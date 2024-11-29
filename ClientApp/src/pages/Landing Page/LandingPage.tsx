@@ -3,7 +3,7 @@ import reactLogo from '../../assets/react.svg'
 import viteLogo from '/vite.svg'
 import '../../App.css'
 
-function HomePage() {
+const LandingPage = () => {
   const [count, setCount] = useState(0)
 
   return (
@@ -32,4 +32,4 @@ function HomePage() {
   )
 }
 
-export default HomePage
+export default LandingPage
