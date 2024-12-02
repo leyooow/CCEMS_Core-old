@@ -24,27 +24,32 @@ const AppRoutes = () => (
         <Route path="/" element={<LandingPage />} />
 
         {/* User Management Routes */}
+        <Route path="/UserManagement" element={<UserManagementDashboard />} />
         <Route path="/UserManagement/Dashboard" element={<UserManagementDashboard />} />
         <Route path="/UserManagement/CreateUserAccess" element={<CreateUserAccess />} />
         <Route path="/UserManagement/ManageRoles" element={<ManageRoles />} />
         <Route path="/UserManagement/EmployeeMaintenance" element={<EmployeeMaintenance />} />
 
         {/* User Management Routes */}
+        <Route path="/GroupManagement" element={<GroupManagementDashboard />} />
         <Route path="/GroupManagement/Dashboard" element={<GroupManagementDashboard />} />
         <Route path="/GroupManagement/CreateGroup" element={<CreateGroup />} />
 
         {/* Generate Report Routes */}
+        <Route path="/GenerateReport" element={<AuditLogs />} />
         <Route path="/GenerateReport/AuditLogs" element={<AuditLogs />} />
         <Route path="/GenerateReport/UserList" element={<UserList />} />
         <Route path="/GenerateReport/GroupList" element={<GroupList />} />
 
 
         {/* Exceptions Management Routes */}
+        <Route path="/ExceptionsManagement/" element={<ExceptionManagementDashboard />} />
         <Route path="/ExceptionsManagement/Dashboard" element={<ExceptionManagementDashboard />} />
         <Route path="/ExceptionsManagement/ForApprovalExceptions" element={<ForApprovalException />} />
         <Route path="/ExceptionsManagement/ForApprovalSubExceptions" element={<ForApprovalSubException />} />
 
         {/* Reports Management Routes */}
+        <Route path="/ReportsManagement" element={<ReportManagementDashboard />} />
         <Route path="/ReportsManagement/Dashboard" element={<ReportManagementDashboard />} />
         <Route path="/ReportsManagement/GenerateRegularReports" element={<GenerateRegularReports />} />
  
