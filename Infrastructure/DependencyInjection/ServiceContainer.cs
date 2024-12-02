@@ -1,4 +1,6 @@
-﻿using Infrastructure.Entities;
+﻿using Application.Contracts.Repositories;
+using Infrastructure.Entities;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,37 +23,38 @@ namespace Infrastructure.DependencyInjection
               b => b.MigrationsAssembly(typeof(ServiceContainer).Assembly.FullName)),
               ServiceLifetime.Scoped);
 
-            // Configure JWT Authentication
-            var jwtSettings = configuration.GetSection("Jwt");
-            var key = jwtSettings["Key"];
-            var issuer = jwtSettings["Issuer"];
-            var audience = jwtSettings["Audience"];
+          
+            //var jwtSettings = configuration.GetSection("Jwt");
+            //var key = jwtSettings["Key"];
+            //var issuer = jwtSettings["Issuer"];
+            //var audience = jwtSettings["Audience"];
 
-            if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
-            {
-                throw new ArgumentNullException("JWT configuration is missing or incomplete.");
-            }
+            //if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
+            //{
+            //    throw new ArgumentNullException("JWT configuration is missing or incomplete.");
+            //}
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    ValidIssuer = configuration["Jwt:Issuer"],
-                    ValidAudience = configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey
-                    (Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
-                };
-            });
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //}).AddJwtBearer(options =>
+            //{
+            //    options.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuer = true,
+            //        ValidateAudience = true,
+            //        ValidateIssuerSigningKey = true,
+            //        ValidateLifetime = true,
+            //        ValidIssuer = configuration["Jwt:Issuer"],
+            //        ValidAudience = configuration["Jwt:Audience"],
+            //        IssuerSigningKey = new SymmetricSecurityKey
+            //        (Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
+            //    };
+            //});
 
             services.AddHttpContextAccessor();
+            services.AddScoped<IGroupRepository, GroupRepository>();
             //services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
             //services.AddScoped<IReportsRepository, ReportsRepository>();
             //services.AddScoped<IUserRepository, UserRepository>();

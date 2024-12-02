@@ -2,6 +2,22 @@
   "version": 3,
   "targets": {
     "net8.0": {
+      "AutoMapper/13.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Options": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/AutoMapper.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/AutoMapper.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Azure.Core/1.38.0": {
         "type": "package",
         "dependencies": {
@@ -1657,6 +1673,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
+          "AutoMapper": "13.0.1",
           "Domain": "1.0.0"
         },
         "compile": {
@@ -1698,6 +1715,21 @@
     }
   },
   "libraries": {
+    "AutoMapper/13.0.1": {
+      "sha512": "/Fx1SbJ16qS7dU4i604Sle+U9VLX+WSNVJggk6MupKVkYvvBm4XqYaeFuf67diHefHKHs50uQIS2YEDFhPCakQ==",
+      "type": "package",
+      "path": "automapper/13.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "automapper.13.0.1.nupkg.sha512",
+        "automapper.nuspec",
+        "icon.png",
+        "lib/net6.0/AutoMapper.dll",
+        "lib/net6.0/AutoMapper.xml"
+      ]
+    },
     "Azure.Core/1.38.0": {
       "sha512": "IuEgCoVA0ef7E4pQtpC3+TkPbzaoQfa77HlfJDmfuaJUCVJmn7fT0izamZiryW5sYUFKizsftIxMkXKbgIcPMQ==",
       "type": "package",
@@ -4439,11 +4471,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS\\API\\API.csproj",
+      "projectUniqueName": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS_Core\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS\\API\\API.csproj",
+      "projectPath": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS_Core\\API\\API.csproj",
       "packagesPath": "C:\\Users\\jcoroy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS\\API\\obj\\",
+      "outputPath": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS_Core\\API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\jcoroy\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -4461,11 +4493,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS\\Application\\Application.csproj": {
-              "projectPath": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS\\Application\\Application.csproj"
+            "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS_Core\\Application\\Application.csproj": {
+              "projectPath": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS_Core\\Application\\Application.csproj"
             },
-            "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS\\Infrastructure\\Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS\\Infrastructure\\Infrastructure.csproj"
+            "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS_Core\\Infrastructure\\Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS_Core\\Infrastructure\\Infrastructure.csproj"
             }
           }
         }
