@@ -1,10 +1,10 @@
 import AppRoutes from './routes/AppRoutes';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { CssBaseline } from '@mui/material';
+import SideBar from './layouts/SideBar';
 
 const App = () => {
   return (
     <div>
+       <SideBar/>
       <AppRoutes />
     </div>
   );
