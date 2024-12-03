@@ -1,4 +1,6 @@
 ﻿using Application.Contracts.Repositories;
+using Application.Contracts.Services;
+using Application.Services;
 using Infrastructure.Entities;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,12 +20,13 @@ namespace Infrastructure.DependencyInjection
     {
         public static IServiceCollection InfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
+
             services.AddDbContext<CcemQatContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("Default"),
               b => b.MigrationsAssembly(typeof(ServiceContainer).Assembly.FullName)),
               ServiceLifetime.Scoped);
 
-          
+
             //var jwtSettings = configuration.GetSection("Jwt");
             //var key = jwtSettings["Key"];
             //var issuer = jwtSettings["Issuer"];
@@ -52,6 +55,8 @@ namespace Infrastructure.DependencyInjection
             //        (Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
             //    };
             //});
+
+            services.AddScoped<IGroupService, GroupService>();
 
             services.AddHttpContextAccessor();
             services.AddScoped<IGroupRepository, GroupRepository>();

@@ -6,6 +6,7 @@ using Application.Models.DTOs.Group;
 using AutoMapper;
 using Infrastructure.Entities;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading.Tasks;
 
 namespace Application.Services
@@ -23,19 +24,27 @@ namespace Application.Services
 
         public async Task<PagedResult<GroupDTO>> GetAllGroupsAsync(int? pageNumber, int? pageSize, string? searchTerm)
         {
-            var groups = await _repository.GetAllAsync(pageNumber, pageSize, searchTerm);
-            var groupDtos = _mapper.Map<List<GroupDTO>>(groups);
-
-            // Get the total count of groups for pagination metadata
-            var totalCount = await _repository.GetTotalCountAsync(searchTerm);
-
-            return new PagedResult<GroupDTO>
+            try
             {
-                Items = groupDtos,
-                TotalCount = totalCount,
-                PageNumber = pageNumber ?? 1,  // Default to 1 if not provided
-                PageSize = pageSize ?? 10      // Default to 10 if not provided
-            };
+                var groups = await _repository.GetAllAsync(pageNumber, pageSize, searchTerm);
+                var groupDtos = _mapper.Map<List<GroupDTO>>(groups);
+
+                // Get the total count of groups for pagination metadata
+                var totalCount = await _repository.GetTotalCountAsync(searchTerm);
+
+                return new PagedResult<GroupDTO>
+                {
+                    Items = groupDtos,
+                    TotalCount = totalCount,
+                    PageNumber = pageNumber ?? 1,  // Default to 1 if not provided
+                    PageSize = pageSize ?? 10      // Default to 10 if not provided
+                };
+            }
+            catch (DbException ex)
+            {
+                throw;
+            }
+
         }
 
         public async Task<GroupDTO?> GetGroupByIdAsync(int id)

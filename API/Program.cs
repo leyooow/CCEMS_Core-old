@@ -24,7 +24,6 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.InfrastructureServices(builder.Configuration);
 
-builder.Services.AddScoped<IGroupService, GroupService>();
 
 var app = builder.Build();
 
@@ -35,8 +34,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var CORS_IP = builder.Configuration["CORS_IP"];
+
 app.UseCors(policy =>
-    policy.WithOrigins("http://localhost:7192/")
+    policy.WithOrigins(CORS_IP)
           .AllowAnyMethod()
           .AllowAnyHeader());
 

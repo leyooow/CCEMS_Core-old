@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("GetGroupById/{id}")]
-        public async Task<ActionResult<GroupDTO>> GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             var group = await _groupService.GetGroupByIdAsync(id);
             if (group == null) return NotFound();
