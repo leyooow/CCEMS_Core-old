@@ -1,3 +1,14 @@
 
 API/appsettings.json
 *.cache
+/.vs
+/API/bin
+/Application/bin
+/Application/obj
+/Domain/bin
+/Domain/obj
+/Tests/obj
+/Infrastructure/obj
+/API/obj/Debug
+/Infrastructure/bin
+/API/obj
