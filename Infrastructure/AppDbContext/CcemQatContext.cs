@@ -87,8 +87,7 @@ public partial class CcemQatContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=L-DSG-JCOROY\\SQLEXPRESS; Database=CCEM_QAT;Integrated Security=True;Encrypt=True;TrustServerCertificate=True");
+   
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

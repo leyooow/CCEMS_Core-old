@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
-   
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class GroupsController : ControllerBase

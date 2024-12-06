@@ -13,6 +13,7 @@ import DocumentScanner from '@mui/icons-material/DocumentScanner';
 import DocumentScannerTwoTone from '@mui/icons-material/DocumentScannerTwoTone';
 import ApprovalSharp from '@mui/icons-material/ApprovalSharp';
 import ApprovalTwoTone from '@mui/icons-material/ApprovalTwoTone';
+import './MainLayout.css'
 // import logo from '../assets/re1act.svg'; // Importing logo
 
 // Define your navigation menu
@@ -83,7 +84,7 @@ const demoTheme = createTheme({
     colorSchemes: { light: true, dark: true },
     breakpoints: { values: { xs: 0, sm: 600, md: 960, lg: 1200, xl: 1536 } },
     typography: {
-        fontSize: 13, // Adjusting base font size
+        fontSize: 11, // Adjusting base font size
     },
     components: {
         MuiDrawer: {

@@ -1,7 +1,7 @@
 // src/services/groupService.ts
 
 import apiClient from './apiClient'; // Assuming apiClient.ts handles base configurations like axios instance
-import { GroupDTO, GroupCreateDTO, GroupUpdateDTO } from '../models/gruopDTOs'; // Update with actual DTO paths
+import { GroupDTO, GroupCreateDTO, GroupUpdateDTO, PagedResult } from '../models/gruopDTOs'; // Update with actual DTO paths
 
 const GroupService = {
   async getAllGroups(pageNumber: number = 1, pageSize: number = 10, searchTerm: string = ''): Promise<GroupDTO[]> {
@@ -19,7 +19,7 @@ const GroupService = {
     }
   },
 
-  async getGroupById(id: number): Promise<GroupDTO> {
+  async getGroupById(id: number): Promise<PagedResult> {
     try {
       const response = await apiClient.get(`/groups/GetGroupById/${id}`);
       return response.data;
