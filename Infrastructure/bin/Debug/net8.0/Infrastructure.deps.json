@@ -596,7 +596,8 @@
       "Application/1.0.0": {
         "dependencies": {
           "AutoMapper": "13.0.1",
-          "Domain": "1.0.0"
+          "Domain": "1.0.0",
+          "Microsoft.AspNetCore.Http.Abstractions": "2.2.0"
         },
         "runtime": {
           "Application.dll": {}

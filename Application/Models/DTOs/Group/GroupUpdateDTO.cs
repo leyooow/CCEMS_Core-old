@@ -11,5 +11,9 @@ namespace Application.Models.DTOs.Group
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Code { get; set; }
+        public string Area { get; set; }
+        public string Division { get; set; }
+        public DateTime? DateModified { get; set; }
     }
 }

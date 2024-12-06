@@ -4005,19 +4005,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\laespino\\.nuget\\packages\\": {}
+    "C:\\Users\\jcoroy\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Domain\\Domain.csproj",
+      "projectUniqueName": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS_Core\\Domain\\Domain.csproj",
       "projectName": "Domain",
-      "projectPath": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Domain\\Domain.csproj",
-      "packagesPath": "C:\\Users\\laespino\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Domain\\obj\\",
+      "projectPath": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS_Core\\Domain\\Domain.csproj",
+      "packagesPath": "C:\\Users\\jcoroy\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS_Core\\Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\laespino\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\jcoroy\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4025,6 +4025,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4075,7 +4076,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

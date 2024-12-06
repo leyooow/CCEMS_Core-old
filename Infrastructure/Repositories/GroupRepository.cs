@@ -1,71 +1,92 @@
 ﻿using Application.Contracts.Repositories;
 using Application.Models.DTOs;
+using Application.Models.DTOs.Common;
+using Application.Models.Helpers;
+using Application.Services.Application.Services;
 using AutoMapper;
 using Infrastructure.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class GroupRepository : IGroupRepository
+    public class GroupRepository : BaseRepository<Group>, IGroupRepository
     {
         private readonly CcemQatContext _context;
-        public GroupRepository(CcemQatContext context)
+        private Logs _auditlogs;
+        //private IHttpContextAccessor _httpContextAccessor;
+        private readonly UserClaimsService _userClaimsService;
+
+
+        public GroupRepository(CcemQatContext context,Logs auditLogs, UserClaimsService userClaimsService) : base(context) 
         {
             _context = context;
-          
+            _auditlogs = auditLogs;
+            //_httpContextAccessor = httpContextAccessor;
+            _userClaimsService = userClaimsService;
         }
 
-        public async Task AddAsync(Group group)
+        public new async Task AddAsync(Group group)
         {
-            group.DateCreated = DateTime.UtcNow; // Add default values at the repository layer if needed
-            await _context.Set<Group>().AddAsync(group);
-            await _context.SaveChangesAsync();
+            var userClaims = _userClaimsService.GetClaims();
+
+           
+            AuditLog auditlogs = _auditlogs.SaveLog("Group",
+                       "Create",
+                       string.Format("Created Group - [Branch Code: {0} | Name: {1} | Area: {2} | Division: {3}]", group.Code, group.Name, group.Area, group.Division),
+                         userClaims.LoginName);
+            _context.Add(auditlogs);
+
+            group.DateCreated = DateTime.UtcNow;
+            await base.AddAsync(group);
         }
 
-        public async Task UpdateAsync(Group group)
+        public new async Task UpdateAsync(Group group)
         {
-            var existingGroup = await _context.Set<Group>().FindAsync(group.Id);
+            var existingGroup = await base.GetByIdAsync(group.Id); 
             if (existingGroup == null)
             {
                 throw new KeyNotFoundException("Group not found.");
             }
 
-            // Update entity properties (this assumes the group contains the updated values)
+            
             existingGroup.Name = group.Name;
             existingGroup.Description = group.Description;
+            existingGroup.Name = group.Name;
+            existingGroup.Code = group.Code;
+            existingGroup.Area = group.Area;
+            existingGroup.Division = group.Division;
             existingGroup.DateModified = DateTime.UtcNow;
 
-            _context.Set<Group>().Update(existingGroup);
-            await _context.SaveChangesAsync();
+            await base.UpdateAsync(existingGroup);
         }
 
-        public async Task DeleteAsync(int id)
+        public new async Task DeleteAsync(int id)
         {
-            var group = await _context.Set<Group>().FindAsync(id);
-            if (group == null)
-            {
-                throw new KeyNotFoundException("Group not found.");
-            }
-
-            _context.Set<Group>().Remove(group);
-            await _context.SaveChangesAsync();
+            await base.DeleteAsync(id);
         }
 
         public async Task<List<Group>> GetAllAsync(int? pageNumber, int? pageSize, string? searchTerm)
         {
             IQueryable<Group> query = _context.Set<Group>();
 
-            // If searchTerm is provided, filter based on name (or any other field you wish to search)
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                query = query.Where(g => g.Name.Contains(searchTerm));
+                query = query.Where(g =>
+                    g.Name.Contains(searchTerm) ||
+                    g.Id.ToString().Contains(searchTerm) ||
+                    g.Code.Contains(searchTerm) ||
+                    g.Description.Contains(searchTerm) ||
+                    g.Area.Contains(searchTerm) ||
+                    g.Division.Contains(searchTerm));
             }
 
-            // If pageNumber and pageSize are provided, apply pagination
             if (pageNumber.HasValue && pageSize.HasValue)
             {
                 query = query
@@ -76,17 +97,18 @@ namespace Infrastructure.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<Group?> GetByIdAsync(int id)
+
+        public new async Task<Group?> GetByIdAsync(int id)
         {
-            return await _context.Set<Group>().FindAsync(id);
+            return await base.GetByIdAsync(id);
         }
 
-        // Method to return the total count for pagination
+        
         public async Task<int> GetTotalCountAsync(string? searchTerm)
         {
             IQueryable<Group> query = _context.Set<Group>();
 
-            // If searchTerm is provided, filter based on name
+           
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(g => g.Name.Contains(searchTerm));
