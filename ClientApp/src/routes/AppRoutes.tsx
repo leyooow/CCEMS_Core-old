@@ -6,7 +6,7 @@ import UserManagementDashboard from '../pages/User Management/Dashboard/Dashboar
 import CreateUserAccess from '../pages/User Management/Create User Access/CreateUserAcces';
 import ManageRoles from '../pages/User Management/Manage Roles/ManageRoles';
 import EmployeeMaintenance from '../pages/User Management/Employee Maintenance/EmployeeMaintenance';
-import GroupManagementDashboard from '../pages/Group Management/Dashboard/Dashboard';
+import GroupManagementDashboard from '../pages/Group Management/Dashboard/Dashboard.tsx';
 import CreateGroup from '../pages/Group Management/Create Group/CreateGroup';
 import AuditLogs from '../pages/Generate Report/Audit Logs/AuditLogs';
 import UserList from '../pages/Generate Report/User List/UserList';

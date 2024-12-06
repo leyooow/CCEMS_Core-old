@@ -1,6 +1,6 @@
 // src/components/PaginationControls.tsx
 import React from 'react';
-import { Grid, Button, Typography, Pagination } from '@mui/material';
+import { Grid, Typography, Pagination } from '@mui/material';
 
 interface PaginationControlsProps {
     currentPage: number;
