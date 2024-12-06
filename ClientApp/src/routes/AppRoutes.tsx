@@ -1,12 +1,12 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from '../pages/Landing Page/LandingPage';
-import SideBar from '../layouts/SideBar';
+// import SideBar from '../layouts/SideBar';
 import UserManagementDashboard from '../pages/User Management/Dashboard/Dashboard';
 import CreateUserAccess from '../pages/User Management/Create User Access/CreateUserAcces';
 import ManageRoles from '../pages/User Management/Manage Roles/ManageRoles';
 import EmployeeMaintenance from '../pages/User Management/Employee Maintenance/EmployeeMaintenance';
-import GroupManagementDashboard from '../pages/Group Management/Dashboard/Dashboard';
+import GroupManagementDashboard from '../pages/Group Management/Dashboard/Dashboard.tsx';
 import CreateGroup from '../pages/Group Management/Create Group/CreateGroup';
 import AuditLogs from '../pages/Generate Report/Audit Logs/AuditLogs';
 import UserList from '../pages/Generate Report/User List/UserList';
@@ -16,10 +16,11 @@ import ForApprovalException from '../pages/Exception Management/For Approval (Ex
 import ForApprovalSubException from '../pages/Exception Management/For Approval (Sub-Exception)/ForApprovalSubException';
 import ReportManagementDashboard from '../pages/Reports Management/Dashboard/Dashboard';
 import GenerateRegularReports from '../pages/Reports Management/Generate Regular Reports/GenerateRegularReports';
+import MainLayout from '../layouts/MainLayout';
 
 const AppRoutes = () => (
   <BrowserRouter>
-    <SideBar>
+    <MainLayout>
       <Routes>
         <Route path="/" element={<LandingPage />} />
 
@@ -54,7 +55,7 @@ const AppRoutes = () => (
         <Route path="/ReportsManagement/GenerateRegularReports" element={<GenerateRegularReports />} />
  
       </Routes>
-    </SideBar>
+    </MainLayout>
   </BrowserRouter>
 );
 
