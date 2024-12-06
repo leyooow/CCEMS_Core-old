@@ -204,8 +204,7 @@
               "RelativeToolTip": "Infrastructure\\Repositories\\UserRepository.cs",
               "ViewState": "AQIAAAYAAAAAAAAAAAAAABQAAAAGAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-05T01:22:06.634Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-05T01:22:06.634Z"
             },
             {
               "$type": "Document",
@@ -241,8 +240,7 @@
               "RelativeToolTip": "Application\\Contracts\\Services\\IAuthService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-04T08:09:26.644Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-04T08:09:26.644Z"
             },
             {
               "$type": "Document",
@@ -254,8 +252,7 @@
               "RelativeToolTip": "Application\\Models\\DTOs\\Auth\\AuthenticationDTO.cs",
               "ViewState": "AQIAAAkAAAAAAAAAAADwvxwAAAATAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-04T08:05:06.439Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-04T08:05:06.439Z"
             },
             {
               "$type": "Document",
@@ -265,7 +262,7 @@
               "RelativeDocumentMoniker": "API\\Controllers\\AuthController.cs",
               "ToolTip": "C:\\Users\\jcoroy\\Documents\\GitHub\\CCEMS_Core\\API\\Controllers\\AuthController.cs",
               "RelativeToolTip": "API\\Controllers\\AuthController.cs",
-              "ViewState": "AQIAABIAAAAAAAAAAAA1wAYAAAAPAAAA",
+              "ViewState": "AQIAABMAAAAAAAAAAAAQwAYAAAAPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-04T08:04:21.822Z",
               "EditorCaption": ""
@@ -316,8 +313,7 @@
               "RelativeToolTip": "Application\\Services\\JwtTokenGenerator.cs",
               "ViewState": "AQIAABgAAAAAAAAAAAA1wDQAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-04T07:43:37.615Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-04T07:43:37.615Z"
             },
             {
               "$type": "Document",
@@ -329,8 +325,7 @@
               "RelativeToolTip": "Application\\Services\\AuthService.cs",
               "ViewState": "AQIAAA0AAAAAAAAAAAAAwCwAAAA4AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-04T07:21:46.866Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-04T07:21:46.866Z"
             },
             {
               "$type": "Document",
@@ -342,8 +337,7 @@
               "RelativeToolTip": "Infrastructure\\Repositories\\AuthRepository.cs",
               "ViewState": "AQIAAAkAAAAAAAAAAAAAABUAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-04T07:14:50.692Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-04T07:14:50.692Z"
             }
           ]
         }
