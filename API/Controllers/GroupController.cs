@@ -2,12 +2,14 @@
 using Application.Contracts.Services;
 using Application.Models.DTOs;
 using Application.Models.DTOs.Group;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
+   
     [ApiController]
     [Route("api/[controller]")]
     public class GroupsController : ControllerBase

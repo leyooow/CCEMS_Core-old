@@ -1,4 +1,4 @@
-﻿using Application.Models.DTOs;
+﻿using Application.Models.DTOs.Common;
 using Application.Models.DTOs.Group;
 using System;
 using System.Collections.Generic;

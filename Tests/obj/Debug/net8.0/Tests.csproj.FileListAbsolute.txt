@@ -253,3 +253,5 @@ C:\Users\jcoroy\Documents\GitHub\CCEMS_Core\Tests\obj\Debug\net8.0\refint\Tests.
 C:\Users\jcoroy\Documents\GitHub\CCEMS_Core\Tests\obj\Debug\net8.0\Tests.pdb
 C:\Users\jcoroy\Documents\GitHub\CCEMS_Core\Tests\obj\Debug\net8.0\Tests.genruntimeconfig.cache
 C:\Users\jcoroy\Documents\GitHub\CCEMS_Core\Tests\obj\Debug\net8.0\ref\Tests.dll
+C:\Users\jcoroy\Documents\GitHub\CCEMS_Core\Tests\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Abstractions.dll
+C:\Users\jcoroy\Documents\GitHub\CCEMS_Core\Tests\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Features.dll

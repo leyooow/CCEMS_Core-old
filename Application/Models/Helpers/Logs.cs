@@ -1,4 +1,5 @@
-﻿using Application.Models.DTOs;
+﻿using Application.Models.DTOs.Common;
+using Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace Application.Models.Helpers
 {
     public class Logs
     {
-        public AuditLogsDTO SaveLog(string moduleName, string actionType, string actionDesc, string actionBy)
+        public AuditLog SaveLog(string moduleName, string actionType, string actionDesc, string actionBy)
         {
-            AuditLogsDTO audit = new AuditLogsDTO();
+            AuditLog audit = new AuditLog();
             audit.ModuleName = moduleName;
             audit.ActionType = actionType;
             audit.ActionDesc = actionDesc;

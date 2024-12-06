@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Models.Responses
+namespace Application.Contracts.Repositories
 {
-    public class AuthResponse
+    public interface IAuthenticationRepository
     {
+
     }
 }
