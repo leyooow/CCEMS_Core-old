@@ -51,27 +51,22 @@ builder.Services.AddDbContext<CcemQatContext>(options =>
 // Add AutoMapper with mapping profiles.
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-//// Register Authentication Services
-//builder.Services.AddAuthentication("Bearer")
-//    .AddJwtBearer(options =>
-//    {
-//        options.Authority = builder.Configuration["Authentication:Authority"];  // Set your authority (e.g., identity server)
-//        options.Audience = builder.Configuration["Authentication:Audience"];  // Set your API audience (e.g., your API's name)
-//        options.RequireHttpsMetadata = true;
-//        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-//        {
-//            ValidateIssuer = true,
-//            ValidateAudience = true,
-//            ValidateLifetime = true,
-//            ValidateIssuerSigningKey = true,
-//            ClockSkew = TimeSpan.Zero // Optional: you can set a small skew if necessary
-//        };
-//    });
-
-// Add your infrastructure services
 builder.Services.InfrastructureServices(builder.Configuration);
 
+builder.Services.AddCors(options =>
+{
+    var allowedOrigins = builder.Configuration.GetSection("CorsSettings:AllowedOrigins").Get<string[]>();
+
+    options.AddPolicy("DefaultPolicy", policy =>
+    {
+        policy.WithOrigins(allowedOrigins)
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
+app.UseCors("DefaultPolicy");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -80,10 +75,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(policy =>
-    policy.WithOrigins("http://localhost:7192/")
-          .AllowAnyMethod()
-          .AllowAnyHeader());
+//app.UseCors(policy =>
+//    policy.WithOrigins("http://localhost:5173")
+//          .AllowAnyMethod()
+//          .AllowAnyHeader());
+
+
 
 // Add authentication middleware
 app.UseAuthentication(); // Add this line
