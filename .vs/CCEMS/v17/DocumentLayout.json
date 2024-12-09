@@ -3,11 +3,31 @@
   "WorkspaceRootPath": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5C29C48F-E506-468F-A6E1-DBFB535AB27B}|API\\API.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "AbsoluteMoniker": "D:0:0:{3933AEFC-60D5-40BC-B8AD-6D218EB44AD8}|Application\\Application.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\application\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3933AEFC-60D5-40BC-B8AD-6D218EB44AD8}|Application\\Application.csproj|solutionrelative:application\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C29C48F-E506-468F-A6E1-DBFB535AB27B}|API\\API.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C29C48F-E506-468F-A6E1-DBFB535AB27B}|API\\API.csproj|solutionrelative:api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BDD03E79-67A0-4EE7-BD86-0FCA4D72B68F}|Infrastructure\\Infrastructure.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\infrastructure\\repositories\\authrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BDD03E79-67A0-4EE7-BD86-0FCA4D72B68F}|Infrastructure\\Infrastructure.csproj|solutionrelative:infrastructure\\repositories\\authrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3933AEFC-60D5-40BC-B8AD-6D218EB44AD8}|Application\\Application.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\application\\services\\groupservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3933AEFC-60D5-40BC-B8AD-6D218EB44AD8}|Application\\Application.csproj|solutionrelative:application\\services\\groupservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3933AEFC-60D5-40BC-B8AD-6D218EB44AD8}|Application\\Application.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\application\\models\\dtos\\auth\\authenticationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3933AEFC-60D5-40BC-B8AD-6D218EB44AD8}|Application\\Application.csproj|solutionrelative:application\\models\\dtos\\auth\\authenticationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C29C48F-E506-468F-A6E1-DBFB535AB27B}|API\\API.csproj|c:\\users\\laespino\\documents\\github\\ccems_core\\api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{5C29C48F-E506-468F-A6E1-DBFB535AB27B}|API\\API.csproj|solutionrelative:api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BDD03E79-67A0-4EE7-BD86-0FCA4D72B68F}|Infrastructure\\Infrastructure.csproj|c:\\users\\laespino\\documents\\github\\ccems_core\\infrastructure\\appdbcontext\\ccemqatcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{BDD03E79-67A0-4EE7-BD86-0FCA4D72B68F}|Infrastructure\\Infrastructure.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\infrastructure\\appdbcontext\\ccemqatcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BDD03E79-67A0-4EE7-BD86-0FCA4D72B68F}|Infrastructure\\Infrastructure.csproj|solutionrelative:infrastructure\\appdbcontext\\ccemqatcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -17,22 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{5C29C48F-E506-468F-A6E1-DBFB535AB27B}|API\\API.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5C29C48F-E506-468F-A6E1-DBFB535AB27B}|API\\API.csproj|solutionrelative:api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5C29C48F-E506-468F-A6E1-DBFB535AB27B}|API\\API.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C29C48F-E506-468F-A6E1-DBFB535AB27B}|API\\API.csproj|solutionrelative:api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3933AEFC-60D5-40BC-B8AD-6D218EB44AD8}|Application\\Application.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\application\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3933AEFC-60D5-40BC-B8AD-6D218EB44AD8}|Application\\Application.csproj|solutionrelative:application\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3933AEFC-60D5-40BC-B8AD-6D218EB44AD8}|Application\\Application.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\application\\models\\dtos\\auth\\authenticationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3933AEFC-60D5-40BC-B8AD-6D218EB44AD8}|Application\\Application.csproj|solutionrelative:application\\models\\dtos\\auth\\authenticationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BDD03E79-67A0-4EE7-BD86-0FCA4D72B68F}|Infrastructure\\Infrastructure.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\infrastructure\\repositories\\authrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BDD03E79-67A0-4EE7-BD86-0FCA4D72B68F}|Infrastructure\\Infrastructure.csproj|solutionrelative:infrastructure\\repositories\\authrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BDD03E79-67A0-4EE7-BD86-0FCA4D72B68F}|Infrastructure\\Infrastructure.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\infrastructure\\repositories\\grouprepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -57,10 +61,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{BDD03E79-67A0-4EE7-BD86-0FCA4D72B68F}|Infrastructure\\Infrastructure.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\infrastructure\\dependencyinjection\\servicecontainer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BDD03E79-67A0-4EE7-BD86-0FCA4D72B68F}|Infrastructure\\Infrastructure.csproj|solutionrelative:infrastructure\\dependencyinjection\\servicecontainer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3933AEFC-60D5-40BC-B8AD-6D218EB44AD8}|Application\\Application.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\application\\services\\groupservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3933AEFC-60D5-40BC-B8AD-6D218EB44AD8}|Application\\Application.csproj|solutionrelative:application\\services\\groupservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3933AEFC-60D5-40BC-B8AD-6D218EB44AD8}|Application\\Application.csproj|C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\application\\contracts\\repositories\\igrouprepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -94,7 +94,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 172,
-          "SelectedChildIndex": 18,
+          "SelectedChildIndex": 20,
           "Children": [
             {
               "$type": "Bookmark",
@@ -102,7 +102,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "CcemQatContext.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Infrastructure\\AppDbContext\\CcemQatContext.cs",
               "RelativeDocumentMoniker": "Infrastructure\\AppDbContext\\CcemQatContext.cs",
@@ -110,12 +110,11 @@
               "RelativeToolTip": "Infrastructure\\AppDbContext\\CcemQatContext.cs",
               "ViewState": "AQIAAFsAAAAAAAAAAAAkwFkAAAADAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-06T02:47:07.559Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-06T02:47:07.559Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 8,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\API\\Program.cs",
               "RelativeDocumentMoniker": "API\\Program.cs",
@@ -127,7 +126,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 3,
               "Title": "GroupService.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Application\\Services\\GroupService.cs",
               "RelativeDocumentMoniker": "Application\\Services\\GroupService.cs",
@@ -135,11 +134,12 @@
               "RelativeToolTip": "Application\\Services\\GroupService.cs",
               "ViewState": "AQIAAB4AAAAAAAAAAAAYwDkAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-05T05:21:41.944Z"
+              "WhenOpened": "2024-12-05T05:21:41.944Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "ServiceContainer.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Infrastructure\\DependencyInjection\\ServiceContainer.cs",
               "RelativeDocumentMoniker": "Infrastructure\\DependencyInjection\\ServiceContainer.cs",
@@ -151,7 +151,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "UserClaimsService.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Application\\Services\\UserClaimsService.cs",
               "RelativeDocumentMoniker": "Application\\Services\\UserClaimsService.cs",
@@ -176,7 +176,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "GroupRepository.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Infrastructure\\Repositories\\GroupRepository.cs",
               "RelativeDocumentMoniker": "Infrastructure\\Repositories\\GroupRepository.cs",
@@ -213,7 +213,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "UserRepository.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Infrastructure\\Repositories\\UserRepository.cs",
               "RelativeDocumentMoniker": "Infrastructure\\Repositories\\UserRepository.cs",
@@ -249,7 +249,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "IAuthService.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Application\\Contracts\\Services\\IAuthService.cs",
               "RelativeDocumentMoniker": "Application\\Contracts\\Services\\IAuthService.cs",
@@ -261,31 +261,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
               "Title": "AuthenticationDTO.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Application\\Models\\DTOs\\Auth\\AuthenticationDTO.cs",
               "RelativeDocumentMoniker": "Application\\Models\\DTOs\\Auth\\AuthenticationDTO.cs",
               "ToolTip": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Application\\Models\\DTOs\\Auth\\AuthenticationDTO.cs",
               "RelativeToolTip": "Application\\Models\\DTOs\\Auth\\AuthenticationDTO.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAADwvxwAAAATAAAA",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAkwBwAAAAfAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-04T08:05:06.439Z"
+              "WhenOpened": "2024-12-04T08:05:06.439Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\API\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "API\\Controllers\\AuthController.cs",
               "ToolTip": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\API\\Controllers\\AuthController.cs",
               "RelativeToolTip": "API\\Controllers\\AuthController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAPAAAA",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAQwBMAAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-04T08:04:21.822Z"
+              "WhenOpened": "2024-12-04T08:04:21.822Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "GroupController.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\API\\Controllers\\GroupController.cs",
               "RelativeDocumentMoniker": "API\\Controllers\\GroupController.cs",
@@ -309,20 +311,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\API\\appsettings.json",
               "RelativeDocumentMoniker": "API\\appsettings.json",
               "ToolTip": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\API\\appsettings.json",
               "RelativeToolTip": "API\\appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAbAAAA",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAAAsAAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-12-04T07:55:40.912Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "JwtTokenGenerator.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Application\\Services\\JwtTokenGenerator.cs",
               "RelativeDocumentMoniker": "Application\\Services\\JwtTokenGenerator.cs",
@@ -334,27 +336,29 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": "AuthService.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Application\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "Application\\Services\\AuthService.cs",
               "ToolTip": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Application\\Services\\AuthService.cs",
               "RelativeToolTip": "Application\\Services\\AuthService.cs",
-              "ViewState": "AQIAAA0AAAAAAAAAAAAAwCwAAAA4AAAA",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAzwBcAAAAdAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-04T07:21:46.866Z"
+              "WhenOpened": "2024-12-04T07:21:46.866Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 2,
               "Title": "AuthRepository.cs",
               "DocumentMoniker": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Infrastructure\\Repositories\\AuthRepository.cs",
               "RelativeDocumentMoniker": "Infrastructure\\Repositories\\AuthRepository.cs",
               "ToolTip": "C:\\Users\\laespino\\Documents\\GitHub\\CCEMS_Core\\Infrastructure\\Repositories\\AuthRepository.cs",
               "RelativeToolTip": "Infrastructure\\Repositories\\AuthRepository.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAABUAAAAIAAAA",
+              "ViewState": "AQIAAA0AAAAAAAAAAAApwCQAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-04T07:14:50.692Z"
+              "WhenOpened": "2024-12-04T07:14:50.692Z",
+              "EditorCaption": ""
             }
           ]
         }

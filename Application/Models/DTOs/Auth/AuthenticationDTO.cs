@@ -22,13 +22,13 @@ namespace Application.Models.DTOs.Auth
 
         public class AuthResponse
         {
-            public bool Success { get; }
+            public bool IsAuthenticated { get; }
             public string Message { get; }
             public string Token { get; }
 
-            public AuthResponse(bool success, string message, string token = null)
+            public AuthResponse(bool isAuthenticated, string message, string token = null)
             {
-                Success = success;
+                IsAuthenticated = isAuthenticated;
                 Message = message;
                 Token = token;
             }

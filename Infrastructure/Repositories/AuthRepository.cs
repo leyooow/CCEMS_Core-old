@@ -20,16 +20,16 @@ namespace Infrastructure.Repositories
 
         public async Task<User> GetUserByLoginNameAsync(string loginName)
         {
-            if (string.IsNullOrWhiteSpace(loginName))
-                throw new ArgumentException("Login name cannot be null or empty.", nameof(loginName));
+            //if (string.IsNullOrWhiteSpace(loginName))
+            //    throw new ArgumentException("Login name cannot be null or empty.", nameof(loginName));
 
             var user = await _context.Users
                                      .Include(u => u.Role)
                                      .Include(u => u.BranchAccesses)
                                      .SingleOrDefaultAsync(u => u.LoginName == loginName);
 
-            if (user == null)
-                throw new KeyNotFoundException($"User with login name '{loginName}' was not found.");
+            //if (user == null)
+            //    throw new KeyNotFoundException($"User with login name '{loginName}' was not found.");
 
             return user;
 

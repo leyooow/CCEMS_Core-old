@@ -1,17 +1,14 @@
 import apiClient from './apiClient';
 
 interface LoginRequest {
-  email: string;
+  username: string;
   password: string;
 }
 
 interface LoginResponse {
+  isAuthenticated: string;
+  message : string;
   token: string;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-  };
 }
 
 const authService = {
@@ -21,7 +18,7 @@ const authService = {
   },
 
   logout: () => {
-    localStorage.removeItem('token'); // Clear token on logout
+    localStorage.removeItem('token'); // Clear token on logout  
   },
 };
 

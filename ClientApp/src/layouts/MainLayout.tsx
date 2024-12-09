@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Card, createTheme } from '@mui/material';
 import { AppProvider, type Session, type Navigation } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
@@ -13,7 +14,11 @@ import DocumentScanner from '@mui/icons-material/DocumentScanner';
 import DocumentScannerTwoTone from '@mui/icons-material/DocumentScannerTwoTone';
 import ApprovalSharp from '@mui/icons-material/ApprovalSharp';
 import ApprovalTwoTone from '@mui/icons-material/ApprovalTwoTone';
+import reactLogo from '../assets/react.svg'
+import { jwtDecode, JwtPayload } from "jwt-decode";
 import './MainLayout.css'
+
+
 // import logo from '../assets/re1act.svg'; // Importing logo
 
 // Define your navigation menu
@@ -78,6 +83,17 @@ const NAVIGATION: Navigation = [
     },
 ];
 
+interface CustomJwtPayload extends JwtPayload {
+    EmployeeID: string;
+    LoginDateTime: string;
+    LoginName: string;
+    Name: string;
+    Role: string;
+    aud: string;
+    exp: number;
+    iss: string;
+}
+
 // Define your theme
 const demoTheme = createTheme({
     cssVariables: { colorSchemeSelector: 'data-toolpad-color-scheme' },
@@ -90,29 +106,59 @@ const demoTheme = createTheme({
         MuiDrawer: {
             styleOverrides: {
                 paper: {
-                    width: 150, // Adjust sidebar width
+                    width: 100, // Adjust sidebar width
                 },
             },
         },
     },
 });
 
+
 // Main Layout component
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [session, setSession] = React.useState<Session | null>(null);
+    const [session, setSession] = useState<Session | null>(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+
+        authentication.signIn();
+        const token = localStorage.getItem('token'); // Retrieve your token
+        if (token) {
+            try {
+                // Decode the JWT payload with your custom type
+                const decoded = jwtDecode<CustomJwtPayload>(token);
+                // console.log(decoded)
+
+                localStorage.setItem('jwtLoginName' , decoded.LoginName)
+                localStorage.setItem('jwtRole' , decoded.Role)
+            } catch (error) {
+                console.error("Invalid token:", error);
+            }
+        }
+
+        // console.log(decodedPayload.LoginName)
+        // console.log(decodedPayload.Role)
+    }, []);
+
 
     const authentication = React.useMemo(
         () => ({
             signIn: () => {
                 setSession({
                     user: {
-                        name: 'Bharat Kashyap',
-                        email: 'bharatkashyap@outlook.com',
-                        image: 'https://avatars.githubusercontent.com/u/19550456',
+                        // name: localStorage.getItem('jwtLoginName'),
+                        // email: localStorage.getItem('jwtRole'),
+
+                        name: localStorage.getItem('jwtLoginName'),
+                        email: localStorage.getItem('jwtRole'),
                     },
                 });
             },
-            signOut: () => setSession(null),
+            signOut: () => {
+                localStorage.clear()
+                setSession(null)
+                navigate('/')
+            },
         }),
         []
     );
@@ -123,7 +169,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             authentication={authentication}
             navigation={NAVIGATION}
             theme={demoTheme}
-            branding={{ title: 'CCEMS' }}
+            branding={{ title: 'CCEMS NI LEO AT JOHNLY', logo: '' }}
         >
             <DashboardLayout>
                 <Box
