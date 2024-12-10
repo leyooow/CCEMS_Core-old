@@ -6,13 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Models.DTOs.Employee;
 using Application.Models.DTOs.Common;
+using Application.Models.Responses;
 
 namespace Application.Contracts.Services
 {
     public interface IEmployeeService
     {
-        Task<PagedResult<EmployeeDTO>> GetAllEmployeesAsync(int? pageNumber, int? pageSize, string? searchTerm);
+        Task<GenericResponse<PagedResult<EmployeeDTO>>> GetAllEmployeesAsync(int? pageNumber, int? pageSize, string? searchTerm);
 
-        Task AddEmployeeAsync(EmployeeCreateDTO employeeCreateDto);
+        Task<GenericResponse<object>> AddEmployeeAsync(EmployeeCreateDTO employeeCreateDto);
     }
 }

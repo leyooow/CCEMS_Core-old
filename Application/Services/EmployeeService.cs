@@ -4,6 +4,7 @@ using Application.Models.DTOs.Common;
 using Application.Models.DTOs.Employee;
 using Application.Models.DTOs.Group;
 using Application.Models.Helpers;
+using Application.Models.Responses;
 using AutoMapper;
 using Infrastructure.Entities;
 using System;
@@ -18,41 +19,47 @@ namespace Application.Services
     {
         private readonly IEmployeeRepository _repository;
         private readonly IMapper _mapper;
-        private Logs _auditlogs;
 
-        public EmployeeService(IEmployeeRepository repository, IMapper mapper, Logs auditlogs) 
+        public EmployeeService(IEmployeeRepository repository, IMapper mapper) 
         {
             _repository = repository;
             _mapper = mapper;
-            _auditlogs = auditlogs;
         }
-        public async Task AddEmployeeAsync(EmployeeCreateDTO employeeCreateDto)
+     
+        public async Task<GenericResponse<object>> AddEmployeeAsync(EmployeeCreateDTO employeeCreateDto)
         {
             var employee = _mapper.Map<Employee>(employeeCreateDto);
-
-            //AuditLogsDTO auditlogs = _auditlogs.SaveLog("Group",
-            //             "Create",
-            //             string.Format("Created Group - [Branch Code: {0} | Name: {1} | Area: {2} | Division: {3}]", group.Code, group.Name, group.Area, group.Division),
-            //             group.CreatedBy);
-            //_context.Add(auditlogs);
             await _repository.AddAsync(employee);
+            return ResponseHelper.SuccessResponse<object>(null, "Group added successfully");
         }
 
-        public async Task<PagedResult<EmployeeDTO>> GetAllEmployeesAsync(int? pageNumber, int? pageSize, string? searchTerm)
+        public async Task<GenericResponse<PagedResult<EmployeeDTO>>> GetAllEmployeesAsync(int? pageNumber, int? pageSize, string? searchTerm)
         {
-            var employees = await _repository.GetAllAsync(pageNumber, pageSize, searchTerm);
-            var employeeDtos = _mapper.Map<List<EmployeeDTO>>(employees);
-
-            // Get the total count of groups for pagination metadata
-            var totalCount = await _repository.GetTotalCountAsync(searchTerm);
-
-            return new PagedResult<EmployeeDTO>
+            try
             {
-                Items = employeeDtos,
-                TotalCount = totalCount,
-                PageNumber = pageNumber ?? 1,  // Default to 1 if not provided
-                PageSize = pageSize ?? 10      // Default to 10 if not provided
-            };
+
+                var employees = await _repository.GetAllAsync(pageNumber, pageSize, searchTerm);
+                var employeeDtos = _mapper.Map<List<EmployeeDTO>>(employees);
+
+                // Get the total count of groups for pagination metadata
+                var totalCount = await _repository.GetTotalCountAsync(searchTerm);
+
+                var pagedResult = new PagedResult<EmployeeDTO>
+                {
+                    Items = employeeDtos,
+                    TotalCount = totalCount,
+                    PageNumber = pageNumber ?? 1,  // Default to 1 if not provided
+                    PageSize = pageSize ?? 10      // Default to 10 if not provided
+                };
+
+                return ResponseHelper.SuccessResponse(pagedResult, "Employees retrieved successfully");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper.ErrorResponse<PagedResult<EmployeeDTO>>($"Failed to retrieve employees: {ex.Message}");
+                
+            }
+           
         }
     }
 }

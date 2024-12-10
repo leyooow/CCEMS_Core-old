@@ -1,9 +1,12 @@
 ﻿using Application.Contracts.Repositories;
+using Application.Models.Helpers;
+using Application.Services.Application.Services;
 using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,14 +15,26 @@ namespace Infrastructure.Repositories
     public class EmployeeRepository : BaseRepository<Employee>, IEmployeeRepository
     {
         private readonly CcemQatContext _context;
-        public EmployeeRepository(CcemQatContext context) : base(context)
+        private Logs _auditlogs;
+        private readonly UserClaimsService _userClaimsService;
+        private string UserLoginName;
+        public EmployeeRepository(CcemQatContext context, Logs auditLogs,UserClaimsService userClaimsService) : base(context)
         {
             _context = context;
-
+            _auditlogs = auditLogs;
+            _userClaimsService = userClaimsService;
+            UserLoginName = _userClaimsService.GetClaims().LoginName;
         }
 
         public new async Task AddAsync(Employee employee)
         {
+            AuditLog auditlogs = _auditlogs.SaveLog("Users", "AddEmployee",
+                              string.Format("New Employee Added - Details: [Employee ID: {0} | First Name: {1} | Middle Name: {2} | Last Name: {3}]", employee.EmployeeId, employee.FirstName, employee.MiddleName, employee.LastName),
+                              UserLoginName);
+            _context.Add(auditlogs);
+
+            await _context.SaveChangesAsync();
+
             await base.AddAsync(employee);
         }
 

@@ -1,16 +1,11 @@
-﻿using Application.Contracts;
-using Application.Contracts.Repositories;
+﻿using Application.Contracts.Repositories;
 using Application.Contracts.Services;
 using Application.Models.DTOs.Common;
 using Application.Models.DTOs.Group;
 using Application.Models.Helpers;
+using Application.Models.Responses;
 using AutoMapper;
 using Infrastructure.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Security.AccessControl;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
@@ -26,47 +21,115 @@ namespace Application.Services
            
         }
 
-        public async Task<PagedResult<GroupDTO>> GetAllGroupsAsync(int? pageNumber, int? pageSize, string? searchTerm)
+        //public async Task<PagedResult<GroupDTO>> GetAllGroupsAsync(int? pageNumber, int? pageSize, string? searchTerm)
+        //{
+        //    var groups = await _repository.GetAllAsync(pageNumber, pageSize, searchTerm);
+        //    var groupDtos = _mapper.Map<List<GroupDTO>>(groups);
+
+        //    // Get the total count of groups for pagination metadata
+        //    var totalCount = await _repository.GetTotalCountAsync(searchTerm);
+
+        //    return new PagedResult<GroupDTO>
+        //    {
+        //        Items = groupDtos,
+        //        TotalCount = totalCount,
+        //        PageNumber = pageNumber ?? 1,  // Default to 1 if not provided
+        //        PageSize = pageSize ?? 10      // Default to 10 if not provided
+        //    };
+        //}
+
+        public async Task<GenericResponse<PagedResult<GroupDTO>>> GetAllGroupsAsync(int? pageNumber, int? pageSize, string? searchTerm)
         {
-            var groups = await _repository.GetAllAsync(pageNumber, pageSize, searchTerm);
-            var groupDtos = _mapper.Map<List<GroupDTO>>(groups);
-
-            // Get the total count of groups for pagination metadata
-            var totalCount = await _repository.GetTotalCountAsync(searchTerm);
-
-            return new PagedResult<GroupDTO>
+            try
             {
-                Items = groupDtos,
-                TotalCount = totalCount,
-                PageNumber = pageNumber ?? 1,  // Default to 1 if not provided
-                PageSize = pageSize ?? 10      // Default to 10 if not provided
-            };
+                var groups = await _repository.GetAllAsync(pageNumber, pageSize, searchTerm);
+                var groupDtos = _mapper.Map<List<GroupDTO>>(groups);
+
+                // Get the total count of groups for pagination metadata
+                var totalCount = await _repository.GetTotalCountAsync(searchTerm);
+
+                var pagedResult =new  PagedResult<GroupDTO>
+                {
+                    Items = groupDtos,
+                    TotalCount = totalCount,
+                    PageNumber = pageNumber ?? 1,  // Default to 1 if not provided
+                    PageSize = pageSize ?? 10      // Default to 10 if not provided
+                };
+                
+                return ResponseHelper.SuccessResponse(pagedResult, "Groups retrieved successfully");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper.ErrorResponse<PagedResult<GroupDTO>>($"Failed to retrieve groups: {ex.Message}");
+            }
         }
 
-        public async Task<GroupDTO?> GetGroupByIdAsync(int id)
+
+        public async Task <GenericResponse<GroupDTO?>> GetGroupByIdAsync(int id)
         {
-            var group = await _repository.GetByIdAsync(id);
-            return group == null ? null : _mapper.Map<GroupDTO>(group);
+            try
+            {
+                var group = await _repository.GetByIdAsync(id);
+                var mapgroup = group == null ? null : _mapper.Map<GroupDTO>(group);
+
+                return ResponseHelper.SuccessResponse(mapgroup, "Group retrieved successfully");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper.ErrorResponse<GroupDTO?>("An error occurred while retrieving the group.");
+            }
+
         }
 
-        public async Task AddGroupAsync(GroupCreateDTO groupCreateDto)
+        public async Task<GenericResponse<object>> AddGroupAsync(GroupCreateDTO groupCreateDto)
         {
-            
-            var group = _mapper.Map<Group>(groupCreateDto);
+            try
+            {
 
-            await _repository.AddAsync(group);
+                var group = _mapper.Map<Group>(groupCreateDto);
+
+                await _repository.AddAsync(group);
+
+                return ResponseHelper.SuccessResponse<object>(null, "Group added successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return ResponseHelper.ErrorResponse<object>($"An error occurred while adding the group: {ex.Message}");
+            }
+
         }
 
-        public async Task UpdateGroupAsync(GroupUpdateDTO groupUpdateDto)
+        public async Task <GenericResponse<object>> UpdateGroupAsync(GroupUpdateDTO groupUpdateDto)
         {
-            
-            var group = _mapper.Map<Group>(groupUpdateDto);
-            await _repository.UpdateAsync(group);
+            try
+            {
+                var group = _mapper.Map<Group>(groupUpdateDto);
+                await _repository.UpdateAsync(group);
+
+                return ResponseHelper.SuccessResponse<object>(null, "Group updated successfully");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper.ErrorResponse<object>($"An error occurred while adding the group: {ex.Message}");
+            }
+
+           
         }
 
-        public async Task DeleteGroupAsync(int id)
+        public async Task<GenericResponse<object>> DeleteGroupAsync(int id)
         {
-            await _repository.DeleteAsync(id);
+            try
+            {
+                await _repository.DeleteAsync(id);
+                return ResponseHelper.SuccessResponse<object>(false, "Group deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper.ErrorResponse<object>($"Failed to delete group: {ex.Message}");
+            }
+
+
         }
     }
 }

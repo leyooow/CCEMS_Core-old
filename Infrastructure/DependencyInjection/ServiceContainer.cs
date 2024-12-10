@@ -67,6 +67,7 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 
 
             services.AddScoped<IAuthService, AuthService>();

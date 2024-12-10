@@ -24,40 +24,39 @@ namespace WebAPI.Controllers
         [HttpGet ("GetAllGroups")]
         public async Task<IActionResult> GetAllGroups([FromQuery] int? pageNumber = 1, [FromQuery] int? pageSize = 10, [FromQuery] string? searchTerm = null)
         {
-            var result = await _groupService.GetAllGroupsAsync(pageNumber, pageSize, searchTerm);
-            return Ok(result);
+
+            var response = await _groupService.GetAllGroupsAsync(pageNumber, pageSize, searchTerm);
+            return Ok(response);
         }
 
         [HttpGet("GetGroupById/{id}")]
         public async Task<ActionResult<GroupDTO>> GetById(int id)
         {
-            var group = await _groupService.GetGroupByIdAsync(id);
-            if (group == null) return NotFound();
+            var response = await _groupService.GetGroupByIdAsync(id);
+            return Ok(response);
 
-            return Ok(group);
         }
 
         [HttpPost("CreateGroup")]
         public async Task<IActionResult> Create(GroupCreateDTO groupCreateDto)
         {
-            await _groupService.AddGroupAsync(groupCreateDto);
-            return CreatedAtAction(nameof(GetById), new { id = groupCreateDto.Name }, groupCreateDto);
+            var response = await _groupService.AddGroupAsync(groupCreateDto);
+            return Ok(response);
+
         }
 
         [HttpPut("UpdateGroup/{id}")]
         public async Task<IActionResult> Update(int id, GroupUpdateDTO groupUpdateDto)
         {
-            if (id != groupUpdateDto.Id) return BadRequest("ID mismatch");
-
-            await _groupService.UpdateGroupAsync(groupUpdateDto);
-            return NoContent();
+            var response = await _groupService.UpdateGroupAsync(groupUpdateDto);
+            return Ok(response);
         }
 
         [HttpDelete("DeleteGroup/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _groupService.DeleteGroupAsync(id);
-            return NoContent();
+            var response = await _groupService.DeleteGroupAsync(id);
+            return Ok(response);
         }
     }
 }

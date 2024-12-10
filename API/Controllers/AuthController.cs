@@ -18,19 +18,7 @@ public class AuthController : ControllerBase
     [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody] AuthRequest request)
     {
-        if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
-        {
-            return BadRequest(new { Message = "Username or password cannot be blank." });
-        }
-
-        var authResponse = await _authService.AuthenticateAsync(request.Username, request.Password);
-
-        if (!authResponse.Success)
-        {
-            return Unauthorized(new { authResponse.Message });
-        }
-        var response = new AuthResponse(true, "Login successful.", authResponse.Token);
-
+        var response = await _authService.AuthenticateAsync(request.Username, request.Password);
         return Ok(response);
     }
 }
