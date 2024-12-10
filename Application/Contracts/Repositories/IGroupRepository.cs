@@ -10,7 +10,6 @@ namespace Application.Contracts.Repositories
 {
     public interface IGroupRepository : IBaseRepository<Group>
     {
-        Task<List<Group>> GetAllAsync(int? pageNumber, int? pageSize, string? searchTerm);
-        Task<int> GetTotalCountAsync(string? searchTerm);
+        Task<List<Group>> GetPaginatedAsync(int? pageNumber, int? pageSize, string? searchTerm);
     }
 }

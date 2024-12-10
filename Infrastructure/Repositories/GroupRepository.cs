@@ -90,7 +90,11 @@ namespace Infrastructure.Repositories
             }
             
         }
-        public async Task<List<Group>> GetAllAsync(int? pageNumber, int? pageSize, string? searchTerm)
+        public async Task<List<Group>> GetAllAsync()
+        { 
+            return await base.GetAllAsync();
+        }
+        public async Task<List<Group>> GetPaginatedAsync(int? pageNumber, int? pageSize, string? searchTerm)
         {
             IQueryable<Group> query = _context.Set<Group>();
 
@@ -118,17 +122,12 @@ namespace Infrastructure.Repositories
         {
             return await base.GetByIdAsync(id);
         }
+
         public async Task<int> GetTotalCountAsync(string? searchTerm)
         {
-            IQueryable<Group> query = _context.Set<Group>();
 
-           
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                query = query.Where(g => g.Name.Contains(searchTerm));
-            }
-
-            return await query.CountAsync();
+            return await base.GetTotalCountAsync(searchTerm);
         }
+      
     }
 }

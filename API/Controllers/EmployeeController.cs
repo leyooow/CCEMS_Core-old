@@ -19,11 +19,17 @@ namespace API.Controllers
         }
 
 
-
         [HttpGet("GetAllEmployees")]
-        public async Task<IActionResult> GetAllEmployees([FromQuery] int? pageNumber = 1, [FromQuery] int? pageSize = 10, [FromQuery] string? searchTerm = null)
+        public async Task<IActionResult> GetAll()
         {
-            var response = await _employeeService.GetAllEmployeesAsync(pageNumber, pageSize, searchTerm);
+            var response = await _employeeService.GetAllAsync();
+            return Ok(response);
+        }
+
+        [HttpGet("GetPaginatedEmployees")]
+        public async Task<IActionResult> GetPaginated([FromQuery] int? pageNumber = 1, [FromQuery] int? pageSize = 10, [FromQuery] string? searchTerm = null)
+        {
+            var response = await _employeeService.GetPaginatedAsync(pageNumber, pageSize, searchTerm);
             return Ok(response);
         }
 

@@ -1,4 +1,6 @@
-﻿using Infrastructure.Entities;
+﻿using Application.Models.DTOs.Group;
+using Application.Models.Responses;
+using Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,8 @@ namespace Application.Contracts.Repositories
 {
     public interface IEmployeeRepository : IBaseRepository<Employee>
     {
-        Task<List<Employee>> GetAllAsync(int? pageNumber, int? pageSize, string? searchTerm);
-        Task<int> GetTotalCountAsync(string? searchTerm);
+        //Task<List<Employee>> GetAllAsync();
+        Task<List<Employee>> GetPaginatedAsync(int? pageNumber, int? pageSize, string? searchTerm);
+       
     }
 }

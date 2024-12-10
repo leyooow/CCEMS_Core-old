@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,6 +57,24 @@ namespace Infrastructure.Repositories
 
             _dbSet.Remove(entity);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> GetTotalCountAsync(string? searchTerm)
+        {
+            var query = _dbSet.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var stringProperties = typeof(TEntity).GetProperties()
+                                                        .Where(p => p.PropertyType == typeof(string));
+
+                foreach (var property in stringProperties)
+                {
+                    query = query.Where(e => EF.Property<string>(e, property.Name).Contains(searchTerm));
+                }
+            }
+
+            return await query.CountAsync();
         }
     }
 }

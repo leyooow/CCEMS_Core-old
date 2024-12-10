@@ -12,7 +12,8 @@ namespace Application.Contracts.Services
 {
     public interface IEmployeeService
     {
-        Task<GenericResponse<PagedResult<EmployeeDTO>>> GetAllEmployeesAsync(int? pageNumber, int? pageSize, string? searchTerm);
+        Task<GenericResponse<List<EmployeeDTO>>> GetAllAsync();
+        Task<GenericResponse<PagedResult<EmployeeDTO>>> GetPaginatedAsync(int? pageNumber, int? pageSize, string? searchTerm);
 
         Task<GenericResponse<object>> AddEmployeeAsync(EmployeeCreateDTO employeeCreateDto);
     }

@@ -2,6 +2,7 @@
 using Application.Contracts.Services;
 using Application.Models.DTOs;
 using Application.Models.DTOs.Group;
+using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -21,11 +22,17 @@ namespace WebAPI.Controllers
             _groupService = groupService;
         }
 
-        [HttpGet ("GetAllGroups")]
-        public async Task<IActionResult> GetAllGroups([FromQuery] int? pageNumber = 1, [FromQuery] int? pageSize = 10, [FromQuery] string? searchTerm = null)
+        [HttpGet("GetAllGroups")]
+        public async Task<IActionResult> GetAll()
+        {
+            var response = await _groupService.GetAllAsync();
+            return Ok(response);
+        }
+        [HttpGet ("GetPaginatedGroups")]
+        public async Task<IActionResult> GetPaginated([FromQuery] int? pageNumber = 1, [FromQuery] int? pageSize = 10, [FromQuery] string? searchTerm = null)
         {
 
-            var response = await _groupService.GetAllGroupsAsync(pageNumber, pageSize, searchTerm);
+            var response = await _groupService.GetPaginatedAsync(pageNumber, pageSize, searchTerm);
             return Ok(response);
         }
 

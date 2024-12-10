@@ -13,5 +13,6 @@ namespace Application.Contracts.Repositories
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(int id);
+        Task<int> GetTotalCountAsync(string? searchTerm);
     }
 }

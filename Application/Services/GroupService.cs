@@ -21,28 +21,21 @@ namespace Application.Services
            
         }
 
-        //public async Task<PagedResult<GroupDTO>> GetAllGroupsAsync(int? pageNumber, int? pageSize, string? searchTerm)
-        //{
-        //    var groups = await _repository.GetAllAsync(pageNumber, pageSize, searchTerm);
-        //    var groupDtos = _mapper.Map<List<GroupDTO>>(groups);
 
-        //    // Get the total count of groups for pagination metadata
-        //    var totalCount = await _repository.GetTotalCountAsync(searchTerm);
+        public async Task<GenericResponse<List<GroupDTO>>> GetAllAsync() 
+        {
+            var groups = await _repository.GetAllAsync();
 
-        //    return new PagedResult<GroupDTO>
-        //    {
-        //        Items = groupDtos,
-        //        TotalCount = totalCount,
-        //        PageNumber = pageNumber ?? 1,  // Default to 1 if not provided
-        //        PageSize = pageSize ?? 10      // Default to 10 if not provided
-        //    };
-        //}
+            var groupDtos = _mapper.Map<List<GroupDTO>>(groups);
 
-        public async Task<GenericResponse<PagedResult<GroupDTO>>> GetAllGroupsAsync(int? pageNumber, int? pageSize, string? searchTerm)
+           return ResponseHelper.SuccessResponse(groupDtos,"Groups retrieved succesfully.");
+        }        
+
+        public async Task<GenericResponse<PagedResult<GroupDTO>>> GetPaginatedAsync(int? pageNumber, int? pageSize, string? searchTerm)
         {
             try
             {
-                var groups = await _repository.GetAllAsync(pageNumber, pageSize, searchTerm);
+                var groups = await _repository.GetPaginatedAsync(pageNumber, pageSize, searchTerm);
                 var groupDtos = _mapper.Map<List<GroupDTO>>(groups);
 
                 // Get the total count of groups for pagination metadata
@@ -56,7 +49,7 @@ namespace Application.Services
                     PageSize = pageSize ?? 10      // Default to 10 if not provided
                 };
                 
-                return ResponseHelper.SuccessResponse(pagedResult, "Groups retrieved successfully");
+                return ResponseHelper.SuccessResponse(pagedResult, "Paginated Groups retrieved successfully");
             }
             catch (Exception ex)
             {

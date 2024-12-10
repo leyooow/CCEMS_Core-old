@@ -11,7 +11,8 @@ namespace Application.Contracts.Services
 {
     public interface IGroupService
     {
-        Task<GenericResponse<PagedResult<GroupDTO>>> GetAllGroupsAsync(int? pageNumber, int? pageSize, string? searchTerm);
+        Task<GenericResponse<List<GroupDTO>>> GetAllAsync();
+        Task<GenericResponse<PagedResult<GroupDTO>>> GetPaginatedAsync(int? pageNumber, int? pageSize, string? searchTerm);
         Task<GenericResponse<GroupDTO?>> GetGroupByIdAsync(int id);
         Task<GenericResponse<object>> AddGroupAsync(GroupCreateDTO groupCreateDto);
         Task<GenericResponse<object>> UpdateGroupAsync(GroupUpdateDTO groupUpdateDto);

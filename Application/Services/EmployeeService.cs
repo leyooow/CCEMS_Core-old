@@ -20,12 +20,12 @@ namespace Application.Services
         private readonly IEmployeeRepository _repository;
         private readonly IMapper _mapper;
 
-        public EmployeeService(IEmployeeRepository repository, IMapper mapper) 
+        public EmployeeService(IEmployeeRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
-     
+
         public async Task<GenericResponse<object>> AddEmployeeAsync(EmployeeCreateDTO employeeCreateDto)
         {
             var employee = _mapper.Map<Employee>(employeeCreateDto);
@@ -33,12 +33,21 @@ namespace Application.Services
             return ResponseHelper.SuccessResponse<object>(null, "Group added successfully");
         }
 
-        public async Task<GenericResponse<PagedResult<EmployeeDTO>>> GetAllEmployeesAsync(int? pageNumber, int? pageSize, string? searchTerm)
+        public async Task<GenericResponse<List<EmployeeDTO>>> GetAllAsync()
+        {
+            var employees = await _repository.GetAllAsync();
+
+            var employeesDtos = _mapper.Map<List<EmployeeDTO>>(employees);
+
+           return ResponseHelper.SuccessResponse(employeesDtos, "Employees retrieved succesfully.");
+        }
+
+    public async Task<GenericResponse<PagedResult<EmployeeDTO>>> GetPaginatedAsync(int? pageNumber, int? pageSize, string? searchTerm)
         {
             try
             {
 
-                var employees = await _repository.GetAllAsync(pageNumber, pageSize, searchTerm);
+                var employees = await _repository.GetPaginatedAsync(pageNumber, pageSize, searchTerm);
                 var employeeDtos = _mapper.Map<List<EmployeeDTO>>(employees);
 
                 // Get the total count of groups for pagination metadata
@@ -52,7 +61,7 @@ namespace Application.Services
                     PageSize = pageSize ?? 10      // Default to 10 if not provided
                 };
 
-                return ResponseHelper.SuccessResponse(pagedResult, "Employees retrieved successfully");
+                return ResponseHelper.SuccessResponse(pagedResult, "Paginated Employees retrieved successfully");
             }
             catch (Exception ex)
             {
