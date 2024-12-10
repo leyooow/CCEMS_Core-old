@@ -10,11 +10,18 @@ import {
 } from "@mui/material";
 import { LoginFormStyle } from "./LoginStyle";
 import authService from '../../services/authService';
-import {ERROR_MESSAGES} from '../../utils/constants';
+import {ERROR_MESSAGES, CustomJwtPayload} from '../../utils/constants';
+import {jwtDecode } from 'jwt-decode';;
+import Cookies from 'js-cookie';
+import { encrypt } from "../../utils/encrypt-decrypt";
+import ToastService from "../../utils/toast";
+
+
+// import {Cookies} from 'js-cookie';
+
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-
   // const EMPTY_FIELDS_ERROR_MSG = 'Username and password is required.';
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [erroInput, setErroInput] = useState({
@@ -52,7 +59,17 @@ const Login: React.FC = () => {
 
         if (response.isAuthenticated) {
           localStorage.setItem('token', response.token);
+
+          const decoded = jwtDecode<CustomJwtPayload>(response.token);
+
+          Cookies.set('LoginName', encrypt(decoded.LoginName), { expires: 7 }); // Expires in 7 days
+          Cookies.set('Role', encrypt(decoded.Role), { expires: 7 });
+
+          // localStorage.setItem('LoginName', decoded.LoginName)
+          // localStorage.setItem('Role', decoded.Role)
+          
           navigate('/Homepage');
+          ToastService.success('Login Successful.')
         } else {
           setErrorMsg(response.message);
         }

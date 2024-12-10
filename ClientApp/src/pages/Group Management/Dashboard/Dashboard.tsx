@@ -8,29 +8,69 @@ import EditNoteTwoTone from '@mui/icons-material/EditNoteTwoTone';
 import DeleteTwoTone from '@mui/icons-material/DeleteTwoTone';
 import { FormattedDate } from '../../../utils/formatDate';
 import { DashboardStyle } from './DashboardStyle';
+import EditDataModal from '../../../components/Modal/FormModal';
+import CustomModal from '../../../components/Modal/ConfirmationModal';
 
 const GroupList: React.FC = () => {
 
   // Define state with proper initial structure
   const [pagedResult, setPagedResult] = useState<PagedResult>({
-    items: [], 
+    items: [],
     totalCount: 0,
     pageNumber: 1,
-    pageSize: 10, 
+    pageSize: 10,
     searchTerm: ''
   });
+  const [modalTitle, setModalTitle] = useState('')
+  
+  const [openEditModal, setOpenEditModal] = useState(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  
+  
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    johnly: ''
+  });
+  const handleInputChange = (field: string, value: string) => {
+    setFormData({ ...formData, [field]: value });
+  };
+
+  const handleSave = () => {
+    console.log('Data saved:', formData);
+    setOpenEditModal(false);
+  };
+
+
+  const handleOpenEditModal = () => {
+    setOpenEditModal(true)
+    setModalTitle('Edit Group')
+  }
+
+  const handleOpenDeleteModal = () => {
+    setOpenDeleteModal(true)
+    setModalTitle('Delete Group')
+  }
+
+  const handleConfirmDelete = () => {
+
+  }
+
 
   const [searchTerm, setSearchTerm] = useState<string>(pagedResult.searchTerm);
 
   const fetchGroups = async () => {
     try {
       const result = await GroupService.getAllGroups(
-        pagedResult.pageNumber, 
-        pagedResult.pageSize, 
+        pagedResult.pageNumber,
+        pagedResult.pageSize,
         searchTerm
       );
-      setPagedResult(result);
-      // console.log(result);
+      setPagedResult(result.data.data);
+
+      // console.log(result); 
     } catch (error) {
       console.error("Error fetching groups", error);
     }
@@ -45,15 +85,17 @@ const GroupList: React.FC = () => {
     { label: 'Branch Code', accessor: 'code' },
     { label: 'Branch Name', accessor: 'name' },
     { label: 'Description', accessor: 'description' },
-    { label: 'Date Created', 
+    {
+      label: 'Date Created',
       render: (data: any) => (
         FormattedDate(data.dateCreated)
-      ),  
+      ),
     },
-    { label: 'Date Modifiedd', 
+    {
+      label: 'Date Modifiedd',
       render: (data: any) => (
         FormattedDate(data.dateModified)
-      ),  
+      ),
     },
     // { label: 'Created By', accessor: 'createdBy' },
     { label: 'Area', accessor: 'area' },
@@ -63,12 +105,12 @@ const GroupList: React.FC = () => {
       render: () => (
         <Box sx={DashboardStyle.buttonBox}>
           <Tooltip title="Edit">
-            <IconButton color='primary'>
+            <IconButton color='primary' onClick={handleOpenEditModal}>
               <EditNoteTwoTone />
-            </IconButton> 
+            </IconButton>
           </Tooltip>
           <Tooltip title="Delete">
-            <IconButton sx={DashboardStyle.buttonRed}>
+            <IconButton sx={DashboardStyle.buttonRed} onClick={handleOpenDeleteModal}>
               <DeleteTwoTone />
             </IconButton>
           </Tooltip>
@@ -122,6 +164,27 @@ const GroupList: React.FC = () => {
         totalPages={pageCount}
         onPageChange={handlePageChange}
         totalItems={pagedResult.totalCount}
+      />
+
+      <EditDataModal
+        open={openEditModal}
+        handleClose={() => setOpenEditModal(false)}
+        title={modalTitle}
+        formData={formData}
+        handleInputChange={handleInputChange}
+        handleSave={handleSave}
+      />
+
+
+
+
+      <CustomModal
+        open={openDeleteModal}
+        handleConfirm={handleConfirmDelete}
+        title={modalTitle}
+        handleClose={() => setOpenDeleteModal(false)}
+        buttonName='Delete'
+        content='Are you sure you want to delete this group?'
       />
     </>
   );
