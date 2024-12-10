@@ -14,12 +14,17 @@ import DocumentScanner from '@mui/icons-material/DocumentScanner';
 import DocumentScannerTwoTone from '@mui/icons-material/DocumentScannerTwoTone';
 import ApprovalSharp from '@mui/icons-material/ApprovalSharp';
 import ApprovalTwoTone from '@mui/icons-material/ApprovalTwoTone';
-import reactLogo from '../assets/react.svg'
-import { jwtDecode, JwtPayload } from "jwt-decode";
-import './MainLayout.css'
+import { jwtDecode } from 'jwt-decode';
+import './MainLayout.css';
+import moment from 'moment';
+import ConfirmationModal from '../components/Modal/ConfirmationModal';
+import { CustomJwtPayload } from '../utils/constants';
+import Cookies from 'js-cookie';
+import { decrypt } from '../utils/encrypt-decrypt';
+import { toast } from 'react-toastify';
 
 
-// import logo from '../assets/re1act.svg'; // Importing logo
+
 
 // Define your navigation menu
 const NAVIGATION: Navigation = [
@@ -82,122 +87,126 @@ const NAVIGATION: Navigation = [
         ],
     },
 ];
-
-interface CustomJwtPayload extends JwtPayload {
-    EmployeeID: string;
-    LoginDateTime: string;
-    LoginName: string;
-    Name: string;
-    Role: string;
-    aud: string;
-    exp: number;
-    iss: string;
-}
-
-// Define your theme
 const demoTheme = createTheme({
     cssVariables: { colorSchemeSelector: 'data-toolpad-color-scheme' },
     colorSchemes: { light: true, dark: true },
     breakpoints: { values: { xs: 0, sm: 600, md: 960, lg: 1200, xl: 1536 } },
-    typography: {
-        fontSize: 11, // Adjusting base font size
-    },
+    typography: { fontSize: 11 },
     components: {
         MuiDrawer: {
-            styleOverrides: {
-                paper: {
-                    width: 100, // Adjust sidebar width
-                },
-            },
+            styleOverrides: { paper: { width: 100 } },
         },
     },
 });
 
-
-// Main Layout component
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [session, setSession] = useState<Session | null>(null);
+    const [session, setSession] = useState<Session | null>();
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const navigate = useNavigate();
+
+    const now = moment();
+
+    const handleSignOutModalConfirm = () => {
+        localStorage.clear();
+        toast.dismiss();
+        setSession(null);
+        navigate('/');
+    };
 
     useEffect(() => {
 
-        authentication.signIn();
-        const token = localStorage.getItem('token'); // Retrieve your token
+        console.log(session);
+            authentication.signIn()
+
+
+        const token = localStorage.getItem('token');
+
+
         if (token) {
             try {
-                // Decode the JWT payload with your custom type
                 const decoded = jwtDecode<CustomJwtPayload>(token);
-                // console.log(decoded)
+                const expTime = moment.unix(decoded.exp);
 
-                localStorage.setItem('jwtLoginName' , decoded.LoginName)
-                localStorage.setItem('jwtRole' , decoded.Role)
+                if (now.isAfter(expTime)) {
+                    console.log('Token has expired!');
+                    setDeleteModalOpen(true);
+                }
+
             } catch (error) {
-                console.error("Invalid token:", error);
+                console.error('Invalid token:', error);
             }
         }
-
-        // console.log(decodedPayload.LoginName)
-        // console.log(decodedPayload.Role)
     }, []);
-
 
     const authentication = React.useMemo(
         () => ({
             signIn: () => {
-                setSession({
-                    user: {
-                        // name: localStorage.getItem('jwtLoginName'),
-                        // email: localStorage.getItem('jwtRole'),
+                if (localStorage) {
 
-                        name: localStorage.getItem('jwtLoginName'),
-                        email: localStorage.getItem('jwtRole'),
-                    },
-                });
+                    setSession({
+                        user: {
+                            name: decrypt(Cookies.get('LoginName')),
+                            email: decrypt(Cookies.get('Role')),
+                        }
+                    })
+
+                }
+
             },
             signOut: () => {
-                localStorage.clear()
-                setSession(null)
-                navigate('/')
+                setDeleteModalOpen(true);
+
             },
         }),
         []
     );
 
     return (
-        <AppProvider
-            session={session}
-            authentication={authentication}
-            navigation={NAVIGATION}
-            theme={demoTheme}
-            branding={{ title: 'CCEMS NI LEO AT JOHNLY', logo: '' }}
-        >
-            <DashboardLayout>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        flexGrow: 1,
-                        height: '100%',
-                        padding: 2,
-                        boxSizing: 'border-box',
-                    }}
-                >
-                    <Card
+        <>
+            <AppProvider
+                session={session}
+                authentication={authentication}
+                navigation={NAVIGATION}
+                theme={demoTheme}
+                branding={{ title: 'CCEMS NI LEO AT JOHNLY', logo: '' }}
+            >
+                <DashboardLayout>
+                    <Box
                         sx={{
-                            flexGrow: 1,
                             display: 'flex',
                             flexDirection: 'column',
-                            justifyContent: 'flex-start',
-                            alignItems: 'stretch',
-                            padding: 3,
-                            boxShadow: 3,
+                            flexGrow: 1,
+                            height: '100%',
+                            padding: 2,
+                            boxSizing: 'border-box',
                         }}
                     >
-                        {children}
-                    </Card>
-                </Box>
-            </DashboardLayout>
-        </AppProvider>
+                        <Card
+                            sx={{
+                                flexGrow: 1,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-start',
+                                alignItems: 'stretch',
+                                padding: 3,
+                                boxShadow: 3,
+                            }}
+                        >
+                            {children}
+                        </Card>
+                    </Box>
+                </DashboardLayout>
+            </AppProvider>
+
+            <ConfirmationModal
+                open={deleteModalOpen}
+                title="Sign out"
+                content="Are you sure you want to logout?"
+                handleClose={() => setDeleteModalOpen(false)}
+                handleConfirm={handleSignOutModalConfirm}
+                buttonName="Sign out"
+            />
+        </>
     );
 };
 

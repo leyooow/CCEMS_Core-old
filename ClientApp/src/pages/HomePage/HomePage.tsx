@@ -1,11 +1,10 @@
 import '../../App.css'
+import homepageImg from '../../assets/CCEM_banner.png'
 
 const HomePage: React.FC = () => {
-  // const [count, setCount] = useState(0)
-
   return (
     <>
-      <h1>Homepage</h1>
+      <img src={homepageImg} alt="Homepage" />
     </>
   )
 }
