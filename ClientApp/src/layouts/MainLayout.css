@@ -1,11 +1,11 @@
 .css-6082y2-MuiDrawer-docked .MuiDrawer-paper {
-    width: 265px !important;
+    width: 255px !important;
    
 }
 
 @media (min-width: 0px) {
     .css-6082y2-MuiDrawer-docked {
-        width: 265px !important;
+        width: 250px !important;
         
     }
 }

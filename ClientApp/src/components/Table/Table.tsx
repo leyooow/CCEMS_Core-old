@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { Table as MuiTable, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { TableStyle } from './TableStyle';
+
 
 interface Column {
   label: string;
@@ -16,7 +18,7 @@ interface TableProps {
 const Table: React.FC<TableProps> = ({ columns, data }) => {
   return (
     <TableContainer
-      component={Paper}
+      component={Paper} 
       sx={{
         maxHeight: 600, 
       }}
@@ -28,14 +30,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
             {columns.map((column, index) => (
               <TableCell
                 key={index}
-                sx={{
-                  fontWeight: 'bold',
-                  backgroundColor: 'background.paper', 
-                  position: 'sticky',
-                  top: 0, 
-                  zIndex: 1, 
-                  textAlign: 'center',  
-                }}
+                sx={TableStyle.tableRow}
               >
                 {column.label}
               </TableCell>
@@ -49,7 +44,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
             data.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 {columns.map((column, colIndex) => (
-                  <TableCell key={colIndex} sx={{textAlign: 'center', placeItems: 'center'}}>
+                  <TableCell key={colIndex} sx={TableStyle.tableCell}>
                     {column.render ? column.render(row) : row[column.accessor || '']}
                   </TableCell>
                 ))}
