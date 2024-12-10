@@ -10,15 +10,11 @@ namespace Application.Models.DTOs.Auth
     {
         public class AuthRequest
         {
-            public string Username { get; set; }
-            public string Password { get; set; }
-        }
+            public string? Username { get; set; }
+            public string? Password { get; set; }
 
-        //public class LoginResponse
-        //{
-        //    public string Token { get; set; }
-        //    public DateTime Expiration { get; set; }
-        //}
+            public bool RememberMe { get; set; }
+        }
 
         public class AuthResponse
         {
@@ -26,9 +22,9 @@ namespace Application.Models.DTOs.Auth
             public string Message { get; }
             public string Token { get; }
 
-            public AuthResponse(bool isAuthenticated, string message, string token = null)
+            public AuthResponse(bool success, string message, string? token = null)
             {
-                IsAuthenticated = isAuthenticated;
+                IsAuthenticated = success;
                 Message = message;
                 Token = token;
             }

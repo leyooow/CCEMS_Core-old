@@ -1,7 +1,8 @@
 ﻿using Application.Contracts.Repositories;
 using Application.Contracts.Services;
-using Infrastructure.Entities;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using System.DirectoryServices.AccountManagement;
 using static Application.Models.DTOs.Auth.AuthenticationDTO;
 
 namespace Application.Services
@@ -10,45 +11,76 @@ namespace Application.Services
     {
         private readonly IAuthRepository _authRepository;
         private readonly IJwtTokenGenerator _tokenGenerator;
+        private readonly IAuditLogRepository _auditLogRepository;
+        private readonly IConfiguration _config;
+        private readonly IHttpContextAccessor _httpContext;
 
-        public AuthService(IAuthRepository authRepository, IJwtTokenGenerator tokenGenerator)
+        public AuthService(IAuthRepository authRepository, IJwtTokenGenerator tokenGenerator, IAuditLogRepository auditLogRepository, IConfiguration configuration, IHttpContextAccessor httpContext)
         {
             _authRepository = authRepository;
             _tokenGenerator = tokenGenerator;
+            _auditLogRepository = auditLogRepository;
+            _config = configuration;
+            _httpContext = httpContext;
         }
 
         public async Task<AuthResponse> AuthenticateAsync(string loginName, string password)
         {
-            var user = await _authRepository.GetUserByLoginNameAsync(loginName);
 
+           
+            
+            var user = await _authRepository.GetUserByLoginNameAsync(loginName);
             if (user == null)
                 return new AuthResponse(false, "Invalid username or password.");
 
             if (user.IsLocked)
                 return new AuthResponse(false, "User is locked. Please contact the admin.");
 
-            //if (user.Password != password) // Replace with password hash validation
+            var ipAddress = _httpContext.HttpContext?.Connection.RemoteIpAddress?.ToString();
+            if (user.Ipaddress != null && user.Ipaddress != ipAddress)
+            {
+                return new AuthResponse(false, "User is currently logged-in on another workstation.");
+            }
+
+            var ldapPath = _config["LDAPPath"];
+            var lDapDomain = _config["LDAPDomain"];
+
+            #region validating ad credentials
+
+            //using (var context = new PrincipalContext(ContextType.Domain, "BOC"))
             //{
-            //    user.LogInCounter++;
-            //    if (user.LogInCounter >= 3)
+            //    // Validate credentials using the LDAP server
+            //    if (!context.ValidateCredentials(loginName, password))
             //    {
-            //        user.IsLocked = true;
+            //        user.LogInCounter++;
+            //        if (user.LogInCounter >= 3)
+            //        {
+            //            user.IsLocked = true;
+            //            await _authRepository.UpdateUserAsync(user);
+            //            return new AuthResponse(false, "User is locked due to multiple invalid login attempts.");
+            //        }
+
             //        await _authRepository.UpdateUserAsync(user);
-            //        return new AuthResponse(false, "User is locked due to multiple invalid login attempts.");
+            //        return new AuthResponse(false, "Invalid username or password.");
             //    }
-            //    await _authRepository.UpdateUserAsync(user);
-            //    return new AuthResponse(false, "Invalid username or password.");
             //}
 
+            #endregion
+
+            user.Ipaddress = ipAddress;
             user.LogInCounter = 0;
             user.LastLogIn = DateTime.UtcNow;
-            await _authRepository.UpdateUserAsync(user);
 
+            await _authRepository.UpdateUserAsync(user);
+            await _authRepository.SaveLoginAuditLogAsync(user, loginName);
             var token = _tokenGenerator.GenerateToken(user);
             return new AuthResponse(true, "Login successful.", token);
+
         }
 
        
+
+
     }
 
 }

@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace Application.Contracts.Repositories
 {
-    public interface IAuthRepository
+    public interface IAuditLogRepository
     {
-        Task<User> GetUserByLoginNameAsync(string loginName);
-        Task UpdateUserAsync(User user);
-
-        Task SaveLoginAuditLogAsync(User user, string loginName);
+        Task SaveLogAsync(AuditLog log);
+        Task<List<AuditLog>> GetLogsAsync();
+        Task<List<AuditLog>> GetLogsByUserAsync(string username);
     }
 }

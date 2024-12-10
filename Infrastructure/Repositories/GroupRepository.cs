@@ -11,6 +11,7 @@ using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -20,33 +21,29 @@ namespace Infrastructure.Repositories
     {
         private readonly CcemQatContext _context;
         private Logs _auditlogs;
-        //private IHttpContextAccessor _httpContextAccessor;
         private readonly UserClaimsService _userClaimsService;
-
+        private string UserLoginName;
 
         public GroupRepository(CcemQatContext context,Logs auditLogs, UserClaimsService userClaimsService) : base(context) 
         {
             _context = context;
             _auditlogs = auditLogs;
-            //_httpContextAccessor = httpContextAccessor;
             _userClaimsService = userClaimsService;
+            UserLoginName = _userClaimsService.GetClaims().LoginName;
+           
         }
-
         public new async Task AddAsync(Group group)
         {
-            var userClaims = _userClaimsService.GetClaims();
 
-           
             AuditLog auditlogs = _auditlogs.SaveLog("Group",
                        "Create",
                        string.Format("Created Group - [Branch Code: {0} | Name: {1} | Area: {2} | Division: {3}]", group.Code, group.Name, group.Area, group.Division),
-                         userClaims.LoginName);
+                         UserLoginName);
             _context.Add(auditlogs);
 
             group.DateCreated = DateTime.UtcNow;
             await base.AddAsync(group);
         }
-
         public new async Task UpdateAsync(Group group)
         {
             var existingGroup = await base.GetByIdAsync(group.Id); 
@@ -64,14 +61,35 @@ namespace Infrastructure.Repositories
             existingGroup.Division = group.Division;
             existingGroup.DateModified = DateTime.UtcNow;
 
+            AuditLog auditlogs = _auditlogs.SaveLog("Group",
+                               "Update",
+                               string.Format("Updated Group ID - {0} [Branch Code: {1} | Branch Name: {2} | Area: {3} | Division: {4}]", group.Id, group.Code, group.Name, group.Area, group.Division),
+                               UserLoginName);
+            _context.Add(auditlogs);
+            await _context.SaveChangesAsync();
+
             await base.UpdateAsync(existingGroup);
         }
-
         public new async Task DeleteAsync(int id)
         {
-            await base.DeleteAsync(id);
-        }
+            var group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == id);
+            if (group != null)
+            {
+                AuditLog auditlogs = _auditlogs.SaveLog("Group",
+                           "Delete",
+                           string.Format("Deleted Group ID - {0} [Branch Code: {1} | Name: {2} | Area: {3} | Division: {4}]", id, group.Code, group.Name, group.Area, group.Division),
+                           UserLoginName);
 
+                _context.Add(auditlogs);
+
+                await base.DeleteAsync(id);
+            }
+            else
+            {
+                return;
+            }
+            
+        }
         public async Task<List<Group>> GetAllAsync(int? pageNumber, int? pageSize, string? searchTerm)
         {
             IQueryable<Group> query = _context.Set<Group>();
@@ -96,14 +114,10 @@ namespace Infrastructure.Repositories
 
             return await query.ToListAsync();
         }
-
-
         public new async Task<Group?> GetByIdAsync(int id)
         {
             return await base.GetByIdAsync(id);
         }
-
-        
         public async Task<int> GetTotalCountAsync(string? searchTerm)
         {
             IQueryable<Group> query = _context.Set<Group>();

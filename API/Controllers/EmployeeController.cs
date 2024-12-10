@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class EmployeeController : ControllerBase
@@ -23,15 +23,15 @@ namespace API.Controllers
         [HttpGet("GetAllEmployees")]
         public async Task<IActionResult> GetAllEmployees([FromQuery] int? pageNumber = 1, [FromQuery] int? pageSize = 10, [FromQuery] string? searchTerm = null)
         {
-            var result = await _employeeService.GetAllEmployeesAsync(pageNumber, pageSize, searchTerm);
-            return Ok(result);
+            var response = await _employeeService.GetAllEmployeesAsync(pageNumber, pageSize, searchTerm);
+            return Ok(response);
         }
 
         [HttpPost("CreateEmployee")]
         public async Task<IActionResult> Create(EmployeeCreateDTO employeeCreateDto)
         {
-            await _employeeService.AddEmployeeAsync(employeeCreateDto);
-            return NoContent();
+            var response = await _employeeService.AddEmployeeAsync(employeeCreateDto);
+            return Ok(response);
         }
 
     }
