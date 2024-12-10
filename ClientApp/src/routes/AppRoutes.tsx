@@ -1,7 +1,5 @@
-
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LandingPage from '../pages/Landing Page/LandingPage';
-// import SideBar from '../layouts/SideBar';
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import UserManagementDashboard from '../pages/User Management/Dashboard/Dashboard';
 import CreateUserAccess from '../pages/User Management/Create User Access/CreateUserAcces';
 import ManageRoles from '../pages/User Management/Manage Roles/ManageRoles';
@@ -16,47 +14,47 @@ import ForApprovalException from '../pages/Exception Management/For Approval (Ex
 import ForApprovalSubException from '../pages/Exception Management/For Approval (Sub-Exception)/ForApprovalSubException';
 import ReportManagementDashboard from '../pages/Reports Management/Dashboard/Dashboard';
 import GenerateRegularReports from '../pages/Reports Management/Generate Regular Reports/GenerateRegularReports';
-import MainLayout from '../layouts/MainLayout';
-
-const AppRoutes = () => (
-  <BrowserRouter>
-    <MainLayout>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-
-        {/* User Management Routes */}
-        <Route path="/UserManagement" element={<UserManagementDashboard />} />
-        <Route path="/UserManagement/Dashboard" element={<UserManagementDashboard />} />
-        <Route path="/UserManagement/CreateUserAccess" element={<CreateUserAccess />} />
-        <Route path="/UserManagement/ManageRoles" element={<ManageRoles />} />
-        <Route path="/UserManagement/EmployeeMaintenance" element={<EmployeeMaintenance />} />
-
-        {/* User Management Routes */}
-        <Route path="/GroupManagement" element={<GroupManagementDashboard />} />
-        <Route path="/GroupManagement/Dashboard" element={<GroupManagementDashboard />} />
-        <Route path="/GroupManagement/CreateGroup" element={<CreateGroup />} />
-
-        {/* Generate Report Routes */}
-        <Route path="/GenerateReport" element={<AuditLogs />} />
-        <Route path="/GenerateReport/AuditLogs" element={<AuditLogs />} />
-        <Route path="/GenerateReport/UserList" element={<UserList />} />
-        <Route path="/GenerateReport/GroupList" element={<GroupList />} />
+import Login from '../pages/Authentication/Login';
+import HomePage from '../pages/HomePage/HomePage.tsx';
 
 
-        {/* Exceptions Management Routes */}
-        <Route path="/ExceptionsManagement/" element={<ExceptionManagementDashboard />} />
-        <Route path="/ExceptionsManagement/Dashboard" element={<ExceptionManagementDashboard />} />
-        <Route path="/ExceptionsManagement/ForApprovalExceptions" element={<ForApprovalException />} />
-        <Route path="/ExceptionsManagement/ForApprovalSubExceptions" element={<ForApprovalSubException />} />
+const AppRoutes: React.FC = () => (
 
-        {/* Reports Management Routes */}
-        <Route path="/ReportsManagement" element={<ReportManagementDashboard />} />
-        <Route path="/ReportsManagement/Dashboard" element={<ReportManagementDashboard />} />
-        <Route path="/ReportsManagement/GenerateRegularReports" element={<GenerateRegularReports />} />
- 
-      </Routes>
-    </MainLayout>
-  </BrowserRouter>
+  <Routes>
+    <Route path="/" element={<Navigate to="/login" replace />} />
+    <Route path="/login" element={<Login />} />
+
+    {/* User Management Routes */}
+    <Route path='/Homepage' element={<HomePage />} />
+    <Route path="/UserManagement" element={<UserManagementDashboard />} />
+    <Route path="/UserManagement/Dashboard" element={<UserManagementDashboard />} />
+    <Route path="/UserManagement/CreateUserAccess" element={<CreateUserAccess />} />
+    <Route path="/UserManagement/ManageRoles" element={<ManageRoles />} />
+    <Route path="/UserManagement/EmployeeMaintenance" element={<EmployeeMaintenance />} />
+
+    {/* Group Management Routes */}
+    <Route path="/GroupManagement" element={<GroupManagementDashboard />} />
+    <Route path="/GroupManagement/Dashboard" element={<GroupManagementDashboard />} />
+    <Route path="/GroupManagement/CreateGroup" element={<CreateGroup />} />
+
+    {/* Generate Report Routes */}
+    <Route path="/GenerateReport" element={<AuditLogs />} />
+    <Route path="/GenerateReport/AuditLogs" element={<AuditLogs />} />
+    <Route path="/GenerateReport/UserList" element={<UserList />} />
+    <Route path="/GenerateReport/GroupList" element={<GroupList />} />
+
+    {/* Exceptions Management Routes */}
+    <Route path="/ExceptionsManagement" element={<ExceptionManagementDashboard />} />
+    <Route path="/ExceptionsManagement/Dashboard" element={<ExceptionManagementDashboard />} />
+    <Route path="/ExceptionsManagement/ForApprovalExceptions" element={<ForApprovalException />} />
+    <Route path="/ExceptionsManagement/ForApprovalSubExceptions" element={<ForApprovalSubException />} />
+
+    {/* Reports Management Routes */}
+    <Route path="/ReportsManagement" element={<ReportManagementDashboard />} />
+    <Route path="/ReportsManagement/Dashboard" element={<ReportManagementDashboard />} />
+    <Route path="/ReportsManagement/GenerateRegularReports" element={<GenerateRegularReports />} />
+  </Routes>
+
 );
 
 export default AppRoutes;
