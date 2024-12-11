@@ -13,7 +13,7 @@ const GroupService = {
           searchTerm,
         },
       });
-      return response.data;
+      return response;
     } catch (error) {
       throw error;
     }
