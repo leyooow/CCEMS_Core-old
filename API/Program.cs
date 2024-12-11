@@ -48,6 +48,11 @@ builder.Services.AddSwaggerGen(swagger => {
 builder.Services.AddDbContext<CcemQatContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
+// Register DbContext with dependency injection
+builder.Services.AddDbContext<SitcbsContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Finacle")));
+
+
 // Add AutoMapper with mapping profiles.
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 

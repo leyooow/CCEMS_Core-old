@@ -68,11 +68,13 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+            services.AddScoped<IBranchCodeRepository, BranchCodeRepository>();
 
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IBranchCodeService, BranchCodeService>();
 
             services.AddSingleton< UserClaimsService>();
             //services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
