@@ -6,10 +6,10 @@ import { GroupCreateDTO, GroupUpdateDTO, PagedResult } from '../models/gruopDTOs
 const GroupService = {
   async getAllGroups(pageNumber: number = 1, pageSize: number = 10, searchTerm: string = '') {
     try {
-      const response = await apiClient.get('/groups/GetAllGroups', {
+      const response = await apiClient.get('/groups/GetPaginatedGroups', {
         params: {
           pageNumber,
-          pageSize,
+          pageSize, 
           searchTerm,
         },
       });

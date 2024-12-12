@@ -1,12 +1,13 @@
 import React from 'react';
 import { Box, Modal, Typography, Button, IconButton, TextField, Grid, Divider } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { formatLabel } from '../../utils/formatLabel';
 
 
 
 
 // Define the props for the modal
-interface EditDataModalProps {
+interface FormDataModalProps {
     open: boolean;
     handleClose: () => void;
     title: string;
@@ -21,16 +22,16 @@ const modalStyle = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 1000,
+    width: 1200,
     bgcolor: 'background.paper',
     border: '1px solid #000',
     boxShadow: 24,
     borderRadius: 2,
-    // pl: 4,
-    // pt: 2,
-    // pr: 2,
-    // pb: 2,
-    p: [0, 2, 2, 4],
+    pl: 4,
+    pt: 2,
+    pr: 4,
+    pb: 2,
+    // p: [0, 2, 2, 4],
 };
 
 const headerStyle = {
@@ -39,7 +40,7 @@ const headerStyle = {
     alignItems: 'center',
 };
 
-const EditDataModal: React.FC<EditDataModalProps> = ({
+const FormDataModal: React.FC<FormDataModalProps> = ({
     open,
     handleClose,
     title,
@@ -80,19 +81,21 @@ const EditDataModal: React.FC<EditDataModalProps> = ({
                 <Box component="form" sx={{ m: 2 }}>
                     <Grid container spacing={2}>
                         {Object.keys(formData).map((field) => (
-                            <Grid item xs={12} sm={6} key={field}>
-                                <TextField
-                                    label={field.charAt(0).toUpperCase() + field.slice(1)}
-                                    value={formData[field]}
-                                    onChange={(e) => handleInputChange(field, e.target.value)}
-                                    fullWidth
-                                    margin="normal"
-                                    variant="outlined"
-                                />
-                            </Grid>
+                           <Grid item xs={12} sm={6} key={field}>
+                           <TextField
+                               label={formatLabel(field)} // Use the utility function here
+                               value={formData[field]}
+                               onChange={(e) => handleInputChange(field, e.target.value)}
+                               fullWidth
+                               margin="normal"
+                               variant="outlined"
+                           />
+                       </Grid>
                         ))}
                     </Grid>
                 </Box>
+                
+                <Divider />
 
                 {/* Action Buttons */}
                 <Box sx={{ textAlign: 'right', mt: 3 }}>
@@ -108,4 +111,4 @@ const EditDataModal: React.FC<EditDataModalProps> = ({
     );
 };
 
-export default EditDataModal;
+export default FormDataModal;
