@@ -1,0 +1,57 @@
+// src/services/EmployeeService.ts
+
+import apiClient from './apiClient'; // Assuming apiClient.ts handles base configurations like axios instance
+import { EmployeeCreateDTO, EmployeeUpdateDTO, PagedResult } from '../models/employeeMaintenanceDTOs'; // Update with actual DTO paths
+
+const EmployeeService = {
+  async getAllEmployees(pageNumber: number = 1, pageSize: number = 10, searchTerm: string = '') {
+    try {
+      const response = await apiClient.get('/Employee/GetPaginatedEmployees', {
+        params: {
+          pageNumber,
+          pageSize, 
+          searchTerm,
+        },
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async getEmployeeById(id: number): Promise<PagedResult> {
+    try {
+      const response = await apiClient.get(`/Employees/GetEmployeeById/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async createEmployee(EmployeeCreateDto: EmployeeCreateDTO) {
+    try {
+      const response = await apiClient.post('/Employees/CreateEmployee', EmployeeCreateDto);
+      return response
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async updateEmployee(id: number, EmployeeUpdateDto: EmployeeUpdateDTO): Promise<void> {
+    try {
+      await apiClient.put(`/Employees/UpdateEmployee/${id}`, EmployeeUpdateDto);
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async deleteEmployee(id: number): Promise<void> {
+    try {
+      await apiClient.delete(`/Employees/DeleteEmployee/${id}`);
+    } catch (error) {
+      throw error;
+    }
+  },
+};
+
+export default EmployeeService;

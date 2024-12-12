@@ -101,7 +101,8 @@ const demoTheme = createTheme({
 
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [session, setSession] = useState<Session | null>();
-    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [signOutModalOpen, setSignOutModalOpen] = useState(false);
+    const [sessionExpiredModalOpen, setSessionExpiredModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const now = moment();
@@ -116,7 +117,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     useEffect(() => {
 
         console.log(session);
-            authentication.signIn()
+        authentication.signIn()
 
 
         const token = localStorage.getItem('token');
@@ -129,12 +130,14 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
                 if (now.isAfter(expTime)) {
                     console.log('Token has expired!');
-                    setDeleteModalOpen(true);
+                    setSessionExpiredModalOpen(true);
                 }
 
             } catch (error) {
                 console.error('Invalid token:', error);
             }
+        } else {
+            handleSignOutModalConfirm();
         }
     }, []);
 
@@ -154,7 +157,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
             },
             signOut: () => {
-                setDeleteModalOpen(true);
+                setSignOutModalOpen(true);
 
             },
         }),
@@ -199,12 +202,22 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </AppProvider>
 
             <ConfirmationModal
-                open={deleteModalOpen}
+                open={signOutModalOpen}
                 title="Sign out"
                 content="Are you sure you want to logout?"
-                handleClose={() => setDeleteModalOpen(false)}
+                handleClose={() => setSignOutModalOpen(false)}
                 handleConfirm={handleSignOutModalConfirm}
                 buttonName="Sign out"
+            />
+
+
+            <ConfirmationModal
+                open={sessionExpiredModalOpen}
+                title="Sign out"
+                content="Session Expired"
+                handleClose={() => setSignOutModalOpen(false)}
+                handleConfirm={handleSignOutModalConfirm}
+                buttonName="Sign In"
             />
         </>
     );

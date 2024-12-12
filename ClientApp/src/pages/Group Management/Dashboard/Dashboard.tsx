@@ -7,7 +7,7 @@ import { Box, Typography, TextField, IconButton, Tooltip } from '@mui/material';
 import EditNoteTwoTone from '@mui/icons-material/EditNoteTwoTone';
 import DeleteTwoTone from '@mui/icons-material/DeleteTwoTone';
 import { FormattedDate } from '../../../utils/formatDate';
-import { DashboardStyle } from './DashboardStyle';
+import { globalStyle } from '../../../styles/theme';
 import EditDataModal from '../../../components/Modal/FormModal';
 import CustomModal from '../../../components/Modal/ConfirmationModal';
 
@@ -103,14 +103,14 @@ const GroupList: React.FC = () => {
     {
       label: 'Action',
       render: () => (
-        <Box sx={DashboardStyle.buttonBox}>
+        <Box sx={globalStyle.buttonBox}>
           <Tooltip title="Edit">
             <IconButton color='primary' onClick={handleOpenEditModal}>
               <EditNoteTwoTone />
             </IconButton>
           </Tooltip>
           <Tooltip title="Delete">
-            <IconButton sx={DashboardStyle.buttonRed} onClick={handleOpenDeleteModal}>
+            <IconButton sx={globalStyle.buttonRed} onClick={handleOpenDeleteModal}>
               <DeleteTwoTone />
             </IconButton>
           </Tooltip>
@@ -136,19 +136,19 @@ const GroupList: React.FC = () => {
 
   return (
     <>
-      <Box sx={DashboardStyle.mainBox}>
+      <Box sx={globalStyle.mainBox}>
         <Typography variant="h6" component="h6" gutterBottom>
           Groups
         </Typography>
 
         {/* Search input box with spacing */}
-        <Box sx={DashboardStyle.searchBox}>
+        <Box sx={globalStyle.searchBox}>
           {/* Search Input */}
           <TextField
             label="Search"
             variant="outlined"
             size="small"
-            sx={DashboardStyle.searchInput} // Make the input box flexible
+            sx={globalStyle.searchInput} // Make the input box flexible
             value={searchTerm}  // Controlled input
             onChange={handleSearchChange}  // Update search term as user types
           />
