@@ -7,12 +7,16 @@ import { Box, Typography, TextField, IconButton, Tooltip } from '@mui/material';
 import EditNoteTwoTone from '@mui/icons-material/EditNoteTwoTone';
 import DeleteTwoTone from '@mui/icons-material/DeleteTwoTone';
 import { FormattedDate } from '../../../utils/formatDate';
-import { globalStyle } from '../../../styles/theme';
+import { boxTheme } from '../../../styles/theme';
 import EditDataModal from '../../../components/Modal/FormModal';
 import CustomModal from '../../../components/Modal/ConfirmationModal';
+import { ERROR_MESSAGES } from '../../../utils/constants';
+import { FormData, FormField  } from '../../../models/formDTOs';
 
 const GroupList: React.FC = () => {
+  
 
+  
   // Define state with proper initial structure
   const [pagedResult, setPagedResult] = useState<PagedResult>({
     items: [],
@@ -26,23 +30,43 @@ const GroupList: React.FC = () => {
   const [openEditModal, setOpenEditModal] = useState(false)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
   
-  
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    johnly: ''
-  });
-  const handleInputChange = (field: string, value: string) => {
-    setFormData({ ...formData, [field]: value });
+  const initialFormData = {
+    name: { value: '', error: false, helperText: '' },
+    email: { value: '', error: false, helperText: '' },
+    phone: { value: '', error: false, helperText: '' },
+    address: { value: '', error: false, helperText: '' },
   };
+
+  const [formData, setFormData] = useState<FormData>(initialFormData);
+
+
+
+  const REQUIRED_FIELDS = ['name', 'email', 'phone'];
+  const handleInputChange = (field: string, value: string) => {
+    const isRequired = REQUIRED_FIELDS.includes(field); 
+
+    setFormData({
+      ...formData,
+      [field]: {
+        ...formData[field],
+        value: value,
+        error: isRequired && value === '', // Set error only if the field is required and value is empty
+        helperText: isRequired && value === '' ? ERROR_MESSAGES.REQUIRED_FIELD : '', // Set helper text only if the field is required and value is empty
+      },
+    });
+  };
+
 
   const handleSave = () => {
     console.log('Data saved:', formData);
-    setOpenEditModal(false);
+    closeEditModal()
   };
 
+  const closeEditModal = () => {
+    setFormData(initialFormData)
+    setOpenEditModal(false);
+
+  }
 
   const handleOpenEditModal = () => {
     setOpenEditModal(true)
@@ -103,14 +127,14 @@ const GroupList: React.FC = () => {
     {
       label: 'Action',
       render: () => (
-        <Box sx={globalStyle.buttonBox}>
+        <Box sx={boxTheme.buttonBox}>
           <Tooltip title="Edit">
             <IconButton color='primary' onClick={handleOpenEditModal}>
               <EditNoteTwoTone />
             </IconButton>
           </Tooltip>
           <Tooltip title="Delete">
-            <IconButton sx={globalStyle.buttonRed} onClick={handleOpenDeleteModal}>
+            <IconButton sx={boxTheme.buttonRed} onClick={handleOpenDeleteModal}>
               <DeleteTwoTone />
             </IconButton>
           </Tooltip>
@@ -136,19 +160,19 @@ const GroupList: React.FC = () => {
 
   return (
     <>
-      <Box sx={globalStyle.mainBox}>
+      <Box sx={boxTheme.mainBox}>
         <Typography variant="h6" component="h6" gutterBottom>
           Groups
         </Typography>
 
         {/* Search input box with spacing */}
-        <Box sx={globalStyle.searchBox}>
+        <Box sx={boxTheme.searchBox}>
           {/* Search Input */}
           <TextField
             label="Search"
             variant="outlined"
             size="small"
-            sx={globalStyle.searchInput} // Make the input box flexible
+            sx={boxTheme.searchInput} // Make the input box flexible
             value={searchTerm}  // Controlled input
             onChange={handleSearchChange}  // Update search term as user types
           />
@@ -168,11 +192,12 @@ const GroupList: React.FC = () => {
 
       <EditDataModal
         open={openEditModal}
-        handleClose={() => setOpenEditModal(false)}
+        handleClose={closeEditModal}
         title={modalTitle}
         formData={formData}
         handleInputChange={handleInputChange}
         handleSave={handleSave}
+        requiredFields={REQUIRED_FIELDS}
       />
 
 

@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 
-export const globalStyle = {
+export const boxTheme = {
     mainBox: {
         marginBottom: 0,
         display: 'flex',

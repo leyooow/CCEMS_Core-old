@@ -14,10 +14,10 @@ export interface PagedResult {
 }
 
 export interface EmployeeCreateDTO {
-  EmployeeId: string;
-  Firstname: string;
-  MiddleName: string;
-  LastName: string;
+  employeeId: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
   
 }
 

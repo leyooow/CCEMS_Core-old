@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { PagedResult } from '../../../models/gruopDTOs';
-import PaginationControls from '../../../components/Pagination/PaginationControls'
+import PaginationControls from '../../../components/Pagination/PaginationControls';
 import Table from '../../../components/Table/Table';
 import { Box, Typography, TextField } from '@mui/material';
-import { globalStyle } from '../../../styles/theme';
+import { boxTheme } from '../../../styles/theme';
 import EmployeeService from '../../../services/employeeService';
 import GlobalButton from '../../../components/Button/Button';
 import { EmployeeStyle } from './EmployeeMaintenanceStyle';
-import AddDataModal from '../../../components/Modal/FormModal'
+import AddDataModal from '../../../components/Modal/FormModal';
+import ToastService from '../../../utils/toast';
+import { ERROR_MESSAGES } from '../../../utils/constants';
+import { FormData  } from '../../../models/formDTOs';
 
 
 const EmployeeMaintenance: React.FC = () => {
-
   // Define state with proper initial structure
   const [pagedResult, setPagedResult] = useState<PagedResult>({
     items: [],
@@ -22,32 +24,98 @@ const EmployeeMaintenance: React.FC = () => {
   });
 
   const [searchTerm, setSearchTerm] = useState<string>(pagedResult.searchTerm);
+  const [modalTitle, setModalTitle] = useState('');
+  const [openAddModal, setOpenAddModal] = useState(false);
 
-
-  const [modalTitle, setModalTitle] = useState('')
-
-  const [openAddModal, setOpenAddModal] = useState(false)
-
-
-  const [formData, setFormData] = useState({
-    employeeId: '',
-    firstName: '',
-    middleName: '',
-    lastName: '',
-  });
-  const handleInputChange = (field: string, value: string) => {
-    setFormData({ ...formData, [field]: value });
+  const initialFormData = {
+    employeeId: { value: '', error: false, helperText: '' },
+    firstName: { value: '', error: false, helperText: '' },
+    middleName: { value: '', error: false, helperText: '' },
+    lastName: { value: '', error: false, helperText: '' },
   };
 
-  const handleSave = () => {
-    console.log('Data saved:', formData);
-    setOpenAddModal(false);
+  const resetFormData = useCallback(() => {
+    setFormData(initialFormData);
+  }, []);
+
+  const [formData, setFormData] = useState<FormData>(initialFormData);
+
+
+
+  const REQUIRED_FIELDS = ['employeeId', 'firstName', 'lastName'];
+
+  const closeAddModal = () => {
+    resetFormData()
+    setOpenAddModal(false)
+
+  }
+
+  const handleCreateEmployee = async () => {
+    // Validate required fields
+    let isValid = true;
+    const updatedFormData = { ...formData };
+
+    REQUIRED_FIELDS.forEach((field) => {
+      if (formData[field].value.trim() === '') {
+        updatedFormData[field] = {
+          ...formData[field],
+          error: true,
+          helperText: ERROR_MESSAGES.REQUIRED_FIELD,
+        };
+        isValid = false;
+      } else {
+        updatedFormData[field] = {
+          ...formData[field],
+          error: false,
+          helperText: '',
+        };
+      }
+    });
+
+    setFormData(updatedFormData);
+
+    if (!isValid) {
+      return;
+    }
+
+    try {
+      const result = await EmployeeService.createEmployee({
+        employeeId: formData.employeeId.value,
+        firstName: formData.firstName.value,
+        middleName: formData.middleName.value,
+        lastName: formData.lastName.value,
+      });
+      if (result.data.success) {
+        closeAddModal();
+        fetchEmployees()
+        ToastService.success(result.data.message);
+      } else {
+        ToastService.error(result.data.message);
+      }
+    } catch (error) {
+      console.error("Error creating employee", error);
+      ToastService.error('An error occurred while creating the employee.');
+    }
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    const isRequired = REQUIRED_FIELDS.includes(field); 
+
+    setFormData({
+      ...formData,
+      [field]: {
+        ...formData[field],
+        value: value,
+        error: isRequired && value === '', // Set error only if the field is required and value is empty
+        helperText: isRequired && value === '' ? ERROR_MESSAGES.REQUIRED_FIELD : '', // Set helper text only if the field is required and value is empty
+      },
+    });
   };
 
   const handleOpenAddModal = () => {
-    setOpenAddModal(true)
-    setModalTitle('Add Employee')
-  }
+    setOpenAddModal(true);
+    setModalTitle('Add Employee');
+  };
 
   const fetchEmployees = async () => {
     try {
@@ -57,8 +125,6 @@ const EmployeeMaintenance: React.FC = () => {
         searchTerm
       );
       setPagedResult(result.data.data);
-
-      // console.log(result); 
     } catch (error) {
       console.error("Error fetching employees", error);
     }
@@ -77,27 +143,6 @@ const EmployeeMaintenance: React.FC = () => {
         ` ${data.lastName}, ${data.firstName} ${data.middleName} `
       ),
     },
-
-    // { label: 'Middle Name', accessor: 'middleName' },
-    // { label: 'Last Name', accessor: 'lastName' },
-
-    // {
-    //   label: 'Action',
-    //   render: () => (
-    //     <Box sx={globalStyle.buttonBox}>
-    //       <Tooltip title="Edit">
-    //         <IconButton color='primary' onClick={handleOpenEditModal}>
-    //           <EditNoteTwoTone />
-    //         </IconButton>
-    //       </Tooltip>
-    //       <Tooltip title="Delete">
-    //         <IconButton sx={globalStyle.buttonRed} onClick={handleOpenDeleteModal}>
-    //           <DeleteTwoTone />
-    //         </IconButton>
-    //       </Tooltip>
-    //     </Box>
-    //   ),
-    // },
   ];
 
   const pageCount = Math.ceil(pagedResult.totalCount / pagedResult.pageSize);
@@ -120,26 +165,24 @@ const EmployeeMaintenance: React.FC = () => {
       <Typography variant="h6" component="h6" gutterBottom>
         Employee Maintenance
       </Typography>
-      <Box sx={globalStyle.mainBox}>
-
+      <Box sx={boxTheme.mainBox}>
         <Box sx={EmployeeStyle.btnBox}>
           <GlobalButton buttonAction="add" buttonName="Add Employee" onClick={handleOpenAddModal} />
         </Box>
 
         {/* Search input box with spacing */}
-        <Box sx={globalStyle.searchBox}>
+        <Box sx={boxTheme.searchBox}>
           {/* Search Input */}
           <TextField
             label="Search"
             variant="outlined"
             size="small"
-            sx={globalStyle.searchInput} // Make the input box flexible
+            sx={boxTheme.searchInput} // Make the input box flexible
             value={searchTerm}  // Controlled input
             onChange={handleSearchChange}  // Update search term as user types
           />
         </Box>
       </Box>
-
 
       {/* Table wrapped inside a responsive container */}
       <Table columns={columns} data={pagedResult.items} />
@@ -152,19 +195,17 @@ const EmployeeMaintenance: React.FC = () => {
         totalItems={pagedResult.totalCount}
       />
 
-
       <AddDataModal
         open={openAddModal}
-        handleClose={() => setOpenAddModal(false)}
+        handleClose={closeAddModal}
         title={modalTitle}
         formData={formData}
         handleInputChange={handleInputChange}
-        handleSave={handleSave}
+        handleSave={handleCreateEmployee}
+        requiredFields={REQUIRED_FIELDS}
       />
-
     </>
   );
 };
 
 export default EmployeeMaintenance;
-2
