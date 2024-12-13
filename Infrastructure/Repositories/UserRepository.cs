@@ -25,7 +25,9 @@ namespace Infrastructure.Repositories
 
         public async Task<List<User>> GetPaginatedAsync(int? pageNumber, int? pageSize, string? searchTerm)
         {
-            IQueryable<User> query = _context.Set<User>();
+            IQueryable<User> query = _context.Users
+                .Include(u => u.BranchAccesses);
+                //.Include(u => u.Role);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {

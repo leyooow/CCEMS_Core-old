@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { PagedResult } from '../../../models/gruopDTOs';
+import { PagedResult } from '../../../models/employeeMaintenanceDTOs';
 import PaginationControls from '../../../components/Pagination/PaginationControls';
 import Table from '../../../components/Table/Table';
 import { Box, Typography, TextField } from '@mui/material';
-import { boxTheme } from '../../../styles/theme';
+import { globalStyle } from '../../../styles/theme';
 import EmployeeService from '../../../services/employeeService';
 import GlobalButton from '../../../components/Button/Button';
 import { EmployeeStyle } from './EmployeeMaintenanceStyle';
@@ -163,19 +163,19 @@ const EmployeeMaintenance: React.FC = () => {
       <Typography variant="h6" component="h6" gutterBottom>
         Employee Maintenance
       </Typography>
-      <Box sx={boxTheme.mainBox}>
+      <Box sx={globalStyle.mainBox}>
         <Box sx={EmployeeStyle.btnBox}>
           <GlobalButton buttonAction="add" buttonName="Add Employee" onClick={handleOpenAddModal} />
         </Box>
 
         {/* Search input box with spacing */}
-        <Box sx={boxTheme.searchBox}>
+        <Box sx={globalStyle.searchBox}>
           {/* Search Input */}
           <TextField
             label="Search"
             variant="outlined"
             size="small"
-            sx={boxTheme.searchInput} // Make the input box flexible
+            sx={globalStyle.searchInput} // Make the input box flexible
             value={searchTerm}  // Controlled input
             onChange={handleSearchChange}  // Update search term as user types
           />

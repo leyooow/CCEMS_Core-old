@@ -55,7 +55,9 @@ namespace Application.Services
             try
             {
                 var Users = await _repository.GetPaginatedAsync(pageNumber, pageSize, searchTerm);
+                
                 var UserDtos = _mapper.Map<List<UserDTO>>(Users);
+                //var branchCount = UserDtos.Select(u => u.BranchAccesses).Count();
 
                 // Get the total count of Users for pagination metadata
                 var totalCount = await _repository.GetTotalCountAsync(searchTerm);
