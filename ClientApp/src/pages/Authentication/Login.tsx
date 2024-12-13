@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 import { LoginFormStyle } from "./LoginStyle";
 import authService from '../../services/authService';
-import {ERROR_MESSAGES, CustomJwtPayload} from '../../utils/constants';
-import {jwtDecode } from 'jwt-decode';;
+import { ERROR_MESSAGES, CustomJwtPayload } from '../../utils/constants';
+import { jwtDecode } from 'jwt-decode';;
 import Cookies from 'js-cookie';
 import { encrypt } from "../../utils/encrypt-decrypt";
 import ToastService from "../../utils/toast";
@@ -67,7 +67,7 @@ const Login: React.FC = () => {
 
           // localStorage.setItem('LoginName', decoded.LoginName)
           // localStorage.setItem('Role', decoded.Role)
-          
+
           navigate('/Homepage');
           ToastService.success('Login Successful.')
         } else {

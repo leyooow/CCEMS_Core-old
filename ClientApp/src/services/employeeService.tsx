@@ -21,7 +21,7 @@ const EmployeeService = {
 
   async getEmployeeById(id: number): Promise<PagedResult> {
     try {
-      const response = await apiClient.get(`/Employees/GetEmployeeById/${id}`);
+      const response = await apiClient.get(`/Employee/GetEmployeeById/${id}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -30,7 +30,7 @@ const EmployeeService = {
 
   async createEmployee(EmployeeCreateDto: EmployeeCreateDTO) {
     try {
-      const response = await apiClient.post('/Employees/CreateEmployee', EmployeeCreateDto);
+      const response = await apiClient.post('/Employee/CreateEmployee', EmployeeCreateDto);
       return response
     } catch (error) {
       throw error;
@@ -39,7 +39,7 @@ const EmployeeService = {
 
   async updateEmployee(id: number, EmployeeUpdateDto: EmployeeUpdateDTO): Promise<void> {
     try {
-      await apiClient.put(`/Employees/UpdateEmployee/${id}`, EmployeeUpdateDto);
+      await apiClient.put(`/Employee/UpdateEmployee/${id}`, EmployeeUpdateDto);
     } catch (error) {
       throw error;
     }

@@ -3,9 +3,6 @@ import { Box, Modal, Typography, Button, IconButton, TextField, Grid, Divider } 
 import CloseIcon from '@mui/icons-material/Close';
 import { formatLabel } from '../../utils/formatLabel';
 
-
-
-
 // Define the props for the modal
 interface FormDataModalProps {
     open: boolean;
@@ -14,6 +11,7 @@ interface FormDataModalProps {
     formData: { [key: string]: any };
     handleInputChange: (field: string, value: string) => void;
     handleSave: () => void;
+    requiredFields: string[];
 }
 
 // Style for the modal content
@@ -31,7 +29,6 @@ const modalStyle = {
     pt: 2,
     pr: 4,
     pb: 2,
-    // p: [0, 2, 2, 4],
 };
 
 const headerStyle = {
@@ -46,9 +43,9 @@ const FormDataModal: React.FC<FormDataModalProps> = ({
     title,
     formData,
     handleInputChange,
-    handleSave
+    handleSave,
+    requiredFields
 }) => {
-
     return (
         <Modal
             open={open}
@@ -81,20 +78,23 @@ const FormDataModal: React.FC<FormDataModalProps> = ({
                 <Box component="form" sx={{ m: 2 }}>
                     <Grid container spacing={2}>
                         {Object.keys(formData).map((field) => (
-                           <Grid item xs={12} sm={6} key={field}>
-                           <TextField
-                               label={formatLabel(field)} // Use the utility function here
-                               value={formData[field]}
-                               onChange={(e) => handleInputChange(field, e.target.value)}
-                               fullWidth
-                               margin="normal"
-                               variant="outlined"
-                           />
-                       </Grid>
+                            <Grid item xs={12} sm={6} key={field}>
+                                <TextField
+                                    label={formatLabel(field)} // Use the utility function here
+                                    value={formData[field].value}
+                                    onChange={(e) => handleInputChange(field, e.target.value)}
+                                    fullWidth
+                                    margin="normal"
+                                    variant="outlined"
+                                    required={requiredFields.includes(field)} // Conditionally make the field required
+                                    error={formData[field].error} // Dynamically set error
+                                    helperText={formData[field].helperText} // Dynamically set helper text
+                                />
+                            </Grid>
                         ))}
                     </Grid>
                 </Box>
-                
+
                 <Divider />
 
                 {/* Action Buttons */}
