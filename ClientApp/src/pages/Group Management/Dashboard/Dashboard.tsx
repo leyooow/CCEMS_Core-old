@@ -11,12 +11,12 @@ import { boxTheme } from '../../../styles/theme';
 import EditDataModal from '../../../components/Modal/FormModal';
 import CustomModal from '../../../components/Modal/ConfirmationModal';
 import { ERROR_MESSAGES } from '../../../utils/constants';
-import { FormData, FormField  } from '../../../models/formDTOs';
+import { FormData } from '../../../models/formDTOs';
 
 const GroupList: React.FC = () => {
-  
 
-  
+
+
   // Define state with proper initial structure
   const [pagedResult, setPagedResult] = useState<PagedResult>({
     items: [],
@@ -26,10 +26,10 @@ const GroupList: React.FC = () => {
     searchTerm: ''
   });
   const [modalTitle, setModalTitle] = useState('')
-  
+
   const [openEditModal, setOpenEditModal] = useState(false)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
-  
+
   const initialFormData = {
     name: { value: '', error: false, helperText: '' },
     email: { value: '', error: false, helperText: '' },
@@ -43,7 +43,7 @@ const GroupList: React.FC = () => {
 
   const REQUIRED_FIELDS = ['name', 'email', 'phone'];
   const handleInputChange = (field: string, value: string) => {
-    const isRequired = REQUIRED_FIELDS.includes(field); 
+    const isRequired = REQUIRED_FIELDS.includes(field);
 
     setFormData({
       ...formData,

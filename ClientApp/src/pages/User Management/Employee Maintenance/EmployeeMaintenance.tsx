@@ -10,7 +10,7 @@ import { EmployeeStyle } from './EmployeeMaintenanceStyle';
 import AddDataModal from '../../../components/Modal/FormModal';
 import ToastService from '../../../utils/toast';
 import { ERROR_MESSAGES } from '../../../utils/constants';
-import { FormData  } from '../../../models/formDTOs';
+import { FormData } from '../../../models/formDTOs';
 
 
 const EmployeeMaintenance: React.FC = () => {
@@ -39,8 +39,6 @@ const EmployeeMaintenance: React.FC = () => {
   }, []);
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
-
-
 
   const REQUIRED_FIELDS = ['employeeId', 'firstName', 'lastName'];
 
@@ -99,7 +97,7 @@ const EmployeeMaintenance: React.FC = () => {
   };
 
   const handleInputChange = (field: string, value: string) => {
-    const isRequired = REQUIRED_FIELDS.includes(field); 
+    const isRequired = REQUIRED_FIELDS.includes(field);
 
     setFormData({
       ...formData,

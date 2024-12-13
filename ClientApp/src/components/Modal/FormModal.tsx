@@ -94,7 +94,7 @@ const FormDataModal: React.FC<FormDataModalProps> = ({
                         ))}
                     </Grid>
                 </Box>
-                
+
                 <Divider />
 
                 {/* Action Buttons */}
