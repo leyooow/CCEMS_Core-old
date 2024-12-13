@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Models.DTOs.Employee;
+using Application.Models.DTOs.FBranch;
 using Application.Models.DTOs.Group;
+using Application.Models.DTOs.User;
 using AutoMapper;
+using Domain.FEntities;
 using Infrastructure.Entities;
 
 namespace Application.MappingProfile
@@ -20,6 +23,11 @@ namespace Application.MappingProfile
 
             CreateMap<Employee, EmployeeDTO>().ReverseMap();
             CreateMap<Employee, EmployeeCreateDTO>().ReverseMap();
+
+            CreateMap<BranchCodeTable, BranchCodeTableDTO>().ReverseMap();
+
+            CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<Role, RoleDTO>().ReverseMap();
         }
     }
 }

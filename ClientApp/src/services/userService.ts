@@ -1,15 +1,30 @@
 import apiClient from './apiClient';
 
 const userService = {
-  getUserProfile: async () => {
-    const response = await apiClient.get('/user/profile');
-    return response.data;
+
+  async getPaginatedUsers(pageNumber: number = 1, pageSize: number = 10, searchTerm: string = '') {
+    try {
+      const response = await apiClient.get('/User/GetPaginatedUsers', {
+        params: {
+          pageNumber,
+          pageSize, 
+          searchTerm,
+        },
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+    
+  async GetAllRoles() {
+      const response = await apiClient.get('/User/GetAllRoles', {
+      });
+      return response.data;
   },
 
-  updateUserProfile: async (data: Record<string, any>) => {
-    const response = await apiClient.put('/user/profile', data);
-    return response.data;
-  },
+
+
 };
 
 export default userService;
