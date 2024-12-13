@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import UserManagementDashboard from '../pages/User Management/Dashboard/Dashboard';
+import UserManagementDashboard from '../pages/User Management/Dashboard/Dashboard.tsx';
 import CreateUserAccess from '../pages/User Management/Create User Access/CreateUserAcces';
 import ManageRoles from '../pages/User Management/Manage Roles/ManageRoles';
 import EmployeeMaintenance from '../pages/User Management/Employee Maintenance/EmployeeMaintenance';

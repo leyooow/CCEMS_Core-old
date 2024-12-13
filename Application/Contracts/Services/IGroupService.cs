@@ -1,5 +1,6 @@
 ﻿using Application.Models.DTOs.Common;
 using Application.Models.DTOs.Group;
+using Application.Models.DTOs.User;
 using Application.Models.Responses;
 using System;
 using System.Collections.Generic;

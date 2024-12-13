@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PagedResult } from '../../../models/gruopDTOs';
+import { PagedResult } from '../../../models/groupDTOs';
 import PaginationControls from '../../../components/Pagination/PaginationControls'
 import Table from '../../../components/Table/Table';
 import { Box, Typography, TextField } from '@mui/material';

@@ -2,10 +2,12 @@
 using Application.Contracts.Services;
 using Application.Models.DTOs.Common;
 using Application.Models.DTOs.Group;
+using Application.Models.DTOs.User;
 using Application.Models.Helpers;
 using Application.Models.Responses;
 using AutoMapper;
 using Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
 {
@@ -76,37 +78,53 @@ namespace Application.Services
 
         public async Task<GenericResponse<object>> AddGroupAsync(GroupCreateDTO groupCreateDto)
         {
-            try
+            var checkexisting = await _repository.CheckExistingGroupNameAsync(groupCreateDto.Name);
+            if (checkexisting)
             {
-
-                var group = _mapper.Map<Group>(groupCreateDto);
-
-                await _repository.AddAsync(group);
-
-                return ResponseHelper.SuccessResponse<object>(null, "Group added successfully");
+                return ResponseHelper.ErrorResponse<object>("Group Name Already exists.");
             }
-            catch (Exception ex)
+            else
             {
-                // Log the exception if needed
-                return ResponseHelper.ErrorResponse<object>($"An error occurred while adding the group: {ex.Message}");
+                try
+                {
+
+                    var group = _mapper.Map<Group>(groupCreateDto);
+
+                    await _repository.AddAsync(group);
+
+                    return ResponseHelper.SuccessResponse<object>(null, "Group added successfully");
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception if needed
+                    return ResponseHelper.ErrorResponse<object>($"An error occurred while adding the group: {ex.Message}");
+                }
             }
+           
 
         }
 
         public async Task <GenericResponse<object>> UpdateGroupAsync(GroupUpdateDTO groupUpdateDto)
         {
-            try
+            var checkexisting = await _repository.CheckExistingGroupNameAsync(groupUpdateDto.Name);
+            if (checkexisting)
             {
-                var group = _mapper.Map<Group>(groupUpdateDto);
-                await _repository.UpdateAsync(group);
-
-                return ResponseHelper.SuccessResponse<object>(null, "Group updated successfully");
+                return ResponseHelper.ErrorResponse<object>("Group Name Already exists.");
             }
-            catch (Exception ex)
+            else
             {
-                return ResponseHelper.ErrorResponse<object>($"An error occurred while adding the group: {ex.Message}");
-            }
+                try
+                {
+                    var group = _mapper.Map<Group>(groupUpdateDto);
+                    await _repository.UpdateAsync(group);
 
+                    return ResponseHelper.SuccessResponse<object>(null, "Group updated successfully");
+                }
+                catch (Exception ex)
+                {
+                    return ResponseHelper.ErrorResponse<object>($"An error occurred while adding the group: {ex.Message}");
+                }
+            }
            
         }
 
@@ -124,5 +142,7 @@ namespace Application.Services
 
 
         }
+
+        
     }
 }

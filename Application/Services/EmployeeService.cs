@@ -30,7 +30,7 @@ namespace Application.Services
         {
             var employee = _mapper.Map<Employee>(employeeCreateDto);
             await _repository.AddAsync(employee);
-            return ResponseHelper.SuccessResponse<object>(null, "Group added successfully");
+            return ResponseHelper.SuccessResponse<object>(null, "Employees added successfully");
         }
 
         public async Task<GenericResponse<List<EmployeeDTO>>> GetAllAsync()

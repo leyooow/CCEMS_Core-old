@@ -128,6 +128,11 @@ namespace Infrastructure.Repositories
 
             return await base.GetTotalCountAsync(searchTerm);
         }
+
+        public async Task<bool> CheckExistingGroupNameAsync(string? name)
+        { 
+            return _context.Groups.Any(g => g.Name.Contains(name));
+        }
       
     }
 }
