@@ -46,7 +46,7 @@ public partial class User
 
     [JsonIgnore]
     public virtual ICollection<BranchAccess> BranchAccesses { get; set; } = [];
-
+    [JsonIgnore]
     public virtual Role Role { get; set; } = null!;
 }
     

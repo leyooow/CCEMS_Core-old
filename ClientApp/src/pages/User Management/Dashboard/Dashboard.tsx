@@ -62,7 +62,7 @@ const Dashboard: React.FC = () => {
         data.branchAccesses?.length || 0
       ),
     },
-    { label: 'Role', accessor: 'roleId' },
+    { label: 'Role', accessor: 'roleName' },
     {
       label: 'Action',
       render: () => (

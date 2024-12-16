@@ -14,6 +14,7 @@ using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Application.Services
 {
@@ -58,8 +59,17 @@ namespace Application.Services
             try
             {
                 var Users = await _repository.GetPaginatedAsync(pageNumber, pageSize, searchTerm);
-
                 var UserDtos = _mapper.Map<List<UserDTO>>(Users);
+                var userRoles = await _repository.GetAllRolesAsync();
+
+                // Map role names to UserDTOs
+                foreach (var userDto in UserDtos)
+                {
+                    var userRole = userRoles
+                        .SingleOrDefault(r => r.Id == userDto.RoleId); // Match UserRoleId
+
+                    userDto.RoleName = userRole?.RoleName ?? "Unknown"; // Handle null case
+                }
                 //var branchCount = UserDtos.Select(u => u.BranchAccesses).Count();
 
                 // Get the total count of Users for pagination metadata
@@ -89,7 +99,6 @@ namespace Application.Services
 
             return ResponseHelper.SuccessResponse(rolesDTOs, "Roles retrieved successfully");
         }
-
 
         public async Task<GenericResponse<List<PermissionLookup>>> GetAllPermissionLookUpAsync()
         {
