@@ -58,7 +58,9 @@ namespace Application.Services
             try
             {
                 var Users = await _repository.GetPaginatedAsync(pageNumber, pageSize, searchTerm);
+
                 var UserDtos = _mapper.Map<List<UserDTO>>(Users);
+                //var branchCount = UserDtos.Select(u => u.BranchAccesses).Count();
 
                 // Get the total count of Users for pagination metadata
                 var totalCount = await _repository.GetTotalCountAsync(searchTerm);
@@ -81,12 +83,41 @@ namespace Application.Services
 
         public async Task<GenericResponse<List<RoleDTO>>> GetAllRolesAsync()
         {
-           var roles = await _repository.GetAllRolesAsync();
-            
-           var rolesDTOs = _mapper.Map<List<RoleDTO>>(roles);
+            var roles = await _repository.GetAllRolesAsync();
+
+            var rolesDTOs = _mapper.Map<List<RoleDTO>>(roles);
 
             return ResponseHelper.SuccessResponse(rolesDTOs, "Roles retrieved successfully");
         }
+
+
+        public async Task<GenericResponse<List<PermissionLookup>>> GetAllPermissionLookUpAsync()
+        {
+            var permissionLookups = await _repository.GetAllPermissionLookUpAsync();
+
+            var permissionLookupDTOs = _mapper.Map<List<PermissionLookup>>(permissionLookups);
+
+            return ResponseHelper.SuccessResponse(permissionLookupDTOs, "Permission Lookup retrieved successfully");
+        }
+        public async Task<GenericResponse<List<RolePermission>>> GetPermissionsByRoleId(int roleId)
+        {
+            var rolePermissions = await _repository.GetPermissionsByRoleId(roleId);
+            var rolePermissionDTOs = _mapper.Map<List<RolePermission>>(rolePermissions);
+
+            return ResponseHelper.SuccessResponse(rolePermissionDTOs, "Role Permissions retrieved successfully");
+        }
+
+        public async Task<GenericResponse<object>> AddPermissionsAsync(AddPermissionRequest addPermissionRequest)
+        {
+            try
+            {
+                await _repository.AddPermissionsAsync(addPermissionRequest);
+                return ResponseHelper.SuccessResponse<object>(null, "Permissions added successfully");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper.ErrorResponse<object>($"Error in saving permissions, Error {ex.Message}");
+            }
 
         public async Task<GenericResponse<object>> AddAUserAsync(UserCreateDTO userCreateDTO)
         {
@@ -143,6 +174,7 @@ namespace Application.Services
             }
 
            
+
         }
     }
 

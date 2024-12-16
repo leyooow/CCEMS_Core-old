@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Button, Box, Tooltip, IconButton, TextField } from "@mui/material";
+import { Typography, Box, Tooltip, IconButton, TextField } from "@mui/material";
 import { PagedResult } from "../../../models/groupDTOs";
 import userService from "../../../services/userService";
 import { FormattedDate } from "../../../utils/formatDate";
@@ -59,7 +59,7 @@ const Dashboard: React.FC = () => {
     {
       label: 'Branches',
       render: (data: any) => (
-        (data.branchAccesses.length)
+        data.branchAccesses?.length || 0
       ),
     },
     { label: 'Role', accessor: 'roleId' },

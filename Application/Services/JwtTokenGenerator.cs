@@ -48,7 +48,7 @@ namespace Application.Services
                     _configuration["Jwt:Issuer"],
                     _configuration["Jwt:Audience"],
                     claims,
-                    expires: DateTime.UtcNow.AddHours(1),
+                    expires: DateTime.UtcNow.AddHours(int.Parse(_configuration["Jwt:TokenExpiration"])),
                     signingCredentials: credentials);
 
                 return new JwtSecurityTokenHandler().WriteToken(token);

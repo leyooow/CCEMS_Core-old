@@ -1,3 +1,5 @@
+
+﻿using Application.Models.DTOs.User;
 ﻿using Application.Models.Responses;
 using Infrastructure.Entities;
 using System;
@@ -14,6 +16,10 @@ namespace Application.Contracts.Repositories
         Task<List<User>> GetPaginatedAsync(int? pageNumber, int? pageSize, string? searchTerm);
         Task<User?> GetUserByIdAsync(string? id);
         Task<List<Role>> GetAllRolesAsync();
+        Task<List<PermissionLookup>> GetAllPermissionLookUpAsync();
+        Task<List<RolePermission>> GetPermissionsByRoleId(int roleId);
+        Task AddPermissionsAsync(AddPermissionRequest addPermissionRequest);
         Task<bool> IsUserExistingAsync(string username);
+
     }
 }

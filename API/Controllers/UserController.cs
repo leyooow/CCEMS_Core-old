@@ -4,10 +4,11 @@ using Application.Models.DTOs.User;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -47,6 +48,30 @@ namespace API.Controllers
             return Ok(response);
         }
 
+
+        [HttpGet("GetAllPermissionLookups")]
+        public async Task<IActionResult> GetAllPermissionLookUps()
+        {
+            var response = await _userService.GetAllPermissionLookUpAsync();
+            return Ok(response);
+        }
+
+
+        [HttpGet("GetPermissionsByRoleId/{roleId}")]
+        public async Task<IActionResult> GetPermissionsByRoleId(int roleId)
+        {
+            var permissions = await _userService.GetPermissionsByRoleId(roleId);
+
+            return Ok(permissions);
+        }
+
+        [HttpPost("AddPermissions")]
+        public async Task<IActionResult> AddPermissions([FromBody] AddPermissionRequest addPermissionRequest)
+        {
+            var response = await _userService.AddPermissionsAsync(addPermissionRequest);
+
+            return Ok(response);
+
         [HttpGet("CheckAdUsername/{username}")]
         public async Task<IActionResult> CheckUserNameAsync(string username)
         {
@@ -59,6 +84,7 @@ namespace API.Controllers
         {
             var response = await _userService.AddAUserAsync(userCreateDto);
             return Ok(response);
+
 
         }
     }

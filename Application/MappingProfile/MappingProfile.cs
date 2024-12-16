@@ -30,6 +30,10 @@ namespace Application.MappingProfile
             CreateMap<User, UserCreateDTO>().ReverseMap();
 
             CreateMap<Role, RoleDTO>().ReverseMap();
+
+            CreateMap<PermissionLookup, PermissionLookupDTO>().ReverseMap();
+            CreateMap<RolePermission, RolePermissionDTO>().ReverseMap();
+
         }
     }
 }

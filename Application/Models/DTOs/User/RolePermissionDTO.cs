@@ -1,16 +1,24 @@
-﻿using System;
+﻿using Infrastructure.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Application.Models.DTOs.User
+namespace Application.Models.DTOs.User;
+
+public class RolePermissionDTO
 {
-    public class RolePermissionDTO
-    {
-        // Define properties relevant to RolePermission here
-        // Example:
-        public int Id { get; set; }
-        public string? PermissionName { get; set; }
-    }
+    public int Id { get; set; }
+
+    public int RoleId { get; set; }
+
+    public string? Permission { get; set; }
+}
+
+public class AddPermissionRequest
+{
+    public int RoleId { get; set; } 
+    public List<string>? PermissionList { get; set; }
 }
