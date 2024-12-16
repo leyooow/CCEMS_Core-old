@@ -118,6 +118,7 @@ namespace Application.Services
             {
                 return ResponseHelper.ErrorResponse<object>($"Error in saving permissions, Error {ex.Message}");
             }
+        }
 
         public async Task<GenericResponse<object>> AddAUserAsync(UserCreateDTO userCreateDTO)
         {

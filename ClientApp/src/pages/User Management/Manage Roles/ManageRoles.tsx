@@ -51,12 +51,17 @@ const RoleList: React.FC = () => {
       permissionList: selectedPermissions,
     }
 
-    console.log(permissionData)
+    // console.log(permissionData)
     try {
       const result = await userService.AddPermission(JSON.stringify(permissionData),);
       setToastMessage(result.message);
-      // ToastService.success(toastMessage)
+      // console.log(result)
+
+      ToastService.success("Permission/s added successfully")
+
+
     } catch (error) {
+      ToastService.error("Error in adding permission/s")
       console.error("Error saving permissions", error);
     }
 
@@ -108,7 +113,7 @@ const RoleList: React.FC = () => {
   useEffect(() => {
     fetchRoles();
     // fetchPermissions();
-  }, []);
+  }, [toastMessage]);
 
   const columns = [
     { label: 'Role ID', accessor: 'id' },
@@ -200,13 +205,7 @@ const RoleList: React.FC = () => {
             <Button variant="outlined" onClick={handleClose} sx={{ mr: 2 }}>
               Cancel
             </Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                console.log("Selected Permissions:", selectedPermissions);
-                handleSave();
-              }}
-            >
+            <Button variant="contained" onClick={() => {handleSave(); }}>
               Save
             </Button>
           </Box>

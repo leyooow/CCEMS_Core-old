@@ -71,7 +71,7 @@ namespace API.Controllers
             var response = await _userService.AddPermissionsAsync(addPermissionRequest);
 
             return Ok(response);
-
+        }
         [HttpGet("CheckAdUsername/{username}")]
         public async Task<IActionResult> CheckUserNameAsync(string username)
         {
