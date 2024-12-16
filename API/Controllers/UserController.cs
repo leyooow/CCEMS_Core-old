@@ -1,4 +1,5 @@
 ﻿using Application.Contracts.Services;
+using Application.Models.DTOs.Group;
 using Application.Models.DTOs.User;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -44,6 +45,21 @@ namespace API.Controllers
         {
             var response = await _userService.GetAllRolesAsync();
             return Ok(response);
+        }
+
+        [HttpGet("CheckAdUsername/{username}")]
+        public async Task<IActionResult> CheckUserNameAsync(string username)
+        {
+            var response = await _userService.CheckUserNameAsync(username);
+            return Ok(response);
+        }
+
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> Create(UserCreateDTO userCreateDto)
+        {
+            var response = await _userService.AddAUserAsync(userCreateDto);
+            return Ok(response);
+
         }
     }
 }

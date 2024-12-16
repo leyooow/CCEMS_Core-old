@@ -6,8 +6,11 @@ using Application.Models.DTOs.User;
 using Application.Models.Helpers;
 using Application.Models.Responses;
 using AutoMapper;
+using Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -84,5 +87,79 @@ namespace Application.Services
 
             return ResponseHelper.SuccessResponse(rolesDTOs, "Roles retrieved successfully");
         }
+
+        public async Task<GenericResponse<object>> AddAUserAsync(UserCreateDTO userCreateDTO)
+        {
+
+            try
+            {
+                var branchAccesses = userCreateDTO.BranchAccesses
+                    .Select(ba => new BranchAccess
+                    {
+                        BranchId = ba.BranchId,
+                        EmployeeId = userCreateDTO.EmployeeId
+                    })
+                    .ToList();
+
+                var user = _mapper.Map<User>(userCreateDTO);
+                user.BranchAccesses = branchAccesses;
+                
+                await _repository.AddAsync(user);
+
+                return ResponseHelper.SuccessResponse<object>(null, "User added successfully");
+            }
+            catch (Exception ex)
+            {
+
+                return ResponseHelper.ErrorResponse<object>($"An error occurred while adding the group: {ex.Message}");
+            }
+        }
+        public async Task<GenericResponse<UserActiveDirectoryDTO>> CheckUserNameAsync(string username)
+        {
+           
+
+            try
+            {
+                var result = new UserActiveDirectoryDTO();
+                using var principalContext = new PrincipalContext(ContextType.Domain, "BOC");
+                var domainUser = UserPrincipal.FindByIdentity(principalContext, IdentityType.SamAccountName, username);
+
+                result.IsExisting = await _repository.IsUserExistingAsync(username);
+
+                if (domainUser != null)
+                {
+                    result.IsValidBankComUser = true;
+                    return ResponseHelper.SuccessResponse<UserActiveDirectoryDTO>(result, "Active Diretory Username exists.");
+                }
+                else
+                {
+                    result.IsValidBankComUser = false;
+                    return ResponseHelper.FailResponse<UserActiveDirectoryDTO>(result, "Active Diretory Username is not exists.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper.ErrorResponse<UserActiveDirectoryDTO>($"An error occurred while adding the group: {ex.Message}");
+            }
+
+           
+        }
     }
+
+   
+
+    //private static string AppendBranchIDs(User user)
+    //    {
+    //        string branchIDs = string.Empty;
+    //        foreach (var item in user.BranchAccesses)
+    //        {
+    //            if (branchIDs != string.Empty)
+    //                branchIDs += ("," + item.BranchId);
+    //            else
+    //                branchIDs += item.BranchId;
+    //        }
+
+    //        return branchIDs;
+    //    }
+    //}
 }
