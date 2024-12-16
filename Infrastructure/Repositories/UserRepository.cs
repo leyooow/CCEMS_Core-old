@@ -8,6 +8,11 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using System.Security.AccessControl;
+using System;
+using Microsoft.AspNetCore.Mvc;
+using System.DirectoryServices.AccountManagement;
+
 
 namespace Infrastructure.Repositories
 {
@@ -71,6 +76,7 @@ namespace Infrastructure.Repositories
             return entity;
         }
 
+
         public async Task<List<PermissionLookup>> GetAllPermissionLookUpAsync()
         {
             var entity = await _context.PermissionLookups.ToListAsync();
@@ -109,6 +115,39 @@ namespace Infrastructure.Repositories
         }
 
 
+
+
+        public async Task AddAsync(User user)
+        {
+            var auditMessage = $"Created User - [Login Name: {user.LoginName} | Employee ID: {user.EmployeeId} | Full Name: {user.LastName}, {user.FirstName} {user.MiddleName} | Email: {user.Email} | Role ID: {user.RoleId} | Group ID: {string.Join(", ", user.BranchAccesses)}]";
+
+            var auditLog = _auditlogs.SaveLog("Users", "Create", auditMessage, UserLoginName);
+            _context.Add(auditLog);
+
+            user.CreatedDate = DateTime.UtcNow;
+            user.IsLoggedIn = 0;
+
+            await base.AddAsync(user);
+        }
+
+        //private static string AppendBranchIDs(User user)
+        //{
+        //    string branchIDs = string.Empty;
+        //    foreach (var item in user.BranchAccesses)
+        //    {
+        //        if (branchIDs != string.Empty)
+        //            branchIDs += ("," + item.BranchId);
+        //        else
+        //            branchIDs += item.BranchId;
+        //    }
+
+        //    return branchIDs;
+        //}
+
+        public async Task<bool> IsUserExistingAsync(string username)
+        {
+            return await _context.Users.AnyAsync(s => s.LoginName == username);
+        }
 
     }
 

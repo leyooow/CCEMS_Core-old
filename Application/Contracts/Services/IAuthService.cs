@@ -5,6 +5,6 @@ namespace Application.Contracts.Services
 {
     public interface IAuthService
     {
-        Task<AuthResponse> AuthenticateAsync(string loginName, string password);
+        Task<AuthResponse> AuthenticateAsync(AuthRequest authRequest);
     }
 }

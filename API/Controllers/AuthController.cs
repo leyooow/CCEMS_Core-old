@@ -3,6 +3,7 @@ using Application.Models.DTOs.Auth;
 using System.Threading.Tasks;
 using Application.Contracts.Services;
 using static Application.Models.DTOs.Auth.AuthenticationDTO;
+using Azure.Core;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -18,7 +19,9 @@ public class AuthController : ControllerBase
     [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody] AuthRequest request)
     {
-        var response = await _authService.AuthenticateAsync(request.Username, request.Password);
+        var response = await _authService.AuthenticateAsync(request);
         return Ok(response);
     }
+
+
 }

@@ -27,6 +27,8 @@ namespace Application.MappingProfile
             CreateMap<BranchCodeTable, BranchCodeTableDTO>().ReverseMap();
 
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<User, UserCreateDTO>().ReverseMap();
+
             CreateMap<Role, RoleDTO>().ReverseMap();
 
             CreateMap<PermissionLookup, PermissionLookupDTO>().ReverseMap();

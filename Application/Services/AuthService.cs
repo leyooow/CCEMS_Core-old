@@ -24,12 +24,9 @@ namespace Application.Services
             _httpContext = httpContext;
         }
 
-        public async Task<AuthResponse> AuthenticateAsync(string loginName, string password)
+        public async Task<AuthResponse> AuthenticateAsync(AuthRequest authRequest)
         {
-
-           
-            
-            var user = await _authRepository.GetUserByLoginNameAsync(loginName);
+            var user = await _authRepository.GetUserByLoginNameAsync(authRequest.Username);
             if (user == null)
                 return new AuthResponse(false, "Invalid username or password.");
 
@@ -50,7 +47,7 @@ namespace Application.Services
             //using (var context = new PrincipalContext(ContextType.Domain, "BOC"))
             //{
             //    // Validate credentials using the LDAP server
-            //    if (!context.ValidateCredentials(loginName, password))
+            //    if (!context.ValidateCredentials(authRequest.Username, authRequest.Password))
             //    {
             //        user.LogInCounter++;
             //        if (user.LogInCounter >= 3)
@@ -72,7 +69,7 @@ namespace Application.Services
             user.LastLogIn = DateTime.UtcNow;
 
             await _authRepository.UpdateUserAsync(user);
-            await _authRepository.SaveLoginAuditLogAsync(user, loginName);
+            await _authRepository.SaveLoginAuditLogAsync(user, authRequest.Username);
             var token = _tokenGenerator.GenerateToken(user);
             return new AuthResponse(true, "Login successful.", token);
 
