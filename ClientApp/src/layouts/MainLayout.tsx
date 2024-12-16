@@ -213,8 +213,8 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
             <ConfirmationModal
                 open={sessionExpiredModalOpen}
-                title="Sign out"
-                content="Session Expired"
+                title="Session Expired"
+                content="Your session has timed out. Please log in again."
                 handleClose={() => setSignOutModalOpen(false)}
                 handleConfirm={handleSignOutModalConfirm}
                 buttonName="Sign In"

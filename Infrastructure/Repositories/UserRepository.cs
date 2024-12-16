@@ -4,7 +4,10 @@ using Application.Models.Helpers;
 using Application.Models.Responses;
 using Application.Services.Application.Services;
 using Infrastructure.Entities;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace Infrastructure.Repositories
 {
@@ -15,7 +18,7 @@ namespace Infrastructure.Repositories
         private readonly UserClaimsService _userClaimsService;
         private string UserLoginName;
 
-        public UserRepository(CcemQatContext context, Logs auditLogs, UserClaimsService userClaimsService) : base(context) 
+        public UserRepository(CcemQatContext context, Logs auditLogs, UserClaimsService userClaimsService) : base(context)
         {
             _context = context;
             _auditlogs = auditLogs;
@@ -27,7 +30,7 @@ namespace Infrastructure.Repositories
         {
             IQueryable<User> query = _context.Users
                 .Include(u => u.BranchAccesses);
-                //.Include(u => u.Role);
+            //.Include(u => u.Role);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -55,7 +58,7 @@ namespace Infrastructure.Repositories
         }
 
         public async Task<User?> GetUserByIdAsync(string? id)
-        { 
+        {
             var entity = await _context.Users.Where(x => x.EmployeeId == id).FirstOrDefaultAsync();
 
             return entity;
@@ -67,6 +70,46 @@ namespace Infrastructure.Repositories
 
             return entity;
         }
+
+        public async Task<List<PermissionLookup>> GetAllPermissionLookUpAsync()
+        {
+            var entity = await _context.PermissionLookups.ToListAsync();
+
+            return entity;
+        }
+
+        public async Task<List<RolePermission>> GetPermissionsByRoleId(int roleId)
+        {
+            return await _context.RolePermissions
+                .Where(p => p.RoleId == roleId)
+                .ToListAsync();
+        }
+
+        public async Task AddPermissionsAsync(AddPermissionRequest addPermissionRequest)
+        {
+
+                // Delete existing role permissions
+                var existingPermissions = await _context.RolePermissions
+                    .Where(rp => rp.RoleId == addPermissionRequest.RoleId)
+                    .ToListAsync();
+
+                _context.RolePermissions.RemoveRange(existingPermissions);
+
+
+
+                var rolePermissionEntities = addPermissionRequest.PermissionList.Select(permission => new RolePermission
+                {
+                    RoleId = addPermissionRequest.RoleId,
+                    Permission = permission
+                }).ToList();
+
+                await _context.RolePermissions.AddRangeAsync(rolePermissionEntities);
+                await _context.SaveChangesAsync();
+
+        }
+
+
+
     }
 
 }

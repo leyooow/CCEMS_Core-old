@@ -3,6 +3,7 @@ using Application.Models.DTOs.User;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -43,6 +44,31 @@ namespace API.Controllers
         public async Task<IActionResult> GetallRoles()
         {
             var response = await _userService.GetAllRolesAsync();
+            return Ok(response);
+        }
+
+
+        [HttpGet("GetAllPermissionLookups")]
+        public async Task<IActionResult> GetAllPermissionLookUps()
+        {
+            var response = await _userService.GetAllPermissionLookUpAsync();
+            return Ok(response);
+        }
+
+
+        [HttpGet("GetPermissionsByRoleId/{roleId}")]
+        public async Task<IActionResult> GetPermissionsByRoleId(int roleId)
+        {
+            var permissions = await _userService.GetPermissionsByRoleId(roleId);
+
+            return Ok(permissions);
+        }
+
+        [HttpPost("AddPermissions")]
+        public async Task<IActionResult> AddPermissions([FromBody] AddPermissionRequest addPermissionRequest)
+        {
+            var response = await _userService.AddPermissionsAsync(addPermissionRequest);
+
             return Ok(response);
         }
     }
