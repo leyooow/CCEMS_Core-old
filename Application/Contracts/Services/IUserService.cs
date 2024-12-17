@@ -20,8 +20,9 @@ namespace Application.Contracts.Services
         Task<GenericResponse<List<PermissionLookup>>> GetAllPermissionLookUpAsync();
         Task<GenericResponse<List<RolePermission>>> GetPermissionsByRoleId(int roleId);
         Task<GenericResponse<object>> AddPermissionsAsync(AddPermissionRequest addPermissionRequest );
-        Task<GenericResponse<object>> AddAUserAsync(UserCreateDTO userCreateDTO);
+        Task<GenericResponse<object>> AddUserAsync(UserCreateDTO userCreateDTO);
         Task<GenericResponse<UserActiveDirectoryDTO>> CheckUserNameAsync(string userName);
+        Task<GenericResponse<object>> UpdateUserAsync(UserUpdateDTO userUpdateDTO);
         //Task<GenericResponse<object>> AddGroupAsync(GroupCreateDTO groupCreateDto);
         //Task<GenericResponse<object>> UpdateGroupAsync(GroupUpdateDTO groupUpdateDto);
         //Task<GenericResponse<object>> DeleteGroupAsync(int id);

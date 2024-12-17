@@ -72,6 +72,7 @@ namespace API.Controllers
 
             return Ok(response);
         }
+
         [HttpGet("CheckAdUsername/{username}")]
         public async Task<IActionResult> CheckUserNameAsync(string username)
         {
@@ -82,10 +83,16 @@ namespace API.Controllers
         [HttpPost("CreateUser")]
         public async Task<IActionResult> Create(UserCreateDTO userCreateDto)
         {
-            var response = await _userService.AddAUserAsync(userCreateDto);
+            var response = await _userService.AddUserAsync(userCreateDto);
             return Ok(response);
-
-
         }
+
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDTO userUpdateDTO)
+        {
+            var response = await _userService.UpdateUserAsync(userUpdateDTO);
+            return Ok(response);
+        }
+
     }
 }
