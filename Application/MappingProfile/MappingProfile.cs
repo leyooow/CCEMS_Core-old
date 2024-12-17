@@ -27,7 +27,17 @@ namespace Application.MappingProfile
             CreateMap<BranchCodeTable, BranchCodeTableDTO>().ReverseMap();
 
             CreateMap<User, UserDTO>().ReverseMap();
-            CreateMap<User, UserCreateDTO>().ReverseMap();
+            CreateMap<UserCreateDTO, User>()
+                .ForMember(dest => dest.BranchAccesses, opt => opt.MapFrom(src =>
+                src.BranchAccesses.Select(ba => new BranchAccess
+                {
+                    BranchId = ba.BranchId,
+                    EmployeeId = src.EmployeeId,
+                    UsersLoginName = src.LoginName
+                })));
+            CreateMap<UserUpdateDTO, User>()
+                .ForMember(dest => dest.BranchAccesses, opt => opt.MapFrom(src => src.BranchAccessIds.Select(id => new BranchAccess { BranchId = id, EmployeeId = src.EmployeeId }).ToList()));
+
 
             CreateMap<Role, RoleDTO>().ReverseMap();
 

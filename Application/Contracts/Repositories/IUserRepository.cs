@@ -20,6 +20,6 @@ namespace Application.Contracts.Repositories
         Task<List<RolePermission>> GetPermissionsByRoleId(int roleId);
         Task AddPermissionsAsync(AddPermissionRequest addPermissionRequest);
         Task<bool> IsUserExistingAsync(string username);
-
+        Task UpdateUserAsync(User user, List<BranchAccess> updatedBranchAccesses, List<int> branchAccessIds);
     }
 }

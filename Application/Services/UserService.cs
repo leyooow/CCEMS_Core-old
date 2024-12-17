@@ -118,8 +118,9 @@ namespace Application.Services
             {
                 return ResponseHelper.ErrorResponse<object>($"Error in saving permissions, Error {ex.Message}");
             }
+        }
 
-        public async Task<GenericResponse<object>> AddAUserAsync(UserCreateDTO userCreateDTO)
+        public async Task<GenericResponse<object>> AddUserAsync(UserCreateDTO userCreateDTO)
         {
 
             try
@@ -134,7 +135,7 @@ namespace Application.Services
 
                 var user = _mapper.Map<User>(userCreateDTO);
                 user.BranchAccesses = branchAccesses;
-                
+
                 await _repository.AddAsync(user);
 
                 return ResponseHelper.SuccessResponse<object>(null, "User added successfully");
@@ -147,7 +148,7 @@ namespace Application.Services
         }
         public async Task<GenericResponse<UserActiveDirectoryDTO>> CheckUserNameAsync(string username)
         {
-           
+
 
             try
             {
@@ -173,25 +174,44 @@ namespace Application.Services
                 return ResponseHelper.ErrorResponse<UserActiveDirectoryDTO>($"An error occurred while adding the group: {ex.Message}");
             }
 
-           
+
 
         }
+
+        public async Task<GenericResponse<object>> UpdateUserAsync(UserUpdateDTO userUpdateDTO)
+        {
+            try
+            {
+                // Fetch the existing user entity
+                var existingUser = await _repository.GetUserByIdAsync(userUpdateDTO.EmployeeId);
+
+                if (existingUser == null)
+                {
+                    return ResponseHelper.ErrorResponse<object>("User not found.");
+                }
+
+                // Map DTO to the existing user entity (AutoMapper will update the properties)
+                _mapper.Map(userUpdateDTO, existingUser);
+
+                // Update BranchAccessIds explicitly
+                var updatedBranchAccesses = userUpdateDTO.BranchAccessIds
+                    .Select(branchId => new BranchAccess
+                    {
+                        BranchId = branchId,
+                        EmployeeId = existingUser.EmployeeId
+                    }).ToList();
+
+                // Update user and handle BranchAccess changes
+                await _repository.UpdateUserAsync(existingUser, updatedBranchAccesses, userUpdateDTO.BranchAccessIds);
+
+                return ResponseHelper.SuccessResponse<object>(null, "User updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper.ErrorResponse<object>($"An error occurred while updating the user: {ex.Message}");
+            }
+        }
+
+
     }
-
-   
-
-    //private static string AppendBranchIDs(User user)
-    //    {
-    //        string branchIDs = string.Empty;
-    //        foreach (var item in user.BranchAccesses)
-    //        {
-    //            if (branchIDs != string.Empty)
-    //                branchIDs += ("," + item.BranchId);
-    //            else
-    //                branchIDs += item.BranchId;
-    //        }
-
-    //        return branchIDs;
-    //    }
-    //}
 }
