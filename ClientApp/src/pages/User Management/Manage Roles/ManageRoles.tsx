@@ -183,21 +183,6 @@ const RoleList: React.FC = () => {
                 />
               ))}
             </FormGroup>
-
-            {/* <FormGroup>
-              {permissions.map((permission: any) => (
-                <FormControlLabel
-                  key={permission.id}
-                  control={
-                    <Checkbox
-                    checked={selectedPermissions.includes(permission.id)} // Check if permission ID is in selectedPermissions
-                    onChange={() => handleCheckboxChange(permission.id)}
-                  />
-                  }
-                  label={permission.function}
-                />
-              ))}
-            </FormGroup> */}
           </Box>
 
           {/* Footer Section */}

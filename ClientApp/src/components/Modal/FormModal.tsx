@@ -99,11 +99,13 @@ const FormDataModal: React.FC<FormDataModalProps> = ({
 
                 {/* Action Buttons */}
                 <Box sx={{ textAlign: 'right', mt: 3 }}>
-                    <Button variant="contained" color="primary" onClick={handleSave} sx={{ mr: 1 }}>
-                        Save
-                    </Button>
-                    <Button variant="outlined" color='error' onClick={handleClose}>
+                  
+                    <Button variant="outlined" color='error' onClick={handleClose} sx={{ mr: 1 }}>
                         Cancel
+                    </Button>
+
+                    <Button variant="contained" color="success" onClick={handleSave}>
+                        Save
                     </Button>
                 </Box>
             </Box>

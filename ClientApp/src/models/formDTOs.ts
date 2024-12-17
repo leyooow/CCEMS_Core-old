@@ -3,7 +3,7 @@ export interface FormData {
 }
 
 interface FormField {
-    value: string;
+    value: string | string[];
     error: boolean;
     helperText: string;
 }
