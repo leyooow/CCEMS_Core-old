@@ -53,7 +53,7 @@ const Dashboard: React.FC = () => {
     setCreateUserFormData({ ...createUserFormData, [name]: value });
   };
 
-  const handleBranchChange = (event: any, value: any) => {
+  const handleBranchChange = (value: any) => {
     setCreateUserFormData({ ...createUserFormData, branches: value });
   };
 
@@ -192,9 +192,23 @@ const Dashboard: React.FC = () => {
           roles={roles}
           branchOptions={branchOptions}
           onCancel={hanldeCloseModal}
-          // isEditMode
         />
       </Dialog>
+
+
+      
+      {/* <Dialog open={openCreateUserModal} onClose={() => setOpenCreateUserModal(false)} maxWidth="lg" fullWidth>
+        <UserFormModal
+          formData={createUserFormData}
+          onChange={handleChange}
+          onBranchChange={handleBranchChange}
+          handleSubmit={handleSubmitCreateUser}
+          roles={roles}
+          branchOptions={branchOptions}
+          onCancel={hanldeCloseModal}
+          isEditMode
+        />
+      </Dialog> */}
     </>
 
   )

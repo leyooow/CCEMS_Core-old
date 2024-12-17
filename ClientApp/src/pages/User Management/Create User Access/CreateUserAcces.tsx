@@ -40,7 +40,7 @@ const CreateUserAccess: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleBranchChange = (event: any, value: any) => {
+  const handleBranchChange = ( value: any) => {
     setFormData({ ...formData, branches: value });
   };
 

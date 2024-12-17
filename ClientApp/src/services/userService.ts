@@ -54,7 +54,7 @@ const userService = {
   },
 
   async UpdateUser(UserData: any) {
-    const response = await apiClient.post(`/User/AddPermissions/`, UserData, {
+    const response = await apiClient.post(`/User/UpdateUser/`, UserData, {
     });
     return response.data;
   },

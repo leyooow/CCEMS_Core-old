@@ -26,7 +26,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({ currentPage, to
                 <Pagination
                     count={totalPages}
                     page={currentPage}
-                    onChange={(event, page) => onPageChange(page)}
+                    onChange={(_event, page) => onPageChange(page)}
                     color="primary"
                     siblingCount={1} // Adjust number of pages to show on each side of the current page
                 />
