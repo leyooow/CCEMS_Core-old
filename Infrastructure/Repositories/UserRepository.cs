@@ -34,7 +34,8 @@ namespace Infrastructure.Repositories
         {
             IQueryable<User> query = _context.Users
                 .Include(u => u.BranchAccesses);
-            //.Include(u => u.Role);
+                //.Include(u => u.Role)
+              
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -52,7 +53,7 @@ namespace Infrastructure.Repositories
                     .Skip((pageNumber.Value - 1) * pageSize.Value)
                     .Take(pageSize.Value);
             }
-
+            
             return await query.ToListAsync();
         }
         public async Task<List<User>> GetAllAsync()
@@ -86,23 +87,23 @@ namespace Infrastructure.Repositories
         public async Task AddPermissionsAsync(AddPermissionRequest addPermissionRequest)
         {
 
-                // Delete existing role permissions
-                var existingPermissions = await _context.RolePermissions
-                    .Where(rp => rp.RoleId == addPermissionRequest.RoleId)
-                    .ToListAsync();
+            // Delete existing role permissions
+            var existingPermissions = await _context.RolePermissions
+                .Where(rp => rp.RoleId == addPermissionRequest.RoleId)
+                .ToListAsync();
 
-                _context.RolePermissions.RemoveRange(existingPermissions);
+            _context.RolePermissions.RemoveRange(existingPermissions);
 
 
 
-                var rolePermissionEntities = addPermissionRequest.PermissionList.Select(permission => new RolePermission
-                {
-                    RoleId = addPermissionRequest.RoleId,
-                    Permission = permission
-                }).ToList();
+            var rolePermissionEntities = addPermissionRequest.PermissionList.Select(permission => new RolePermission
+            {
+                RoleId = addPermissionRequest.RoleId,
+                Permission = permission
+            }).ToList();
 
-                await _context.RolePermissions.AddRangeAsync(rolePermissionEntities);
-                await _context.SaveChangesAsync();
+            await _context.RolePermissions.AddRangeAsync(rolePermissionEntities);
+            await _context.SaveChangesAsync();
 
         }
         public new async Task AddAsync(User user)

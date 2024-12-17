@@ -54,20 +54,20 @@ const EmployeeMaintenance: React.FC = () => {
     const updatedFormData = { ...formData };
 
     REQUIRED_FIELDS.forEach((field) => {
-      if (formData[field].value.trim() === '') {
+      if (typeof formData[field].value === 'string' && formData[field].value.trim() === '') {
         updatedFormData[field] = {
-          ...formData[field],
-          error: true,
-          helperText: ERROR_MESSAGES.REQUIRED_FIELD,
+            ...formData[field],
+            error: true,
+            helperText: ERROR_MESSAGES.REQUIRED_FIELD,
         };
         isValid = false;
-      } else {
+    } else {
         updatedFormData[field] = {
-          ...formData[field],
-          error: false,
-          helperText: '',
+            ...formData[field],
+            error: false,
+            helperText: '',
         };
-      }
+    }
     });
 
     setFormData(updatedFormData);

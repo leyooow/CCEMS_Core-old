@@ -35,7 +35,7 @@ const NAVIGATION: Navigation = [
         icon: <ManageAccounts />,
         children: [
             { segment: 'Dashboard', title: 'Dashboard', icon: <DashboardIcon /> },
-            { segment: 'CreateUserAccess', title: 'Create User Access', icon: <CreateRounded /> },
+            // { segment: 'CreateUserAccess', title: 'Create User Access', icon: <CreateRounded /> },
             { segment: 'ManageRoles', title: 'Manage Roles', icon: <ManageAccounts /> },
             { segment: 'EmployeeMaintenance', title: 'Employee Maintenance', icon: <ManageAccountsTwoTone /> },
         ],

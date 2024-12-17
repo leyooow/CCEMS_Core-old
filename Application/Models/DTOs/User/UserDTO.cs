@@ -28,6 +28,8 @@ namespace Application.Models.DTOs.User
         public string? IpAddress { get; set; }
         public string? TempIpAddress { get; set; }
         public int RoleId { get; set; }
+        public string? RoleName { get; set; }
+
         public ICollection<BranchAccess> BranchAccesses { get; set; } = [];
         public RoleDTO Role { get; set; } = new();
     }
