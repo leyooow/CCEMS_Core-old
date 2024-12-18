@@ -23,7 +23,6 @@ namespace Application.Services
            
         }
 
-
         public async Task<GenericResponse<List<GroupDTO>>> GetAllAsync() 
         {
             var groups = await _repository.GetAllAsync();

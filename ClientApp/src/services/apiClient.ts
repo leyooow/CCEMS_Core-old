@@ -1,10 +1,11 @@
 import axios from 'axios';
-import {API_BASE_URL} from '../utils/constants'
 
+// Access environment variables using import.meta.env
 const token = localStorage.getItem('token');
+const API_BASE_URL = import.meta.env.REACT_APP_API_URL_DEV || 'https://default-api-url.com';
 
+// Dynamically get the correct API base URL
 const apiClient = axios.create({
-  //baseURL: process.env.REACT_APP_API_URL, // Fetches the API URL from the .env file
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',

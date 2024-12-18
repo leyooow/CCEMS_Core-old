@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import GroupService from '../../../services/groupService';
-import { PagedResult } from '../../../models/groupDTOs';
+import { PagedResult } from '../../../models/GenericResponseDTO';
 import PaginationControls from '../../../components/Pagination/PaginationControls'
 import Table from '../../../components/Table/Table';
 import { Box, Typography, TextField, IconButton, Tooltip } from '@mui/material';
@@ -12,11 +12,12 @@ import EditDataModal from '../../../components/Modal/FormModal';
 import CustomModal from '../../../components/Modal/ConfirmationModal';
 import { ERROR_MESSAGES } from '../../../utils/constants';
 import { FormData } from '../../../models/formDTOs';
+import { GroupDTO } from '../../../models/groupDTOs';
 
 const GroupList: React.FC = () => {
 
   // Define state with proper initial structure
-  const [pagedResult, setPagedResult] = useState<PagedResult>({
+  const [pagedResult, setPagedResult] = useState<PagedResult<GroupDTO>>({
     items: [],
     totalCount: 0,
     pageNumber: 1,
@@ -83,14 +84,17 @@ const GroupList: React.FC = () => {
 
   const [searchTerm, setSearchTerm] = useState<string>(pagedResult.searchTerm);
 
+
   const fetchGroups = async () => {
     try {
-      const result = await GroupService.getAllGroups(
+      const result = await GroupService.getPaginatedAllGroups(
         pagedResult.pageNumber,
         pagedResult.pageSize,
         searchTerm
       );
-      setPagedResult(result.data.data);
+
+      // console.log(result.data)
+      setPagedResult(result.data);
 
       // console.log(result); 
     } catch (error) {
