@@ -12,13 +12,16 @@ import UserFormModal from "../../../components/Modal/UserFormModal";
 import GlobalButton from "../../../components/Button/Button";
 import { EmployeeDTO } from "../../../models/employeeMaintenanceDTOs";
 import groupService from "../../../services/groupService";
-import { BranchOption, RoleOption } from "../../../models/userMaintenanceDTOs";
+import { BranchAccessDTO, UserCreateDto } from "../../../models/userMaintenanceDTOs";
+import { GroupDTO } from "../../../models/groupDTOs";
+import { RoleDTO, RolePermissionDTO } from "../../../models/RoleDTOs";
 
 const Dashboard: React.FC = () => {
   // Define state with proper initial structure
   const [openCreateUserModal, setOpenCreateUserModal] = useState(false);
-  const [roleOptions, setroleOptions] = useState<RoleOption[]>([]);
-  const [branchOptions, setBranchOptions] = useState<BranchOption[]>([]);
+  const [selectedBranches, setSelectedBranches] = useState<GroupDTO[]>([]);
+  const [roleOptions, setroleOptions] = useState<RoleDTO[]>([]);
+  const [branchOptions, setBranchOptions] = useState<GroupDTO[]>([]);
   const [pagedResult, setPagedResult] = useState<PagedResult<EmployeeDTO>>({
     items: [],
     totalCount: 0,
@@ -27,27 +30,27 @@ const Dashboard: React.FC = () => {
     searchTerm: ''
   });
 
-  const initialFormData = {
-    username: '',
-    employeeId: '',
-    lastName: '',
-    firstName: '',
-    middleInitial: '',
-    email: '',
-    userRole: '',
-    branches: [],
+  const initialFormData: UserCreateDto = {
+    userName: "",
+    employeeId: "",
+    lastName: "",
+    firstName: "",
+    middleName: "",
+    email: "",
+    userRole: 0,
+    branchAccess: [],
   };
 
   // Define form fields, including value, error, and helper text
-  const [aUserFormData, setaUserFormData] = useState(initialFormData);
+  const [userFormData, setUserFormData] = useState(initialFormData);
   const [searchTerm, setSearchTerm] = useState<string>(pagedResult.searchTerm);
-  const transformedBranches = branchOptions.map(branch => branch.name);
-  const transformedRoles = roleOptions.map(role => role.roleName);
+  // const transformedBranches = branchOptions.map(branch => branch.name);
+  // const transformedRoles = roleOptions.map(role => role.roleName);
   const fetchRolesOptions = async () => {
     try {
-      console.log('fetching roles')
+      // console.log('fetching roles')
       const result = await userService.GetAllRoles();
-      console.log(result.data)
+      // console.log(result.data)
       setroleOptions(result.data);
 
       // console.log(result); 
@@ -56,12 +59,36 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const mappedUserFormData = {
+    userName: userFormData.userName,
+    employeeId: userFormData.employeeId,
+    lastName: userFormData.lastName,
+    firstName: userFormData.firstName,
+    middleName: userFormData.middleName,
+    email: userFormData.email,
+    userRole: userFormData.userRole,
+    branchAccess: userFormData.branchAccess,
+  }
+
+  const checkUserAD = async (username: string) => {
+    try {
+
+      // console.log('fetching branches')
+      const result = await userService.checkUserAD(username);
+      // console.log(result.data)
+      setBranchOptions(result.data);
+
+      // console.log(result); 
+    } catch (error) {
+      console.error("Error fetching groups", error);
+    }
+  };
   const fetchBranchOptions = async () => {
     try {
 
-      console.log('fetching branches')
+      // console.log('fetching branches')
       const result = await groupService.getAllGroups();
-      console.log(result.data)
+      // console.log(result.data)
       setBranchOptions(result.data);
 
       // console.log(result); 
@@ -72,22 +99,42 @@ const Dashboard: React.FC = () => {
   // Handle input changes
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setaUserFormData({ ...aUserFormData, [name]: value });
+    setUserFormData({ ...userFormData, [name]: value });
   };
 
-  const handleBranchChange = (_event: any, value: any) => {
-    setaUserFormData({ ...aUserFormData, branches: value });
+  // Handle branch changes
+  const handleBranchChange = (
+    _event: React.ChangeEvent<{}>,
+    value: GroupDTO[]
+  ) => {
+    // Update selected branches
+    setSelectedBranches(value);
+
+    // Map selected branches to create branchAccess
+    const branchAccess: BranchAccessDTO[] = value.map((branch) => ({
+      employeeId: userFormData.employeeId,
+      branchId: branch.code, // Assuming `code` is of type `number`
+      usersLoginName: userFormData.userName,
+    }));
+
+    // Update user form data with the mapped branchAccess
+    setUserFormData({ ...userFormData, branchAccess });
   };
 
+
+
+  const resetUserFormData = () => {
+    setUserFormData(initialFormData)
+    setSelectedBranches([]); 
+  }
   const hanldeCloseModal = () => {
-    setaUserFormData(initialFormData)
+    resetUserFormData()
     setOpenCreateUserModal(false)
   }
 
-  const hanldeAddOpenModal = async  () => {
-    await fetchBranchOptions()
-    await fetchRolesOptions()
-    console.log('add modal opened')
+  const hanldeAddOpenModal = async () => {
+
+    // console.log('add modal opened')
     setOpenCreateUserModal(true)
   }
 
@@ -172,7 +219,9 @@ const Dashboard: React.FC = () => {
 
   const handleSubmitCreateUser = (e: any) => {
     e.preventDefault();
-    console.log("Form Submitted:", aUserFormData);
+    console.log("Form Submitted:", userFormData);
+
+    console.log("Selected Branch:", selectedBranches);
     setOpenCreateUserModal(false);
   };
 
@@ -216,21 +265,24 @@ const Dashboard: React.FC = () => {
 
       <Dialog open={openCreateUserModal} onClose={hanldeAddOpenModal} maxWidth="lg" fullWidth>
         <UserFormModal
-          formData={aUserFormData}
+          formData={mappedUserFormData}
           onChange={handleChange}
           onBranchChange={handleBranchChange}
           handleSubmit={handleSubmitCreateUser}
-          roles={transformedRoles}
-          branchOptions={transformedBranches}
+          rolesOptions={roleOptions}
+          branchOptions={branchOptions}
+          selectedBranches={selectedBranches}
           onCancel={hanldeCloseModal}
+          isEditMode={false}
         />
+
       </Dialog>
 
 
 
       {/* <Dialog open={openCreateUserModal} onClose={() => setOpenCreateUserModal(false)} maxWidth="lg" fullWidth>
         <UserFormModal
-          formData={aUserFormData}
+          formData={userFormData}
           onChange={handleChange}
           onBranchChange={handleBranchChange}
           handleSubmit={handleSubmitCreateUser}
@@ -246,5 +298,3 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
-
-

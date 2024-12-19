@@ -57,7 +57,7 @@ const GroupList: React.FC = () => {
 
 
   const handleSave = () => {
-    console.log('Data saved:', formData);
+    // console.log('Data saved:', formData);
     closeEditModal()
   };
 

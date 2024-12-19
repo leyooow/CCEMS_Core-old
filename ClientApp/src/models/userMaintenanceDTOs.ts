@@ -1,17 +1,22 @@
-  export interface UserDTO {
-    employeeId: string;
-    firstname: string;
-    middleName: string;
-    lastName: string;
-  }
+export interface UserDTO {
+  employeeId: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+}
+export interface BranchAccessDTO {
+  employeeId: string;
+  branchId: number;
+  usersLoginName: string;
+}
 
-  export interface BranchOption {
-    code: number;
-    name: string;
-    // Add other properties as needed
-  }
-  
-  export interface RoleOption {
-    id: number;
-    roleName: string;
-  }
+export interface UserCreateDto {
+  userName: string;
+  employeeId: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  email: string;
+  userRole: number;
+  branchAccess: BranchAccessDTO[];
+}

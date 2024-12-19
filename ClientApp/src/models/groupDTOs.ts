@@ -1,7 +1,7 @@
 
 export interface GroupDTO {
   id: number;
-  code?: string;
+  code: number;
   name: string;
   description?: string;
   dateCreated: Date;

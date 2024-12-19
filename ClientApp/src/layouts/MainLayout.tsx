@@ -116,7 +116,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
     useEffect(() => {
 
-        console.log(session);
+        // console.log(session);
         authentication.signIn()
 
 

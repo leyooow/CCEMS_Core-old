@@ -59,6 +59,11 @@ const userService = {
     return response.data;
   },
 
+  async checkUserAD(username: any) {
+    const response = await apiClient.post(`/User/CheckAdUsername/${username}`, {
+    });
+    return response.data;
+  },
   
 
 

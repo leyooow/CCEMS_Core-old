@@ -5,8 +5,6 @@ export interface PaginatedGenericResponse<T> {
   data: T[];
 }
 
-
-
 export interface PagedResult<T> {
   items: T[];
   totalCount: number;
