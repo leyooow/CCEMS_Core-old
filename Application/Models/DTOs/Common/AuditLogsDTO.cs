@@ -10,7 +10,7 @@ namespace Application.Models.DTOs.Common
     public class AuditLogsDTO
     {
 
-        [Key]
+        
         public int Id { get; set; }
         public string ModuleName { get; set; }
         public string ActionType { get; set; }

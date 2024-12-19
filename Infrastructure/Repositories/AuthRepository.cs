@@ -1,4 +1,6 @@
 ﻿using Application.Contracts.Repositories;
+using Application.Models.Helpers;
+using Application.Services.Application.Services;
 using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,10 +15,14 @@ namespace Infrastructure.Repositories
     public class AuthRepository : IAuthRepository
     {
         private readonly CcemQatContext _context;
+        private readonly UserClaimsService _userClaimsService;
+        private Logs _auditlogs;
 
-        public AuthRepository(CcemQatContext context)
+        public AuthRepository(CcemQatContext context, UserClaimsService userClaimsService, Logs logs)
         {
             _context = context;
+            _userClaimsService = userClaimsService;
+            _auditlogs = logs;
         }
 
         public async Task<User> GetUserByLoginNameAsync(string loginName)
@@ -71,6 +77,45 @@ namespace Infrastructure.Repositories
             _context.AuditLogs.Add(log);
             await _context.SaveChangesAsync();
         }
+
+        public async Task LogOutAsync()
+        {
+            var claims = _userClaimsService.GetClaims();
+            var userName = claims.LoginName;
+            var employeeId = claims.EmployeeID;
+
+            if (string.IsNullOrWhiteSpace(userName) || employeeId == null)
+                return;
+
+            var user = await _context.Users
+                .Include(u => u.BranchAccesses)
+                .FirstOrDefaultAsync(u => u.LoginName == userName && u.EmployeeId == employeeId);
+
+            if (user == null || user.IsLoggedIn != 1)
+                return;
+
+            // Update user logout properties
+            user.Ipaddress = null;
+            user.TempIpaddress = null;
+            user.IsLoggedIn = 0;
+            user.LogInCounter = 0;
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            // Create and save audit log
+            string branchIDs = AppendBranchIDs(user);
+            var auditLog = _auditlogs.SaveLog(
+                "Home",
+                "Logout",
+                $"Successfully logged-out ID - {user.LoginName} [Employee ID: {user.EmployeeId} | Full Name: {user.LastName}, {user.FirstName} {user.MiddleName} | Role: {user.RoleId} | Group: {branchIDs}]",
+                user.LoginName
+            );
+
+            _context.AuditLogs.Add(auditLog);
+            await _context.SaveChangesAsync();
+        }
+
     }
 
 }

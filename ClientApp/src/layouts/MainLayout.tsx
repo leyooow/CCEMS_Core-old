@@ -48,7 +48,7 @@ const NAVIGATION: Navigation = [
         icon: <BarChartIcon />,
         children: [
             { segment: 'Dashboard', title: 'Dashboard', icon: <DashboardIcon /> },
-            { segment: 'CreateGroup', title: 'Create Group', icon: <CreateRounded /> },
+            // { segment: 'CreateGroup', title: 'Create Group', icon: <CreateRounded /> },
         ],
     },
     { kind: 'divider' },

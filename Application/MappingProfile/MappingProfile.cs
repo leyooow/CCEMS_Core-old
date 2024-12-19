@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Models.DTOs.Common;
 using Application.Models.DTOs.Employee;
 using Application.Models.DTOs.FBranch;
 using Application.Models.DTOs.Group;
@@ -43,6 +44,8 @@ namespace Application.MappingProfile
 
             CreateMap<PermissionLookup, PermissionLookupDTO>().ReverseMap();
             CreateMap<RolePermission, RolePermissionDTO>().ReverseMap();
+
+            CreateMap<AuditLogsDTO, AuditLog>().ReverseMap();
 
         }
     }

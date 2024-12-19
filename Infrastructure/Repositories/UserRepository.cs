@@ -1,17 +1,10 @@
 ﻿using Application.Contracts.Repositories;
 using Application.Models.DTOs.User;
 using Application.Models.Helpers;
-using Application.Models.Responses;
 using Application.Services.Application.Services;
 using Infrastructure.Entities;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System.Security.AccessControl;
-using System;
-using Microsoft.AspNetCore.Mvc;
-using System.DirectoryServices.AccountManagement;
 
 
 namespace Infrastructure.Repositories
@@ -172,6 +165,36 @@ namespace Infrastructure.Repositories
             // Add the audit log to the context
             await _context.AddAsync(auditLog);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteUserAsync(User user)
+        {
+            try
+            {
+                var users = await _context.Users.Include(b => b.BranchAccesses).FirstOrDefaultAsync(m => m.EmployeeId == user.EmployeeId);
+                _context.Users.Remove(users);
+                await _context.SaveChangesAsync();
+
+
+                AuditLog auditlogs = _auditlogs.SaveLog("Users",
+                        "Delete",
+                        string.Format("Deleted User ID - {0} [Employee ID: {1} | Full Name: {2}, {3} {4} | Email: {5} | Role ID: {6} | Group ID: {7} | Remarks: {8}]", users.LoginName, users.EmployeeId, users.LastName, users.FirstName, users.MiddleName, users.Email, users.RoleId, users.BranchAccesses, users.Remarks),
+                        UserLoginName);
+                _context.Add(auditlogs);
+                await _context.SaveChangesAsync();
+
+            }
+            catch { 
+            
+            }
+        }
+
+        public async Task<User> GetUserWithBranchAccessesAsync(string employeeId)
+        {
+            var entity = await _context.Users
+                .Include(u => u.BranchAccesses)
+                .FirstOrDefaultAsync(u => u.EmployeeId == employeeId);
+            return entity;
         }
     }
 

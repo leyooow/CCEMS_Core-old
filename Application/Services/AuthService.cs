@@ -1,6 +1,9 @@
 ﻿using Application.Contracts.Repositories;
 using Application.Contracts.Services;
+using Application.Services.Application.Services;
+using Infrastructure.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.DirectoryServices.AccountManagement;
 using static Application.Models.DTOs.Auth.AuthenticationDTO;
@@ -14,6 +17,7 @@ namespace Application.Services
         private readonly IAuditLogRepository _auditLogRepository;
         private readonly IConfiguration _config;
         private readonly IHttpContextAccessor _httpContext;
+        
 
         public AuthService(IAuthRepository authRepository, IJwtTokenGenerator tokenGenerator, IAuditLogRepository auditLogRepository, IConfiguration configuration, IHttpContextAccessor httpContext)
         {
@@ -22,6 +26,7 @@ namespace Application.Services
             _auditLogRepository = auditLogRepository;
             _config = configuration;
             _httpContext = httpContext;
+            
         }
 
         public async Task<AuthResponse> AuthenticateAsync(AuthRequest authRequest)
@@ -75,9 +80,14 @@ namespace Application.Services
 
         }
 
-       
+        public async Task<AuthResponse> LogoutAsync()
+        {
+            await _authRepository.LogOutAsync();
+            return new AuthResponse(true, "Logout successfully.",null);
+        }
 
 
-    }
+
+    } 
 
 }

@@ -8,10 +8,11 @@ import EditNoteTwoTone from '@mui/icons-material/EditNoteTwoTone';
 import DeleteTwoTone from '@mui/icons-material/DeleteTwoTone';
 import { FormattedDate } from '../../../utils/formatDate';
 import { globalStyle } from '../../../styles/theme';
-import EditDataModal from '../../../components/Modal/FormModal';
+import FormDataModal from '../../../components/Modal/FormModal';
 import CustomModal from '../../../components/Modal/ConfirmationModal';
 import { ERROR_MESSAGES } from '../../../utils/constants';
 import { FormData } from '../../../models/formDTOs';
+import GlobalButton from '../../../components/Button/Button';
 
 const GroupList: React.FC = () => {
 
@@ -24,22 +25,22 @@ const GroupList: React.FC = () => {
     searchTerm: ''
   });
   const [modalTitle, setModalTitle] = useState('')
-
+  const [openAddModal, setOpenAddModal] = useState(false)
   const [openEditModal, setOpenEditModal] = useState(false)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
 
   const initialFormData = {
+    code: { value: '', error: false, helperText: '' },
     name: { value: '', error: false, helperText: '' },
-    email: { value: '', error: false, helperText: '' },
-    phone: { value: '', error: false, helperText: '' },
-    address: { value: '', error: false, helperText: '' },
+    area: { value: '', error: false, helperText: '' },
+    division: { value: '', error: false, helperText: '' },
   };
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
 
 
-  const REQUIRED_FIELDS = ['name', 'email', 'phone'];
+  const REQUIRED_FIELDS = ['code', 'name', 'area', 'division'];
   const handleInputChange = (field: string, value: string) => {
     const isRequired = REQUIRED_FIELDS.includes(field);
 
@@ -65,10 +66,24 @@ const GroupList: React.FC = () => {
     setOpenEditModal(false);
 
   }
+  const closeAddModal = () => {
+    setFormData(initialFormData)
+    setOpenEditModal(false);
+    setOpenAddModal(false);
+
+  }
+
 
   const handleOpenEditModal = () => {
     setOpenEditModal(true)
     setModalTitle('Edit Group')
+  }
+
+
+
+  const handleOpenAddModal = () => {
+    setOpenAddModal(true)
+    setModalTitle('Add Group')
   }
 
   const handleOpenDeleteModal = () => {
@@ -158,10 +173,16 @@ const GroupList: React.FC = () => {
 
   return (
     <>
+
+
+      <Typography variant="h6" component="h6" gutterBottom>
+        Groups
+      </Typography>
+
       <Box sx={globalStyle.mainBox}>
-        <Typography variant="h6" component="h6" gutterBottom>
-          Groups
-        </Typography>
+        <Box sx={{ m: 1 }}>
+          <GlobalButton buttonAction="add" buttonName="Add Group" onClick={handleOpenAddModal} />
+        </Box>
 
         {/* Search input box with spacing */}
         <Box sx={globalStyle.searchBox}>
@@ -188,9 +209,9 @@ const GroupList: React.FC = () => {
         totalItems={pagedResult.totalCount}
       />
 
-      <EditDataModal
-        open={openEditModal}
-        handleClose={closeEditModal}
+      <FormDataModal
+        open={openAddModal}
+        handleClose={closeAddModal}
         title={modalTitle}
         formData={formData}
         handleInputChange={handleInputChange}
@@ -199,7 +220,15 @@ const GroupList: React.FC = () => {
       />
 
 
-
+      <FormDataModal
+        open={openEditModal}
+        handleClose={closeEditModal}
+        title={modalTitle}
+        formData={formData}
+        handleInputChange={handleInputChange}
+        handleSave={handleSave}
+        requiredFields={REQUIRED_FIELDS}
+      />
 
       <CustomModal
         open={openDeleteModal}

@@ -21,5 +21,8 @@ namespace Application.Contracts.Repositories
         Task AddPermissionsAsync(AddPermissionRequest addPermissionRequest);
         Task<bool> IsUserExistingAsync(string username);
         Task UpdateUserAsync(User user, List<BranchAccess> updatedBranchAccesses, List<int> branchAccessIds);
+        Task DeleteUserAsync(User user);
+
+        Task<User> GetUserWithBranchAccessesAsync(string employeeId);
     }
 }

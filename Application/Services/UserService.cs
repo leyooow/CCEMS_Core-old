@@ -221,6 +221,40 @@ namespace Application.Services
             }
         }
 
+        public async Task<GenericResponse<object>> DeleteUserAsync(string employeeId)
+        {
+            if (string.IsNullOrWhiteSpace(employeeId))
+                return ResponseHelper.ErrorResponse<object>("Employee ID cannot be null or empty.");
 
+            try
+            {
+                // Fetch user with related branch accesses
+                var user = await _repository.GetUserWithBranchAccessesAsync(employeeId);
+
+                if (user == null)
+                    return ResponseHelper.ErrorResponse<object>("User not found.");
+
+                // Perform deletion
+                await _repository.DeleteUserAsync(user);
+
+                // Log audit details
+                //string branchIDs = AppendBranchIDs(user);
+                //var auditLog = new AuditLog
+                //{
+                //    Entity = "Users",
+                //    Action = "Delete",
+                //    Description = $"Deleted User ID - {user.LoginName} [Employee ID: {user.EmployeeId} | Full Name: {user.LastName}, {user.FirstName} {user.MiddleName} | Email: {user.Email} | Role ID: {user.RoleId} | Group ID: {branchIDs} | Remarks: {user.Remarks}]",
+                //    ActionBy = actionBy,
+                //    ActionDate = DateTime.UtcNow
+                //};
+                //await _auditLogService.SaveAuditLogAsync(auditLog);
+
+                return ResponseHelper.SuccessResponse<object>(null, "User deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper.ErrorResponse<object>($"An error occurred while deleting the user: {ex.Message}");
+            }
+        }
     }
 }
