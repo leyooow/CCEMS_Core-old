@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Models.DTOs.Employee;
+using Application.Models.DTOs.ExceptionsMgmt;
 using Application.Models.DTOs.FBranch;
 using Application.Models.DTOs.Group;
 using Application.Models.DTOs.User;
@@ -28,6 +29,8 @@ namespace Application.MappingProfile
 
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<Role, RoleDTO>().ReverseMap();
+
+            CreateMap<ExceptionItem, ExceptionItemDTO>().ReverseMap();
         }
     }
 }

@@ -70,12 +70,18 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IAuditLogRepository, AuditLogRepository>();
             services.AddScoped<IBranchCodeRepository, BranchCodeRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IExceptionsMgmtRepository, ExceptionsMgmtRepository>();
+            services.AddScoped<ISubExceptionsRepository, SubExceptionsRepository>();
+
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IBranchCodeService, BranchCodeService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IExceptionsMgmtService, ExceptionsMgmtService>();
+            services.AddScoped<ISubExceptionsService, SubExceptionsService>();
+
 
             services.AddSingleton< UserClaimsService>();
             //services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
