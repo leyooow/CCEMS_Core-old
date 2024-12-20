@@ -18,6 +18,23 @@ const GroupService = {
       throw error;
     }
   },
+  
+  
+  async getPaginatedAllGroups(pageNumber: number = 1, pageSize: number = 10, searchTerm: string = '') {
+    try {
+      const response = await apiClient.get('/groups/GetPaginatedGroups', {
+        params: {
+          pageNumber,
+          pageSize, 
+          searchTerm,
+        },
+      }); 
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
 
   async getGroupById(id: number): Promise<PagedResult> {
     try {
@@ -52,8 +69,7 @@ const GroupService = {
     }
   },
 
- 
-  
+
   async getBranchCodes(pageNumber: number = 1, pageSize: number = 10, searchTerm: string = '') {
     try {
       const response = await apiClient.get('/BranchCode/GetPaginatedBranchCodes', {

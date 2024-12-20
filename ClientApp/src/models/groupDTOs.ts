@@ -1,8 +1,6 @@
-// src/models/groupDTOs.ts
-
 export interface GroupDTO {
   id: number;
-  code?: string;
+  code: number;
   name: string;
   description?: string;
   dateCreated: Date;
@@ -11,6 +9,8 @@ export interface GroupDTO {
   area?: string;
   division?: string;
 }
+
+
 
 export interface PagedResult {
   items: GroupDTO[];    // Array of GroupDTO (list of groups)
@@ -25,7 +25,7 @@ export interface GroupCreateDTO {
   name: string,
   area: string,
   division: string
-  
+
 }
 
 export interface GroupUpdateDTO {
@@ -38,4 +38,6 @@ export interface GroupUpdateDTO {
 export interface BranchOption {
   brCode: string;
   brName: string;
+
 }
+

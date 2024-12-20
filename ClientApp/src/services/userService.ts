@@ -54,10 +54,17 @@ const userService = {
   },
 
   async UpdateUser(UserData: any) {
-    const response = await apiClient.post(`/User/AddPermissions/`, UserData, {
+    const response = await apiClient.post(`/User/UpdateUser/`, UserData, {
     });
     return response.data;
   },
+
+  async checkUserAD(username: any) {
+    const response = await apiClient.post(`/User/CheckAdUsername/${username}`, {
+    });
+    return response.data;
+  },
+  
 
 
 };

@@ -33,7 +33,6 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     // console.log(errorMsg);
     const data = new FormData(event.currentTarget);
     const username = data.get("username") as string;

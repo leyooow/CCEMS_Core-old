@@ -1,7 +1,7 @@
 // src/services/EmployeeService.ts
 
 import apiClient from './apiClient'; // Assuming apiClient.ts handles base configurations like axios instance
-import { EmployeeCreateDTO, EmployeeUpdateDTO, PagedResult } from '../models/employeeMaintenanceDTOs'; // Update with actual DTO paths
+import { EmployeeCreateDTO, EmployeeUpdateDTO } from '../models/employeeMaintenanceDTOs'; // Update with actual DTO paths
 
 const EmployeeService = {
   async getAllEmployees(pageNumber: number = 1, pageSize: number = 10, searchTerm: string = '') {
@@ -19,7 +19,7 @@ const EmployeeService = {
     }
   },
 
-  async getEmployeeById(id: number): Promise<PagedResult> {
+  async getEmployeeById(id: number) {
     try {
       const response = await apiClient.get(`/Employee/GetEmployeeById/${id}`);
       return response.data;

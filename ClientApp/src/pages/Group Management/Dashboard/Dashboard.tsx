@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import GroupService from '../../../services/groupService';
+
+import { PagedResult } from '../../../models/GenericResponseDTO';
 import { BranchOption, GroupCreateDTO, PagedResult } from '../../../models/groupDTOs';
 import PaginationControls from '../../../components/Pagination/PaginationControls'
 import Table from '../../../components/Table/Table';
@@ -12,6 +14,7 @@ import FormDataModal from '../../../components/Modal/FormModal';
 import CustomModal from '../../../components/Modal/ConfirmationModal';
 import { ERROR_MESSAGES } from '../../../utils/constants';
 import { FormData } from '../../../models/formDTOs';
+import { GroupDTO } from '../../../models/groupDTOs';
 import GlobalButton from '../../../components/Button/Button';
 import GroupFormModal from '../../../components/Modal/GroupFormModal';
 
@@ -19,7 +22,7 @@ const GroupList: React.FC = () => {
 
 
   // Define state with proper initial structure
-  const [pagedResult, setPagedResult] = useState<PagedResult>({
+  const [pagedResult, setPagedResult] = useState<PagedResult<GroupDTO>>({
     items: [],
     totalCount: 0,
     pageNumber: 1,
@@ -48,21 +51,28 @@ const GroupList: React.FC = () => {
     }
   };
 
+  const handleSave = () => {
+    // console.log('Data saved:', formData);
+    closeEditModal()
 
   const handleBranchSearch = (event: React.ChangeEvent<{}>, value: string) => {
     fetchBranchCodes(value, 1, 10);
+
   };
 
   const [searchTerm, setSearchTerm] = useState<string>(pagedResult.searchTerm);
 
+
   const fetchGroups = async () => {
     try {
-      const result = await GroupService.getAllGroups(
+      const result = await GroupService.getPaginatedAllGroups(
         pagedResult.pageNumber,
         pagedResult.pageSize,
         searchTerm
       );
-      setPagedResult(result.data.data);
+
+      // console.log(result.data)
+      setPagedResult(result.data);
 
       // console.log(result); 
     } catch (error) {

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { PagedResult } from '../../../models/employeeMaintenanceDTOs';
+import { EmployeeDTO } from '../../../models/employeeMaintenanceDTOs';
+import { PagedResult } from '../../../models/GenericResponseDTO';
 import PaginationControls from '../../../components/Pagination/PaginationControls';
 import Table from '../../../components/Table/Table';
 import { Box, Typography, TextField } from '@mui/material';
@@ -12,10 +13,9 @@ import ToastService from '../../../utils/toast';
 import { ERROR_MESSAGES } from '../../../utils/constants';
 import { FormData } from '../../../models/formDTOs';
 
-
 const EmployeeMaintenance: React.FC = () => {
   // Define state with proper initial structure
-  const [pagedResult, setPagedResult] = useState<PagedResult>({
+  const [pagedResult, setPagedResult] = useState<PagedResult<EmployeeDTO>>({
     items: [],
     totalCount: 0,
     pageNumber: 1,
@@ -39,7 +39,6 @@ const EmployeeMaintenance: React.FC = () => {
   }, []);
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
-
   const REQUIRED_FIELDS = ['employeeId', 'firstName', 'lastName'];
 
   const closeAddModal = () => {
