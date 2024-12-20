@@ -67,7 +67,7 @@ const Dashboard: React.FC = () => {
     middleName: userFormData.middleName,
     email: userFormData.email,
     userRole: userFormData.userRole,
-    branchAccess: userFormData.branchAccess,
+    branchAccess: userFormData.branchAccess,  
   }
 
   const checkUserAD = async (username: string) => {
