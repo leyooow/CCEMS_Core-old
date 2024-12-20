@@ -29,7 +29,7 @@ const userService = {
     return response.data;
   },
 
-  async GetAllPermissionByRoleId(roleId: any) {
+  async GetAllPermissionByRoleId(roleId: number) {
     const response = await apiClient.get(`/User/GetPermissionsByRoleId/${roleId}`, {
     });
     return response.data;
@@ -41,7 +41,7 @@ const userService = {
     return response.data;
   },
 
-  async GetUserById(userId: any) {
+  async GetUserById(userId: number) {
     const response = await apiClient.post(`/User/GetUserById/${userId}`, {
     });
     return response.data;

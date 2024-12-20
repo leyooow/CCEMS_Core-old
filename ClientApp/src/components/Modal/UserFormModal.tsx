@@ -27,7 +27,7 @@ interface UserFormProps {
     firstName: string;
     middleName: string;
     email: string;
-    userRole: number;
+    roleId: number;
     branchAccess: BranchAccessDTO[];
   };
   onChange: (e: any) => void;
@@ -64,7 +64,7 @@ const UserFormModal: React.FC<UserFormProps> = ({
       onChange({ target: { name: "firstName", value: userData.firstName } });
       onChange({ target: { name: "middleInitial", value: userData.middleInitial } });
       onChange({ target: { name: "email", value: userData.email } });
-      onChange({ target: { name: "userRole", value: userData.userRole } });
+      onChange({ target: { name: "roleId", value: userData.userRole } });
       onBranchChange(event, userData.branchAccess || []);
     }
   }, [isEditMode, userData, onChange, onBranchChange]);
@@ -80,7 +80,7 @@ const UserFormModal: React.FC<UserFormProps> = ({
     if (!formData.firstName) tempErrors.firstName = ERROR_MESSAGES.REQUIRED_FIELD;
     if (!formData.email) tempErrors.email = ERROR_MESSAGES.REQUIRED_FIELD;
     else if (!/^[^@]+@[^@]+\.[^@]+$/.test(formData.email)) tempErrors.email = "Invalid email format.";
-    if (!formData.userRole) tempErrors.userRole = "User Role is required.";
+    if (!formData.roleId) tempErrors.userRole = "User Role is required.";
     if (selectedBranches.length == 0) tempErrors.branches = "Branches are required.";
 
     setErrors(tempErrors);
@@ -192,7 +192,7 @@ const UserFormModal: React.FC<UserFormProps> = ({
                 variant="outlined"
                 fullWidth
                 name="userRole"
-                value={formData.userRole}
+                value={formData.roleId}
                 onChange={onChange}
                 required
                 error={!!errors.userRole}

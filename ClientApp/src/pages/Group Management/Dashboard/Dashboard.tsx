@@ -57,12 +57,12 @@ const GroupList: React.FC = () => {
  
   const fetchGroups = async () => {
     try {
-      const result = await GroupService.getAllGroups(
+      const result = await GroupService.getPaginatedAllGroups(
         pagedResult.pageNumber,
         pagedResult.pageSize,
         searchTerm
       );
-      setPagedResult(result.data.data);
+      setPagedResult(result.data);
  
       // console.log(result);
     } catch (error) {
@@ -113,35 +113,41 @@ const GroupList: React.FC = () => {
     },
   ];
  
-  const pageCount = Math.ceil(pagedResult.totalCount / pagedResult.pageSize);
- 
-  const handlePageChange = (newPage: number) => {
+  const pageCount = Math.ceil((pagedResult?.totalCount || 0) / (pagedResult?.pageSize || 1));
+
+const handlePageChange = (newPage: number) => {
+  if (pagedResult) {
     setPagedResult({
       ...pagedResult,
       pageNumber: newPage,
     });
-  };
- 
-  // Handle search input change
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    pagedResult.pageNumber = 1;
-  };
- 
-  const handleOpenAddModal = () => {
-    setOpenAddModal(true);
-    setModalTitle('Add Group');
-  };
- 
-  const handleCloseAddModal = () => {
-    setOpenAddModal(false);
-    setFormData({ code: '', name: '', area: '', division: '' });
-  };
- 
-  const handleSave = () => {
-    console.log('Data saved:', formData);
-    handleCloseAddModal();
-  };
+  }
+};
+
+// Handle search input change
+const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setSearchTerm(e.target.value);
+  if (pagedResult) {
+    setPagedResult({
+      ...pagedResult,
+      pageNumber: 1,
+    });
+  }
+};
+
+const handleOpenAddModal = () => {
+  setOpenAddModal(true);
+  setModalTitle('Add Group');
+};
+
+const handleCloseAddModal = () => {
+  setOpenAddModal(false);
+  setFormData({ code: '', name: '', area: '', division: '' });
+};
+
+const handleSave = () => {
+  console.log('Data saved:', formData);
+};
  
   return (
     <>

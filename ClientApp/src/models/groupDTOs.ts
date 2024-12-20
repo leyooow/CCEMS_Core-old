@@ -31,13 +31,11 @@ export interface GroupCreateDTO {
 export interface GroupUpdateDTO {
   id: number;
   name: string;
-  // Other properties for updating a group
+  
 }
 
 
 export interface BranchOption {
   brCode: string;
   brName: string;
-
 }
-

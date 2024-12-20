@@ -20,3 +20,4 @@ export interface UserCreateDto {
   userRole: number;
   branchAccess: BranchAccessDTO[];
 }
+
