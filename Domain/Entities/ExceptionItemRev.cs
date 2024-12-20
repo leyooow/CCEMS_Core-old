@@ -89,4 +89,6 @@ public partial class ExceptionItemRev
     public virtual NonMonetaryRev? NonMonetaryRevs { get; set; }
     [NotMapped]
     public ICollection<ActionPlan>  ActionPlans { get; set; }
+    public bool IsCredit { get; set; }
+    //public ICollection<ActionPlansDTO> ActionPlan { get; set; }
 }

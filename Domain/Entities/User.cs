@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Infrastructure.Entities;
 
@@ -44,9 +45,11 @@ public partial class User
 
     public int RoleId { get; set; }
 
-    public virtual ICollection<BranchAccess> BranchAccesses { get; set; } = new List<BranchAccess>();
-
+    [JsonIgnore]
+    public virtual ICollection<BranchAccess> BranchAccesses { get; set; } = [];
+    [JsonIgnore]
     public virtual Role Role { get; set; } = null!;
     [NotMapped]
     public string DisplayRecipient { get; set; } = "";
 }
+    

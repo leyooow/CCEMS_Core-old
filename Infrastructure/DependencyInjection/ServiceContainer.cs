@@ -75,6 +75,9 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IReportDetailsRepository, ReportDetailsRepository>();
             services.AddScoped<IReportBranchReplyRepository, ReportBranchReplyRepository>();
             services.AddScoped<IReportGenerateRepository, ReportGenerateRepository>();
+            services.AddScoped<IExceptionsMgmtRepository, ExceptionsMgmtRepository>();
+            services.AddScoped<ISubExceptionsRepository, SubExceptionsRepository>();
+
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IGroupService, GroupService>();
@@ -85,6 +88,9 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IReportDetailsService, ReportDetailsService>();
             services.AddScoped<IReportBranchReplyService, ReportBranchReplyService>();
             services.AddScoped<IReportGenerateService, ReportGenerateService>();
+            services.AddScoped<IExceptionsMgmtService, ExceptionsMgmtService>();
+            services.AddScoped<ISubExceptionsService, SubExceptionsService>();
+            services.AddScoped<IAuditLogService, AuditLogService>();
 
             services.AddSingleton< UserClaimsService>();
 

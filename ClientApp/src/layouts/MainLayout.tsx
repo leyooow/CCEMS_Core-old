@@ -35,7 +35,7 @@ const NAVIGATION: Navigation = [
         icon: <ManageAccounts />,
         children: [
             { segment: 'Dashboard', title: 'Dashboard', icon: <DashboardIcon /> },
-            { segment: 'CreateUserAccess', title: 'Create User Access', icon: <CreateRounded /> },
+            // { segment: 'CreateUserAccess', title: 'Create User Access', icon: <CreateRounded /> },
             { segment: 'ManageRoles', title: 'Manage Roles', icon: <ManageAccounts /> },
             { segment: 'EmployeeMaintenance', title: 'Employee Maintenance', icon: <ManageAccountsTwoTone /> },
         ],
@@ -48,7 +48,7 @@ const NAVIGATION: Navigation = [
         icon: <BarChartIcon />,
         children: [
             { segment: 'Dashboard', title: 'Dashboard', icon: <DashboardIcon /> },
-            { segment: 'CreateGroup', title: 'Create Group', icon: <CreateRounded /> },
+            // { segment: 'CreateGroup', title: 'Create Group', icon: <CreateRounded /> },
         ],
     },
     { kind: 'divider' },
@@ -213,8 +213,8 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
             <ConfirmationModal
                 open={sessionExpiredModalOpen}
-                title="Sign out"
-                content="Session Expired"
+                title="Session Expired"
+                content="Your session has timed out. Please log in again."
                 handleClose={() => setSignOutModalOpen(false)}
                 handleConfirm={handleSignOutModalConfirm}
                 buttonName="Sign In"

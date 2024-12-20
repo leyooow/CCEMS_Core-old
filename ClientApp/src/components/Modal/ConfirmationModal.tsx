@@ -44,7 +44,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ open, handleClose, title, con
       <Box sx={modalStyle}>
         {/* Modal Header */}
         <Box sx={headerStyle}>
-          <Typography id="modal-title" variant="h6" component="h2" sx={{fontWeight:'bold'}}>
+          <Typography id="modal-title" variant="h6" component="h2" sx={{ fontWeight: 'bold' }}>
             {title}
           </Typography>
 

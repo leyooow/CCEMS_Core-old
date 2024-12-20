@@ -21,12 +21,21 @@ export interface PagedResult {
 }
 
 export interface GroupCreateDTO {
-  name: string;
-  // Other properties for creating a group
+  code: string,
+  name: string,
+  area: string,
+  division: string
+  
 }
 
 export interface GroupUpdateDTO {
   id: number;
   name: string;
   // Other properties for updating a group
+}
+
+
+export interface BranchOption {
+  brCode: string;
+  brName: string;
 }
