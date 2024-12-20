@@ -1,6 +1,5 @@
-
-﻿using Application.Models.DTOs.User;
-﻿using Application.Models.Responses;
+using Application.Models.DTOs.User.role;
+using Application.Models.Responses;
 using Infrastructure.Entities;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,4 @@
 ﻿using Application.Contracts.Repositories;
-using Application.Models.DTOs.User;
 using Application.Models.Helpers;
 using Application.Models.Responses;
 using Application.Services.Application.Services;
@@ -12,6 +11,7 @@ using System.Security.AccessControl;
 using System;
 using Microsoft.AspNetCore.Mvc;
 using System.DirectoryServices.AccountManagement;
+using Application.Models.DTOs.User.role;
 
 
 namespace Infrastructure.Repositories

@@ -1,6 +1,6 @@
 ﻿using Application.Contracts.Services;
 using Application.Models.DTOs.Group;
-using Application.Models.DTOs.User;
+using Application.Models.DTOs.User.role;
 using Application.Models.DTOs.User.user;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;

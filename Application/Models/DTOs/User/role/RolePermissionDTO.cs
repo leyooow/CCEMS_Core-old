@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Application.Models.DTOs.User;
+namespace Application.Models.DTOs.User.role;
 
 public class RolePermissionDTO
 {
@@ -19,6 +19,6 @@ public class RolePermissionDTO
 
 public class AddPermissionRequest
 {
-    public int RoleId { get; set; } 
+    public int RoleId { get; set; }
     public List<string>? PermissionList { get; set; }
 }
