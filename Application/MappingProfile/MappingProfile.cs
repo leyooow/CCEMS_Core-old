@@ -7,6 +7,7 @@ using Application.Models.DTOs.Employee;
 using Application.Models.DTOs.FBranch;
 using Application.Models.DTOs.Group;
 using Application.Models.DTOs.User;
+using Application.Models.DTOs.User.user;
 using AutoMapper;
 using Domain.FEntities;
 using Infrastructure.Entities;

@@ -1,6 +1,7 @@
 ﻿using Application.Models.DTOs.Common;
 using Application.Models.DTOs.Group;
 using Application.Models.DTOs.User;
+using Application.Models.DTOs.User.user;
 using Application.Models.Responses;
 using Infrastructure.Entities;
 using System;
