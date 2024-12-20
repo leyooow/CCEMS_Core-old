@@ -30,5 +30,13 @@ namespace API.Controllers
             return Ok(response);
 
         }
+
+        [HttpGet("GetPaginatedBranchCodes")]
+        public async Task<IActionResult> GetPaginated([FromQuery] int? pageNumber = 1, [FromQuery] int? pageSize = 10, [FromQuery] string? searchTerm = null)
+        {
+
+            var response = await _branchCodeService.GetPaginatedAsync(pageNumber, pageSize, searchTerm);
+            return Ok(response);
+        }
     }
 }

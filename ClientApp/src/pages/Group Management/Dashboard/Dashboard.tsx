@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import GroupService from '../../../services/groupService';
-import { PagedResult } from '../../../models/groupDTOs';
+import { BranchOption, GroupCreateDTO, PagedResult } from '../../../models/groupDTOs';
 import PaginationControls from '../../../components/Pagination/PaginationControls'
 import Table from '../../../components/Table/Table';
-import { Box, Typography, TextField, IconButton, Tooltip } from '@mui/material';
+import { Box, Typography, TextField, IconButton, Tooltip, Autocomplete } from '@mui/material';
 import EditNoteTwoTone from '@mui/icons-material/EditNoteTwoTone';
 import DeleteTwoTone from '@mui/icons-material/DeleteTwoTone';
 import { FormattedDate } from '../../../utils/formatDate';
-import { boxTheme } from '../../../styles/theme';
-import EditDataModal from '../../../components/Modal/FormModal';
+import { globalStyle } from '../../../styles/theme';
+import FormDataModal from '../../../components/Modal/FormModal';
 import CustomModal from '../../../components/Modal/ConfirmationModal';
 import { ERROR_MESSAGES } from '../../../utils/constants';
 import { FormData } from '../../../models/formDTOs';
+import GlobalButton from '../../../components/Button/Button';
+import GroupFormModal from '../../../components/Modal/GroupFormModal';
 
 const GroupList: React.FC = () => {
-
 
 
   // Define state with proper initial structure
@@ -25,63 +26,32 @@ const GroupList: React.FC = () => {
     pageSize: 10,
     searchTerm: ''
   });
+
   const [modalTitle, setModalTitle] = useState('')
+  const [openAddModal, setOpenAddModal] = useState(false)
+  const [formData, setFormData] = useState<GroupCreateDTO>({
+    code: '',
+    name: '',
+    area: '',
+    division: '',
+  });
 
-  const [openEditModal, setOpenEditModal] = useState(false)
-  const [openDeleteModal, setOpenDeleteModal] = useState(false)
-
-  const initialFormData = {
-    name: { value: '', error: false, helperText: '' },
-    email: { value: '', error: false, helperText: '' },
-    phone: { value: '', error: false, helperText: '' },
-    address: { value: '', error: false, helperText: '' },
-  };
-
-  const [formData, setFormData] = useState<FormData>(initialFormData);
-
-
-
-  const REQUIRED_FIELDS = ['name', 'email', 'phone'];
-  const handleInputChange = (field: string, value: string) => {
-    const isRequired = REQUIRED_FIELDS.includes(field);
-
-    setFormData({
-      ...formData,
-      [field]: {
-        ...formData[field],
-        value: value,
-        error: isRequired && value === '', // Set error only if the field is required and value is empty
-        helperText: isRequired && value === '' ? ERROR_MESSAGES.REQUIRED_FIELD : '', // Set helper text only if the field is required and value is empty
-      },
-    });
+  
+  const [branchOptions, setBranchOptions] = useState<BranchOption[]>([]);
+  const [selectedBranch, setSelectedBranch] = useState<BranchOption | null>(null);
+  const fetchBranchCodes = async (searchTerm = '', pageNumber = 1, pageSize = 10) => {
+    try {
+      const response = await GroupService.getBranchCodes(pageNumber, pageSize, searchTerm);
+      setBranchOptions(response.items); // Assuming API returns { items: [...] }
+    } catch (error) {
+      console.error('Error fetching branch codes', error);
+    }
   };
 
 
-  const handleSave = () => {
-    console.log('Data saved:', formData);
-    closeEditModal()
+  const handleBranchSearch = (event: React.ChangeEvent<{}>, value: string) => {
+    fetchBranchCodes(value, 1, 10);
   };
-
-  const closeEditModal = () => {
-    setFormData(initialFormData)
-    setOpenEditModal(false);
-
-  }
-
-  const handleOpenEditModal = () => {
-    setOpenEditModal(true)
-    setModalTitle('Edit Group')
-  }
-
-  const handleOpenDeleteModal = () => {
-    setOpenDeleteModal(true)
-    setModalTitle('Delete Group')
-  }
-
-  const handleConfirmDelete = () => {
-
-  }
-
 
   const [searchTerm, setSearchTerm] = useState<string>(pagedResult.searchTerm);
 
@@ -127,14 +97,14 @@ const GroupList: React.FC = () => {
     {
       label: 'Action',
       render: () => (
-        <Box sx={boxTheme.buttonBox}>
+        <Box sx={globalStyle.buttonBox}>
           <Tooltip title="Edit">
-            <IconButton color='primary' onClick={handleOpenEditModal}>
+            <IconButton color='primary' >
               <EditNoteTwoTone />
             </IconButton>
           </Tooltip>
           <Tooltip title="Delete">
-            <IconButton sx={boxTheme.buttonRed} onClick={handleOpenDeleteModal}>
+            <IconButton sx={globalStyle.buttonRed} >
               <DeleteTwoTone />
             </IconButton>
           </Tooltip>
@@ -158,21 +128,42 @@ const GroupList: React.FC = () => {
     pagedResult.pageNumber = 1;
   };
 
+  const handleOpenAddModal = () => {
+    setOpenAddModal(true);
+    setModalTitle('Add Group');
+  };
+
+  const handleCloseAddModal = () => {
+    setOpenAddModal(false);
+    setFormData({ code: '', name: '', area: '', division: '' });
+  };
+
+  const handleSave = () => {
+    console.log('Data saved:', formData);
+    handleCloseAddModal();
+  };
+
   return (
     <>
-      <Box sx={boxTheme.mainBox}>
-        <Typography variant="h6" component="h6" gutterBottom>
-          Groups
-        </Typography>
+
+
+      <Typography variant="h6" component="h6" gutterBottom>
+        Groups
+      </Typography>
+
+      <Box sx={globalStyle.mainBox}>
+        <Box sx={{ m: 1 }}>
+          <GlobalButton buttonAction="add" buttonName="Add Group" onClick={handleOpenAddModal} />
+        </Box>
 
         {/* Search input box with spacing */}
-        <Box sx={boxTheme.searchBox}>
+        <Box sx={globalStyle.searchBox}>
           {/* Search Input */}
           <TextField
             label="Search"
             variant="outlined"
             size="small"
-            sx={boxTheme.searchInput} // Make the input box flexible
+            sx={globalStyle.searchInput} // Make the input box flexible
             value={searchTerm}  // Controlled input
             onChange={handleSearchChange}  // Update search term as user types
           />
@@ -190,28 +181,17 @@ const GroupList: React.FC = () => {
         totalItems={pagedResult.totalCount}
       />
 
-      <EditDataModal
-        open={openEditModal}
-        handleClose={closeEditModal}
+      <GroupFormModal
+        open={openAddModal}
+        handleClose={handleCloseAddModal}
         title={modalTitle}
         formData={formData}
-        handleInputChange={handleInputChange}
         handleSave={handleSave}
-        requiredFields={REQUIRED_FIELDS}
+        setFormData={setFormData} 
       />
-
-
-
-
-      <CustomModal
-        open={openDeleteModal}
-        handleConfirm={handleConfirmDelete}
-        title={modalTitle}
-        handleClose={() => setOpenDeleteModal(false)}
-        buttonName='Delete'
-        content='Are you sure you want to delete this group?'
-      />
+     
     </>
+
   );
 };
 

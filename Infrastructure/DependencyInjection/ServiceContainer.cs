@@ -81,7 +81,7 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IExceptionsMgmtService, ExceptionsMgmtService>();
             services.AddScoped<ISubExceptionsService, SubExceptionsService>();
-
+            services.AddScoped<IAuditLogService, AuditLogService>();
 
             services.AddSingleton< UserClaimsService>();
             //services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();

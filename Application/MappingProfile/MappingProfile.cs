@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Models.DTOs.Common;
 using Application.Models.DTOs.Employee;
 using Application.Models.DTOs.ExceptionsMgmt;
 using Application.Models.DTOs.FBranch;
 using Application.Models.DTOs.Group;
-using Application.Models.DTOs.User;
+using Application.Models.DTOs.User.role;
+using Application.Models.DTOs.User.user;
 using AutoMapper;
 using Domain.FEntities;
 using Infrastructure.Entities;
@@ -28,9 +30,26 @@ namespace Application.MappingProfile
             CreateMap<BranchCodeTable, BranchCodeTableDTO>().ReverseMap();
 
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<UserCreateDTO, User>()
+                .ForMember(dest => dest.BranchAccesses, opt => opt.MapFrom(src =>
+                src.BranchAccesses.Select(ba => new BranchAccess
+                {
+                    BranchId = ba.BranchId,
+                    EmployeeId = src.EmployeeId,
+                    UsersLoginName = src.LoginName
+                })));
+            CreateMap<UserUpdateDTO, User>()
+                .ForMember(dest => dest.BranchAccesses, opt => opt.MapFrom(src => src.BranchAccessIds.Select(id => new BranchAccess { BranchId = id, EmployeeId = src.EmployeeId }).ToList()));
+
+
             CreateMap<Role, RoleDTO>().ReverseMap();
 
             CreateMap<ExceptionItem, ExceptionItemDTO>().ReverseMap();
+            CreateMap<PermissionLookup, PermissionLookupDTO>().ReverseMap();
+            CreateMap<RolePermission, RolePermissionDTO>().ReverseMap();
+
+            CreateMap<AuditLogsDTO, AuditLog>().ReverseMap();
+
         }
     }
 }
