@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import GroupService from '../../../services/groupService';
-import { PagedResult } from '../../../models/groupDTOs';
+import { BranchOption, GroupCreateDTO, PagedResult } from '../../../models/groupDTOs';
 import PaginationControls from '../../../components/Pagination/PaginationControls'
 import Table from '../../../components/Table/Table';
-import { Box, Typography, TextField, IconButton, Tooltip } from '@mui/material';
+import { Box, Typography, TextField, IconButton, Tooltip, Autocomplete } from '@mui/material';
 import EditNoteTwoTone from '@mui/icons-material/EditNoteTwoTone';
 import DeleteTwoTone from '@mui/icons-material/DeleteTwoTone';
 import { FormattedDate } from '../../../utils/formatDate';
@@ -13,8 +13,10 @@ import CustomModal from '../../../components/Modal/ConfirmationModal';
 import { ERROR_MESSAGES } from '../../../utils/constants';
 import { FormData } from '../../../models/formDTOs';
 import GlobalButton from '../../../components/Button/Button';
+import GroupFormModal from '../../../components/Modal/GroupFormModal';
 
 const GroupList: React.FC = () => {
+
 
   // Define state with proper initial structure
   const [pagedResult, setPagedResult] = useState<PagedResult>({
@@ -24,77 +26,32 @@ const GroupList: React.FC = () => {
     pageSize: 10,
     searchTerm: ''
   });
+
   const [modalTitle, setModalTitle] = useState('')
   const [openAddModal, setOpenAddModal] = useState(false)
-  const [openEditModal, setOpenEditModal] = useState(false)
-  const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [formData, setFormData] = useState<GroupCreateDTO>({
+    code: '',
+    name: '',
+    area: '',
+    division: '',
+  });
 
-  const initialFormData = {
-    code: { value: '', error: false, helperText: '' },
-    name: { value: '', error: false, helperText: '' },
-    area: { value: '', error: false, helperText: '' },
-    division: { value: '', error: false, helperText: '' },
-  };
-
-  const [formData, setFormData] = useState<FormData>(initialFormData);
-
-
-
-  const REQUIRED_FIELDS = ['code', 'name', 'area', 'division'];
-  const handleInputChange = (field: string, value: string) => {
-    const isRequired = REQUIRED_FIELDS.includes(field);
-
-    setFormData({
-      ...formData,
-      [field]: {
-        ...formData[field],
-        value: value,
-        error: isRequired && value === '', // Set error only if the field is required and value is empty
-        helperText: isRequired && value === '' ? ERROR_MESSAGES.REQUIRED_FIELD : '', // Set helper text only if the field is required and value is empty
-      },
-    });
+  
+  const [branchOptions, setBranchOptions] = useState<BranchOption[]>([]);
+  const [selectedBranch, setSelectedBranch] = useState<BranchOption | null>(null);
+  const fetchBranchCodes = async (searchTerm = '', pageNumber = 1, pageSize = 10) => {
+    try {
+      const response = await GroupService.getBranchCodes(pageNumber, pageSize, searchTerm);
+      setBranchOptions(response.items); // Assuming API returns { items: [...] }
+    } catch (error) {
+      console.error('Error fetching branch codes', error);
+    }
   };
 
 
-  const handleSave = () => {
-    console.log('Data saved:', formData);
-    closeEditModal()
+  const handleBranchSearch = (event: React.ChangeEvent<{}>, value: string) => {
+    fetchBranchCodes(value, 1, 10);
   };
-
-  const closeEditModal = () => {
-    setFormData(initialFormData)
-    setOpenEditModal(false);
-
-  }
-  const closeAddModal = () => {
-    setFormData(initialFormData)
-    setOpenEditModal(false);
-    setOpenAddModal(false);
-
-  }
-
-
-  const handleOpenEditModal = () => {
-    setOpenEditModal(true)
-    setModalTitle('Edit Group')
-  }
-
-
-
-  const handleOpenAddModal = () => {
-    setOpenAddModal(true)
-    setModalTitle('Add Group')
-  }
-
-  const handleOpenDeleteModal = () => {
-    setOpenDeleteModal(true)
-    setModalTitle('Delete Group')
-  }
-
-  const handleConfirmDelete = () => {
-
-  }
-
 
   const [searchTerm, setSearchTerm] = useState<string>(pagedResult.searchTerm);
 
@@ -142,12 +99,12 @@ const GroupList: React.FC = () => {
       render: () => (
         <Box sx={globalStyle.buttonBox}>
           <Tooltip title="Edit">
-            <IconButton color='primary' onClick={handleOpenEditModal}>
+            <IconButton color='primary' >
               <EditNoteTwoTone />
             </IconButton>
           </Tooltip>
           <Tooltip title="Delete">
-            <IconButton sx={globalStyle.buttonRed} onClick={handleOpenDeleteModal}>
+            <IconButton sx={globalStyle.buttonRed} >
               <DeleteTwoTone />
             </IconButton>
           </Tooltip>
@@ -169,6 +126,21 @@ const GroupList: React.FC = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     pagedResult.pageNumber = 1;
+  };
+
+  const handleOpenAddModal = () => {
+    setOpenAddModal(true);
+    setModalTitle('Add Group');
+  };
+
+  const handleCloseAddModal = () => {
+    setOpenAddModal(false);
+    setFormData({ code: '', name: '', area: '', division: '' });
+  };
+
+  const handleSave = () => {
+    console.log('Data saved:', formData);
+    handleCloseAddModal();
   };
 
   return (
@@ -209,36 +181,17 @@ const GroupList: React.FC = () => {
         totalItems={pagedResult.totalCount}
       />
 
-      <FormDataModal
+      <GroupFormModal
         open={openAddModal}
-        handleClose={closeAddModal}
+        handleClose={handleCloseAddModal}
         title={modalTitle}
         formData={formData}
-        handleInputChange={handleInputChange}
         handleSave={handleSave}
-        requiredFields={REQUIRED_FIELDS}
+        setFormData={setFormData} 
       />
-
-
-      <FormDataModal
-        open={openEditModal}
-        handleClose={closeEditModal}
-        title={modalTitle}
-        formData={formData}
-        handleInputChange={handleInputChange}
-        handleSave={handleSave}
-        requiredFields={REQUIRED_FIELDS}
-      />
-
-      <CustomModal
-        open={openDeleteModal}
-        handleConfirm={handleConfirmDelete}
-        title={modalTitle}
-        handleClose={() => setOpenDeleteModal(false)}
-        buttonName='Delete'
-        content='Are you sure you want to delete this group?'
-      />
+     
     </>
+
   );
 };
 

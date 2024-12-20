@@ -1,11 +1,12 @@
-﻿using Infrastructure.Entities;
+﻿using Application.Models.DTOs.User.role;
+using Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Models.DTOs.User
+namespace Application.Models.DTOs.User.user
 {
     public class UserUpdateDTO
     {

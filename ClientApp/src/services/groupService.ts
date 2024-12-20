@@ -28,7 +28,7 @@ const GroupService = {
     }
   },
 
-  async createGroup(groupCreateDto: GroupCreateDTO): Promise<void> {
+  async createGroup(groupCreateDto: GroupCreateDTO) {
     try {
       await apiClient.post('/groups/CreateGroup', groupCreateDto);
     } catch (error) {
@@ -36,7 +36,7 @@ const GroupService = {
     }
   },
 
-  async updateGroup(id: number, groupUpdateDto: GroupUpdateDTO): Promise<void> {
+  async updateGroup(id: number, groupUpdateDto: GroupUpdateDTO) {
     try {
       await apiClient.put(`/groups/UpdateGroup/${id}`, groupUpdateDto);
     } catch (error) {
@@ -44,9 +44,31 @@ const GroupService = {
     }
   },
 
-  async deleteGroup(id: number): Promise<void> {
+  async deleteGroup(id: number) {
     try {
       await apiClient.delete(`/groups/DeleteGroup/${id}`);
+    } catch (error) {
+      throw error;
+    }
+  },
+
+ 
+  
+  async getBranchCodes(pageNumber: number = 1, pageSize: number = 10, searchTerm: string = '') {
+    try {
+      const response = await apiClient.get('/BranchCode/GetPaginatedBranchCodes', {
+        params: {
+          pageNumber,
+          pageSize,
+          searchTerm,
+        },
+      });
+
+      if (response.data.success) {
+        return response.data.data; 
+      }
+
+      throw new Error(response.data.message || 'Failed to fetch branch codes.');
     } catch (error) {
       throw error;
     }

@@ -1,4 +1,5 @@
-﻿using Application.Models.DTOs.Employee;
+﻿using Application.Models.DTOs.Common;
+using Application.Models.DTOs.Employee;
 using Application.Models.DTOs.FBranch;
 using Application.Models.Responses;
 using Domain.FEntities;
@@ -14,5 +15,6 @@ namespace Application.Contracts.Services
     {
         Task<GenericResponse<List<BranchCodeTableDTO>>> GetAllAsync();
         Task<BranchCodeTable> GetByIdAsync(string? code);
+        Task<GenericResponse<PagedResult<BranchCodeTableDTO>>> GetPaginatedAsync(int? pageNumber, int? pageSize, string? searchTerm);
     }
 }

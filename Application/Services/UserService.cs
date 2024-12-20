@@ -2,7 +2,8 @@
 using Application.Contracts.Services;
 using Application.Models.DTOs.Common;
 using Application.Models.DTOs.Group;
-using Application.Models.DTOs.User;
+using Application.Models.DTOs.User.role;
+using Application.Models.DTOs.User.user;
 using Application.Models.Helpers;
 using Application.Models.Responses;
 using AutoMapper;
@@ -228,26 +229,7 @@ namespace Application.Services
 
             try
             {
-                // Fetch user with related branch accesses
-                var user = await _repository.GetUserWithBranchAccessesAsync(employeeId);
-
-                if (user == null)
-                    return ResponseHelper.ErrorResponse<object>("User not found.");
-
-                // Perform deletion
-                await _repository.DeleteUserAsync(user);
-
-                // Log audit details
-                //string branchIDs = AppendBranchIDs(user);
-                //var auditLog = new AuditLog
-                //{
-                //    Entity = "Users",
-                //    Action = "Delete",
-                //    Description = $"Deleted User ID - {user.LoginName} [Employee ID: {user.EmployeeId} | Full Name: {user.LastName}, {user.FirstName} {user.MiddleName} | Email: {user.Email} | Role ID: {user.RoleId} | Group ID: {branchIDs} | Remarks: {user.Remarks}]",
-                //    ActionBy = actionBy,
-                //    ActionDate = DateTime.UtcNow
-                //};
-                //await _auditLogService.SaveAuditLogAsync(auditLog);
+                await _repository.DeleteUserAsync(employeeId);
 
                 return ResponseHelper.SuccessResponse<object>(null, "User deleted successfully.");
             }

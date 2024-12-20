@@ -1,6 +1,5 @@
-
-﻿using Application.Models.DTOs.User;
-﻿using Application.Models.Responses;
+using Application.Models.DTOs.User.role;
+using Application.Models.Responses;
 using Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
@@ -21,8 +20,8 @@ namespace Application.Contracts.Repositories
         Task AddPermissionsAsync(AddPermissionRequest addPermissionRequest);
         Task<bool> IsUserExistingAsync(string username);
         Task UpdateUserAsync(User user, List<BranchAccess> updatedBranchAccesses, List<int> branchAccessIds);
-        Task DeleteUserAsync(User user);
+        Task DeleteUserAsync(string employeeId);
 
-        Task<User> GetUserWithBranchAccessesAsync(string employeeId);
+        //Task<User> GetUserWithBranchAccessesAsync(string employeeId);
     }
 }

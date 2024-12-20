@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Models.DTOs.User
+namespace Application.Models.DTOs.User.role
 {
     public class BranchAccessDTO
     {

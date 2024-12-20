@@ -58,7 +58,7 @@ namespace Infrastructure.Repositories
             return string.Join(",", user.BranchAccesses.Select(item => item.BranchId));
         }
 
-        // Example method to save logs
+        
         public async Task SaveLoginAuditLogAsync(User user, string loginName)
         {
             var branchIDs = AppendBranchIDs(user);

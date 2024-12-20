@@ -1,5 +1,5 @@
 ﻿using Application.Contracts.Repositories;
-using Application.Models.DTOs.User;
+using Application.Models.DTOs.User.role;
 using Application.Models.Helpers;
 using Application.Services.Application.Services;
 using Infrastructure.Entities;
@@ -167,35 +167,52 @@ namespace Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteUserAsync(User user)
+        public async Task DeleteUserAsync(string employeeId)
         {
             try
             {
-                var users = await _context.Users.Include(b => b.BranchAccesses).FirstOrDefaultAsync(m => m.EmployeeId == user.EmployeeId);
+
+                var users = await _context.Users.Include(b => b.BranchAccesses).FirstOrDefaultAsync(m => m.EmployeeId == employeeId);
+
                 _context.Users.Remove(users);
                 await _context.SaveChangesAsync();
-
+                string branchIDs = AppendBranchIDs(users);
 
                 AuditLog auditlogs = _auditlogs.SaveLog("Users",
                         "Delete",
-                        string.Format("Deleted User ID - {0} [Employee ID: {1} | Full Name: {2}, {3} {4} | Email: {5} | Role ID: {6} | Group ID: {7} | Remarks: {8}]", users.LoginName, users.EmployeeId, users.LastName, users.FirstName, users.MiddleName, users.Email, users.RoleId, users.BranchAccesses, users.Remarks),
+                        string.Format("Deleted User ID - {0} [Employee ID: {1} | Full Name: {2}, {3} {4} | Email: {5} | Role ID: {6} | Group ID: {7} | Remarks: {8}]", users.LoginName, users.EmployeeId, users.LastName, users.FirstName, users.MiddleName, users.Email, users.RoleId, branchIDs, users.Remarks),
                         UserLoginName);
                 _context.Add(auditlogs);
                 await _context.SaveChangesAsync();
 
             }
-            catch { 
-            
+            catch (Exception ex){
+                return;
             }
         }
 
-        public async Task<User> GetUserWithBranchAccessesAsync(string employeeId)
+        //public async Task<User> GetUserWithBranchAccessesAsync(string employeeId
+        //{
+             
+        //    return await _context.Users
+        //        .Include(u => u.BranchAccesses)
+        //        .FirstOrDefaultAsync(u => u.EmployeeId == employeeId); 
+        //}
+
+        private static string AppendBranchIDs(User user)
         {
-            var entity = await _context.Users
-                .Include(u => u.BranchAccesses)
-                .FirstOrDefaultAsync(u => u.EmployeeId == employeeId);
-            return entity;
+            string branchIDs = string.Empty;
+            foreach (var item in user.BranchAccesses)
+            {
+                if (branchIDs != string.Empty)
+                    branchIDs += ("," + item.BranchId);
+                else
+                    branchIDs += item.BranchId;
+            }
+
+            return branchIDs;
         }
+
     }
 
 }

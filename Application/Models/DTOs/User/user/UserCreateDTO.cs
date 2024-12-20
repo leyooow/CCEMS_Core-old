@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Models.DTOs.User
+namespace Application.Models.DTOs.User.user
 {
     public class UserCreateDTO
     {
@@ -19,6 +19,6 @@ namespace Application.Models.DTOs.User
         public DateTime CreatedDate { get; set; }
         public int RoleId { get; set; }
         public ICollection<BranchAccess> BranchAccesses { get; set; } = new List<BranchAccess>();
-        public virtual Role Role { get; set; } = null!;
+        //public virtual Role Role { get; set; } = null!;
     }
 }
