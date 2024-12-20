@@ -13,5 +13,6 @@ namespace Application.Contracts.Repositories
         Task UpdateUserAsync(User user);
 
         Task SaveLoginAuditLogAsync(User user, string loginName);
+        Task LogOutAsync();
     }
 }

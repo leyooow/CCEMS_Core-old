@@ -1,17 +1,16 @@
 ﻿using Application.Contracts.Repositories;
+using Application.Models.DTOs.User.role;
 using Application.Models.Helpers;
-using Application.Models.Responses;
 using Application.Services.Application.Services;
 using Infrastructure.Entities;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System.Security.AccessControl;
+
 using System;
 using Microsoft.AspNetCore.Mvc;
 using System.DirectoryServices.AccountManagement;
 using Application.Models.DTOs.User.role;
+
 
 
 namespace Infrastructure.Repositories
@@ -173,6 +172,53 @@ namespace Infrastructure.Repositories
             await _context.AddAsync(auditLog);
             await _context.SaveChangesAsync();
         }
+
+        public async Task DeleteUserAsync(string employeeId)
+        {
+            try
+            {
+
+                var users = await _context.Users.Include(b => b.BranchAccesses).FirstOrDefaultAsync(m => m.EmployeeId == employeeId);
+
+                _context.Users.Remove(users);
+                await _context.SaveChangesAsync();
+                string branchIDs = AppendBranchIDs(users);
+
+                AuditLog auditlogs = _auditlogs.SaveLog("Users",
+                        "Delete",
+                        string.Format("Deleted User ID - {0} [Employee ID: {1} | Full Name: {2}, {3} {4} | Email: {5} | Role ID: {6} | Group ID: {7} | Remarks: {8}]", users.LoginName, users.EmployeeId, users.LastName, users.FirstName, users.MiddleName, users.Email, users.RoleId, branchIDs, users.Remarks),
+                        UserLoginName);
+                _context.Add(auditlogs);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception ex){
+                return;
+            }
+        }
+
+        //public async Task<User> GetUserWithBranchAccessesAsync(string employeeId
+        //{
+             
+        //    return await _context.Users
+        //        .Include(u => u.BranchAccesses)
+        //        .FirstOrDefaultAsync(u => u.EmployeeId == employeeId); 
+        //}
+
+        private static string AppendBranchIDs(User user)
+        {
+            string branchIDs = string.Empty;
+            foreach (var item in user.BranchAccesses)
+            {
+                if (branchIDs != string.Empty)
+                    branchIDs += ("," + item.BranchId);
+                else
+                    branchIDs += item.BranchId;
+            }
+
+            return branchIDs;
+        }
+
     }
 
 }

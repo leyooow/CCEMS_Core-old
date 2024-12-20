@@ -95,5 +95,11 @@ namespace API.Controllers
             return Ok(response);
         }
 
+        [HttpDelete("DeleteUser/{employeeId}")]
+        public async Task<IActionResult> DeleteUser(string employeeId)
+        {
+            var response = await _userService.DeleteUserAsync(employeeId);
+            return Ok(response);
+        }
     }
 }

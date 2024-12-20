@@ -38,4 +38,6 @@ export interface GroupUpdateDTO {
 export interface BranchOption {
   brCode: string;
   brName: string;
+
 }
+

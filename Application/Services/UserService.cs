@@ -222,6 +222,21 @@ namespace Application.Services
             }
         }
 
+        public async Task<GenericResponse<object>> DeleteUserAsync(string employeeId)
+        {
+            if (string.IsNullOrWhiteSpace(employeeId))
+                return ResponseHelper.ErrorResponse<object>("Employee ID cannot be null or empty.");
 
+            try
+            {
+                await _repository.DeleteUserAsync(employeeId);
+
+                return ResponseHelper.SuccessResponse<object>(null, "User deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper.ErrorResponse<object>($"An error occurred while deleting the user: {ex.Message}");
+            }
+        }
     }
 }

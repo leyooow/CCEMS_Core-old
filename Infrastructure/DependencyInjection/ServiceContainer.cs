@@ -4,6 +4,7 @@ using Application.Models.Helpers;
 using Application.Services;
 using Application.Services.Application.Services;
 using Infrastructure.Entities;
+using Infrastructure.Helpers;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
@@ -70,18 +71,36 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IAuditLogRepository, AuditLogRepository>();
             services.AddScoped<IBranchCodeRepository, BranchCodeRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
+            services.AddScoped<IReportDetailsRepository, ReportDetailsRepository>();
+            services.AddScoped<IReportBranchReplyRepository, ReportBranchReplyRepository>();
+            services.AddScoped<IReportGenerateRepository, ReportGenerateRepository>();
+            services.AddScoped<IExceptionsMgmtRepository, ExceptionsMgmtRepository>();
+            services.AddScoped<ISubExceptionsRepository, SubExceptionsRepository>();
+
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IBranchCodeService, BranchCodeService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IReportDetailsService, ReportDetailsService>();
+            services.AddScoped<IReportBranchReplyService, ReportBranchReplyService>();
+            services.AddScoped<IReportGenerateService, ReportGenerateService>();
+            services.AddScoped<IExceptionsMgmtService, ExceptionsMgmtService>();
+            services.AddScoped<ISubExceptionsService, SubExceptionsService>();
+            services.AddScoped<IAuditLogService, AuditLogService>();
 
             services.AddSingleton< UserClaimsService>();
+
+            services.AddScoped<EPPlusPackages>();
+            services.AddScoped<Notification>();
+            services.AddScoped<Utilities>();
             //services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
             //services.AddScoped<IReportsRepository, ReportsRepository>();
             //services.AddScoped<IUserRepository, UserRepository>();
-            
+
             services.AddHttpContextAccessor();
             //services.AddSingleton<UserClaimsGetter>();
 

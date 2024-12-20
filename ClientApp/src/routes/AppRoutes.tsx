@@ -5,7 +5,6 @@ import CreateUserAccess from '../pages/User Management/Create User Access/Create
 import ManageRoles from '../pages/User Management/Manage Roles/ManageRoles';
 import EmployeeMaintenance from '../pages/User Management/Employee Maintenance/EmployeeMaintenance';
 import GroupManagementDashboard from '../pages/Group Management/Dashboard/Dashboard.tsx';
-import CreateGroup from '../pages/Group Management/Create Group/CreateGroup';
 import AuditLogs from '../pages/Generate Report/Audit Logs/AuditLogs';
 import UserList from '../pages/Generate Report/User List/UserList';
 import GroupList from '../pages/Generate Report/Group List/GroupList';
@@ -35,7 +34,7 @@ const AppRoutes: React.FC = () => (
     {/* Group Management Routes */}
     <Route path="/GroupManagement" element={<GroupManagementDashboard />} />
     <Route path="/GroupManagement/Dashboard" element={<GroupManagementDashboard />} />
-    <Route path="/GroupManagement/CreateGroup" element={<CreateGroup />} />
+    {/* <Route path="/GroupManagement/CreateGroup" element={<CreateGroup />} /> */}
 
     {/* Generate Report Routes */}
     <Route path="/GenerateReport" element={<AuditLogs />} />
