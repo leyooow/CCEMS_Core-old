@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import GroupService from '../../../services/groupService';
-import { GroupCreateDTO, PagedResult } from '../../../models/groupDTOs';
+import { BranchOption, GroupCreateDTO, PagedResult } from '../../../models/groupDTOs';
 import PaginationControls from '../../../components/Pagination/PaginationControls'
 import Table from '../../../components/Table/Table';
-import { Box, Typography, TextField, IconButton, Tooltip } from '@mui/material';
+import { Box, Typography, TextField, IconButton, Tooltip, Autocomplete } from '@mui/material';
 import EditNoteTwoTone from '@mui/icons-material/EditNoteTwoTone';
 import DeleteTwoTone from '@mui/icons-material/DeleteTwoTone';
 import { FormattedDate } from '../../../utils/formatDate';
 import { globalStyle } from '../../../styles/theme';
+import FormDataModal from '../../../components/Modal/FormModal';
+import CustomModal from '../../../components/Modal/ConfirmationModal';
+import { ERROR_MESSAGES } from '../../../utils/constants';
+import { FormData } from '../../../models/formDTOs';
 import GlobalButton from '../../../components/Button/Button';
 import GroupFormModal from '../../../components/Modal/GroupFormModal';
  
 const GroupList: React.FC = () => {
-<<<<<<< Updated upstream
  
  
-=======
-
->>>>>>> Stashed changes
   // Define state with proper initial structure
   const [pagedResult, setPagedResult] = useState<PagedResult>({
     items: [],
@@ -35,7 +35,6 @@ const GroupList: React.FC = () => {
     area: '',
     division: '',
   });
-<<<<<<< Updated upstream
  
  
   const [branchOptions, setBranchOptions] = useState<BranchOption[]>([]);
@@ -54,9 +53,6 @@ const GroupList: React.FC = () => {
     fetchBranchCodes(value, 1, 10);
   };
  
-=======
-
->>>>>>> Stashed changes
   const [searchTerm, setSearchTerm] = useState<string>(pagedResult.searchTerm);
  
   const fetchGroups = async () => {
@@ -67,11 +63,8 @@ const GroupList: React.FC = () => {
         searchTerm
       );
       setPagedResult(result.data.data);
-<<<<<<< Updated upstream
  
       // console.log(result);
-=======
->>>>>>> Stashed changes
     } catch (error) {
       console.error("Error fetching groups", error);
     }
@@ -93,11 +86,12 @@ const GroupList: React.FC = () => {
       ),
     },
     {
-      label: 'Date Modified',
+      label: 'Date Modifiedd',
       render: (data: any) => (
         FormattedDate(data.dateModified)
       ),
     },
+    // { label: 'Created By', accessor: 'createdBy' },
     { label: 'Area', accessor: 'area' },
     { label: 'Division', accessor: 'division' },
     {
@@ -131,11 +125,7 @@ const GroupList: React.FC = () => {
   // Handle search input change
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    setPagedResult({
-      ...pagedResult,
-      pageNumber: 1,
-      searchTerm: e.target.value,
-    });
+    pagedResult.pageNumber = 1;
   };
  
   const handleOpenAddModal = () => {
@@ -155,11 +145,8 @@ const GroupList: React.FC = () => {
  
   return (
     <>
-<<<<<<< Updated upstream
  
  
-=======
->>>>>>> Stashed changes
       <Typography variant="h6" component="h6" gutterBottom>
         Groups
       </Typography>
@@ -202,15 +189,10 @@ const GroupList: React.FC = () => {
         handleSave={handleSave}
         setFormData={setFormData}
       />
+     
     </>
-<<<<<<< Updated upstream
  
   );
 };
  
-=======
-  );
-};
-
->>>>>>> Stashed changes
 export default GroupList;
