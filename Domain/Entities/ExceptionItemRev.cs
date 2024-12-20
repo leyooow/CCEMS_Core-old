@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Infrastructure.Entities;
 
@@ -86,4 +87,6 @@ public partial class ExceptionItemRev
     public virtual MonetaryRev? MonetaryRevs { get; set; }
 
     public virtual NonMonetaryRev? NonMonetaryRevs { get; set; }
+    [NotMapped]
+    public ICollection<ActionPlan>  ActionPlans { get; set; }
 }

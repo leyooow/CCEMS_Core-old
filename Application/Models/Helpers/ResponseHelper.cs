@@ -13,6 +13,10 @@ namespace Application.Models.Helpers
         {
             return new GenericResponse<T>(true, message, 200, data);
         }
+        public static GenericResponse<T> SuccessResponse<T>(string message = "Operation successful")
+        {
+            return new GenericResponse<T>(true, message, 200, default);
+        }
 
         public static GenericResponse<T> ErrorResponse<T>(string message, int statusCode = 400)
         {
