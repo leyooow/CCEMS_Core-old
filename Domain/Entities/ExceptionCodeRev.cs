@@ -41,7 +41,7 @@ public partial class ExceptionCodeRev
 
     public string? ApprovalRemarks { get; set; }
 
-    public DateTime? TaggingDate { get; set; }
+    public DateTime TaggingDate { get; set; }
 
     public virtual ExceptionItemRev? ExItem { get; set; }
 }

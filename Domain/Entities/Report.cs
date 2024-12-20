@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Infrastructure.Entities;
 
@@ -44,4 +45,8 @@ public partial class Report
     public string? ApprovalRemarks { get; set; }
 
     public virtual ICollection<ReportContent> ReportContents { get; set; } = new List<ReportContent>();
+    [NotMapped]
+    public List<string> ToList { get; set; }
+    [NotMapped]
+    public List<string> CCList { get; set; }
 }

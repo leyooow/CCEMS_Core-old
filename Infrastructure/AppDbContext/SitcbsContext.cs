@@ -10,6 +10,7 @@ public partial class SitcbsContext : DbContext
 
     
     public virtual DbSet<BranchCodeTable> BranchCodeTables { get; set; }
+    public virtual DbSet<holiday_mast_table> holiday_mast_tables { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -44,6 +45,15 @@ public partial class SitcbsContext : DbContext
 
 
             // Add more configurations for other columns as needed
+        });
+        modelBuilder.Entity<holiday_mast_table>(entity =>
+        {
+            entity.ToTable("holiday_mast_table", "tbaadm");
+
+            // Map properties if needed, e.g.:
+            entity.Property(e => e.CalB2kId)
+                .HasMaxLength(12)
+                .IsRequired(); // Adjust constraints as per your schema.
         });
 
         //modelBuilder.Entity<BranchCodeTable>(entity =>
