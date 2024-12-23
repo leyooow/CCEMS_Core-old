@@ -1,6 +1,10 @@
 export interface GroupDTO {
   id: number;
+<<<<<<< Updated upstream
   code: number;
+=======
+  code?: number;
+>>>>>>> Stashed changes
   name: string;
   description?: string;
   dateCreated: Date;

@@ -17,7 +17,7 @@ interface ModalProps {
   handleClose: () => void;
   title: string;
   formData: FormData;
-  setFormData: React.Dispatch<React.SetStateAction<FormData>>; // <-- Add this line for correct typing
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>;
   handleSave: () => void;
 }
 
@@ -40,7 +40,7 @@ const GroupFormModal: React.FC<ModalProps> = ({ open, handleClose, title, formDa
     }
   };
 
-  const handleBranchSearch = (event: React.ChangeEvent<{}>, value: string) => {
+  const handleBranchSearch = (_: React.ChangeEvent<{}>, value: string) => {
     fetchBranchCodes(value);
   };
 
@@ -63,13 +63,19 @@ const GroupFormModal: React.FC<ModalProps> = ({ open, handleClose, title, formDa
     return Object.keys(tempErrors).length === 0;
   };
 
-  const handleBranchChange = (event: any, value: BranchOption | null) => {
+  const handleBranchChange = (_: any, value: BranchOption | null) => {
     if (value) {
       setFormData((prevData: FormData) => ({
         ...prevData,
         code: value.brCode, // Set the branch code
         name: value.brName, // Set the branch name directly here
       }));
+    }
+  };
+
+  const handleSaveWithValidation = () => {
+    if (validate()) {
+      handleSave();
     }
   };
 
@@ -145,7 +151,7 @@ const GroupFormModal: React.FC<ModalProps> = ({ open, handleClose, title, formDa
           <Button variant="outlined" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="contained" color="primary" onClick={handleSave}>
+          <Button variant="contained" color="primary" onClick={handleSaveWithValidation}>
             Save
           </Button>
         </Box>

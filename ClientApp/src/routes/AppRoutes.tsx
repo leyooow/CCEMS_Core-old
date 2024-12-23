@@ -9,6 +9,8 @@ import AuditLogs from '../pages/Generate Report/Audit Logs/AuditLogs';
 import UserList from '../pages/Generate Report/User List/UserList';
 import GroupList from '../pages/Generate Report/Group List/GroupList';
 import ExceptionManagementDashboard from '../pages/Exception Management/Dashboard/Dashboard';
+import AddException from '../pages/Exception Management/AddException/AddException';
+import ViewExceptionDetails from '../pages/Exception Management/ViewExceptionDetails/ViewExceptionDetails';
 import ForApprovalException from '../pages/Exception Management/For Approval (Exception)/ForApprovalException';
 import ForApprovalSubException from '../pages/Exception Management/For Approval (Sub-Exception)/ForApprovalSubException';
 import ReportManagementDashboard from '../pages/Reports Management/Dashboard/Dashboard';
@@ -45,6 +47,8 @@ const AppRoutes: React.FC = () => (
     {/* Exceptions Management Routes */}
     <Route path="/ExceptionsManagement" element={<ExceptionManagementDashboard />} />
     <Route path="/ExceptionsManagement/Dashboard" element={<ExceptionManagementDashboard />} />
+    <Route path="/ExceptionsManagement/Details/:refNo" element={<ViewExceptionDetails />} />
+    <Route path="/ExceptionsManagement/AddException" element={<AddException />} />
     <Route path="/ExceptionsManagement/ForApprovalExceptions" element={<ForApprovalException />} />
     <Route path="/ExceptionsManagement/ForApprovalSubExceptions" element={<ForApprovalSubException />} />
 
