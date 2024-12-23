@@ -98,14 +98,14 @@ namespace Infrastructure.Repositories
             try
             {
                 var obj = new ExceptionViewDTO();
-                obj.HasPendingUpdate = false;
+                //obj.HasPendingUpdate = false;
                 if (id != null)
                 {
                     string type = string.Empty;
 
                     var exceptionItem = new ExceptionItem();
-                    var exceptionItemRevs = new ExceptionItemRevsDTO();
-                    ICollection<ExceptionCodeRevsDTO> exCodeRevsCollection = new List<ExceptionCodeRevsDTO>();
+                    //var exceptionItemRevs = new ExceptionItemRevsDTO();
+                    //ICollection<ExceptionCodeRevsDTO> exCodeRevsCollection = new List<ExceptionCodeRevsDTO>();
                     TransactionTypeEnumDTO tranType = new TransactionTypeEnumDTO();
 
                     exceptionItem = await _context.ExceptionItems
@@ -162,19 +162,19 @@ namespace Infrastructure.Repositories
                         subExceptionList.Add(subException);
 
                     }
-                    obj.SubExceptionItems = subExceptionList;
+                    //obj.SubExceptionItems = subExceptionList;
 
-                    obj.HasPendingUpdate = subExceptionList.Any(s => s.ApprovalStatus == ApprovalStatusDTO.PendingApproval);
+                    //obj.HasPendingUpdate = subExceptionList.Any(s => s.ApprovalStatus == ApprovalStatusDTO.PendingApproval);
 
                     //var revs = _context.ExceptionItemRevs.LastOrDefault(s => s.RefNo == id && !s.IsProcessed);
-                    var revs = _context.ExceptionItemRevs
-                               .Where(s => s.RefNo == id && !s.IsProcessed)
-                               .OrderByDescending(s => s.Id)
-                               .LastOrDefault();
-                    if (revs != null)
-                    {
-                        obj.Request = revs.Changes;
-                    }
+                    //var revs = _context.ExceptionItemRevs
+                    //           .Where(s => s.RefNo == id && !s.IsProcessed)
+                    //           .OrderByDescending(s => s.Id)
+                    //           .LastOrDefault();
+                    //if (revs != null)
+                    //{
+                    //    obj.Request = revs.Changes;
+                    //}
 
                     PopulateRiskClassificationDropDownList(exceptionItem.RiskClassificationId);
                     PopulateDeviationCategoryDropDownList(exceptionItem.DeviationCategoryId);

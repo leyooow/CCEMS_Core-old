@@ -32,3 +32,17 @@ export interface ExceptionDTO {
     approvalRemarks: string,
     otherRemarks: string
   }
+
+export interface SubExceptionsListViewDTO {
+  id: number;
+  subReferenceNo: string;
+  exItemRefNo: string;
+  dateCreated: string;
+  approvalStatus: number;
+  deviationStatus: number;
+  exCode: number;
+  exCodeDescription: string;
+  deviationCategory: string;
+  riskClassification: string;
+  request: string | null;
+}
