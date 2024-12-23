@@ -3,9 +3,11 @@
 import apiClient from "./apiClient"; // Assuming apiClient.ts handles base configurations like axios instance
 import {
   GroupCreateDTO,
+  GroupDTO,
   GroupUpdateDTO,
   PagedResult,
 } from "../models/groupDTOs"; // Update with actual DTO paths
+import { Id } from "react-toastify";
 
 const GroupService = {
   async getAllGroups() {
@@ -61,6 +63,15 @@ const GroupService = {
       return response.data;
     } catch (error) {
       throw error;
+    }
+  },
+
+  async getBranchDetails(branchIds: string[]) {
+    try {
+      const response = await apiClient.get(`/groups/GetBranchDetails?branchIds=${branchIds.join(',')}`);
+      return response.data;
+    } catch (error: any) {
+      throw new Error(`Failed to fetch branch details: ${error.message}`);
     }
   },
 

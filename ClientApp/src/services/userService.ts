@@ -1,3 +1,5 @@
+import { UpdatePayload } from 'vite/types/hmrPayload.js';
+import { UserCreateDto, UserDTO, UserUpdateDto } from '../models/userManagementDTOs';
 import apiClient from './apiClient';
 
 const userService = {
@@ -42,7 +44,7 @@ const userService = {
   },
 
   async GetUserById(userId: number) {
-    const response = await apiClient.post(`/User/GetUserById/${userId}`, {
+    const response = await apiClient.get(`/User/GetUserById/${userId}`, {
     });
     return response.data;
   },
@@ -54,13 +56,13 @@ const userService = {
   },
 
   async UpdateUser(UserData: any) {
-    const response = await apiClient.post(`/User/UpdateUser/`, UserData, {
+    const response = await apiClient.put(`/User/UpdateUser/`, UserData, {
     });
     return response.data;
   },
 
-  async checkUserAD(username: any) {
-    const response = await apiClient.post(`/User/CheckAdUsername/${username}`, {
+  async checkUserAD(loginName: any) {
+    const response = await apiClient.get(`/User/CheckAdUsername/${loginName}`, {
     });
     return response.data;
   },

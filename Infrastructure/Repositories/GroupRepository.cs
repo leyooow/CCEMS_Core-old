@@ -123,6 +123,11 @@ namespace Infrastructure.Repositories
             return await base.GetByIdAsync(id);
         }
 
+        public async Task<Group?> GetGroupByCode(string? code)
+        {
+            return await _context.Groups.Where(g => g.Code == code).FirstOrDefaultAsync();
+        }
+
         public async Task<int> GetTotalCountAsync(string? searchTerm)
         {
 

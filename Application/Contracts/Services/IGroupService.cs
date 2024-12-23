@@ -15,6 +15,7 @@ namespace Application.Contracts.Services
         Task<GenericResponse<List<GroupDTO>>> GetAllAsync();
         Task<GenericResponse<PagedResult<GroupDTO>>> GetPaginatedAsync(int? pageNumber, int? pageSize, string? searchTerm);
         Task<GenericResponse<GroupDTO?>> GetGroupByIdAsync(int id);
+        Task<List<GroupDTO>> GetBranchDetailsAsync(IEnumerable<string> branchIds);
         Task<GenericResponse<object>> AddGroupAsync(GroupCreateDTO groupCreateDto);
         Task<GenericResponse<object>> UpdateGroupAsync(GroupUpdateDTO groupUpdateDto);
         Task<GenericResponse<object>> DeleteGroupAsync(int id);

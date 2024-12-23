@@ -12,5 +12,6 @@ namespace Application.Contracts.Repositories
     {
         Task<List<Group>> GetPaginatedAsync(int? pageNumber, int? pageSize, string? searchTerm);
         Task<bool> CheckExistingGroupNameAsync(string? name);
+        Task<Group?> GetGroupByCode(string? code);
     }
 }

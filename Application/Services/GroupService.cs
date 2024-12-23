@@ -32,6 +32,7 @@ namespace Application.Services
            return ResponseHelper.SuccessResponse(groupDtos,"Groups retrieved succesfully.");
         }        
 
+
         public async Task<GenericResponse<PagedResult<GroupDTO>>> GetPaginatedAsync(int? pageNumber, int? pageSize, string? searchTerm)
         {
             try
@@ -73,6 +74,40 @@ namespace Application.Services
                 return ResponseHelper.ErrorResponse<GroupDTO?>("An error occurred while retrieving the group.");
             }
 
+        }
+
+        public async Task<GenericResponse<GroupDTO?>> GetGroupByCodeAsync(string code)
+        {
+            try
+            {
+                var group = await _repository.GetGroupByCode(code);
+                var mapgroup = group == null ? null : _mapper.Map<GroupDTO>(group);
+
+                return ResponseHelper.SuccessResponse(mapgroup, "Group retrieved successfully");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper.ErrorResponse<GroupDTO?>("An error occurred while retrieving the group.");
+            }
+
+        }
+
+
+
+        public async Task<List<GroupDTO>> GetBranchDetailsAsync(IEnumerable<string> branchCodes)
+        {
+            var branchDetails = new List<GroupDTO>();
+
+            foreach (var code in branchCodes)
+            {
+                var response = await GetGroupByCodeAsync(code);
+                if (response.Success && response.Data != null)
+                {
+                    branchDetails.Add(response.Data);
+                }
+            }
+
+            return branchDetails;
         }
 
         public async Task<GenericResponse<object>> AddGroupAsync(GroupCreateDTO groupCreateDto)

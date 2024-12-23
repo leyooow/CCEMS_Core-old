@@ -61,7 +61,10 @@ namespace Infrastructure.Repositories
         }
         public async Task<User?> GetUserByIdAsync(string? id)
         {
-            var entity = await _context.Users.Where(x => x.EmployeeId == id).FirstOrDefaultAsync();
+            var entity = await _context.Users
+                .Include(x => x.BranchAccesses)
+                .Where(x => x.EmployeeId == id)
+                .FirstOrDefaultAsync();
 
             return entity;
         }

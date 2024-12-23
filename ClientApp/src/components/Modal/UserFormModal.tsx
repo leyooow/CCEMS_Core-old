@@ -15,20 +15,21 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { ERROR_MESSAGES } from "../../utils/constants";
 import { GroupDTO } from "../../models/groupDTOs";
-import { BranchAccessDTO } from "../../models/userMaintenanceDTOs";
+import { BranchAccessDTO } from "../../models/userManagementDTOs";
 import { RoleDTO } from "../../models/RoleDTOs";
+import userService from "../../services/userService";
 
 // Types and Interfaces
 interface UserFormProps {
   formData: {
-    userName: string;
+    loginName: string;
     employeeId: string;
     lastName: string;
     firstName: string;
     middleName: string;
     email: string;
     roleId: number;
-    branchAccess: BranchAccessDTO[];
+    branchAccesses: BranchAccessDTO[];
   };
   onChange: (e: any) => void;
   onBranchChange: (e: any, value: GroupDTO[]) => void;
@@ -38,7 +39,7 @@ interface UserFormProps {
   selectedBranches: GroupDTO[];
   onCancel: () => void;
   isEditMode?: boolean;
-  userData?: any;
+  // userData?: any;
 }
 
 const UserFormModal: React.FC<UserFormProps> = ({
@@ -51,49 +52,76 @@ const UserFormModal: React.FC<UserFormProps> = ({
   selectedBranches,
   onCancel,
   isEditMode = false,
-  userData,
+  // userData,
 }) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    if (isEditMode && userData) {
-      // Map userData to formData fields
-      onChange({ target: { name: "loginName", value: userData.userName } });
-      onChange({ target: { name: "employeeId", value: userData.employeeId } });
-      onChange({ target: { name: "lastName", value: userData.lastName } });
-      onChange({ target: { name: "firstName", value: userData.firstName } });
-      onChange({ target: { name: "middleInitial", value: userData.middleInitial } });
-      onChange({ target: { name: "email", value: userData.email } });
-      onChange({ target: { name: "roleId", value: userData.userRole } });
-      onBranchChange(event, userData.branchAccess || []);
+    if (isEditMode && formData) {
+      // Map formData to formData fields
+      onChange({ target: { name: "loginName", value: formData.loginName } });
+      onChange({ target: { name: "employeeId", value: formData.employeeId } });
+      onChange({ target: { name: "lastName", value: formData.lastName } });
+      onChange({ target: { name: "firstName", value: formData.firstName } });
+      onChange({ target: { name: "middleInitial", value: formData.middleName } });
+      onChange({ target: { name: "email", value: formData.email } });
+      onChange({ target: { name: "roleId", value: formData.roleId } });
+      // onBranchChange(event, formData.branchAccesses || []);
     }
-  }, [isEditMode, userData, onChange, onBranchChange]);
+  }, [isEditMode, formData, onChange, onBranchChange]);
 
-  const validate = () => {
+  const checkUserAD = async (loginName: string): Promise<boolean> => {
+    try {
+      const result = await userService.checkUserAD(loginName);
+      return result.success ? true : false;
+      
+    } catch (error) {
+      console.error("Error checking AD User:", error);
+      return false; // Return false if an error occurs
+    }
+  };
+  
+
+  const validate = async ()  => {
+
+
     let tempErrors: Record<string, string> = {};
 
     // console.log(formData.branchAccess.length)
+    // if (!checkUserAD) tempErrors.loginName = "Invalid AD User";
 
-    if (!formData.userName) tempErrors.loginName = ERROR_MESSAGES.REQUIRED_FIELD;
+    if (!formData.loginName) {
+      tempErrors.loginName = ERROR_MESSAGES.REQUIRED_FIELD;
+    } else {
+      try {
+        const isValidUser = await checkUserAD(formData.loginName);
+        if (!isValidUser) tempErrors.loginName = "Invalid AD User";
+      } catch (error) {
+        tempErrors.loginName = "Error validating AD User.";
+      }
+    }
+  
+    if (!formData.loginName) tempErrors.loginName = ERROR_MESSAGES.REQUIRED_FIELD;
     if (!formData.employeeId) tempErrors.employeeId = ERROR_MESSAGES.REQUIRED_FIELD;
     if (!formData.lastName) tempErrors.lastName = ERROR_MESSAGES.REQUIRED_FIELD;
     if (!formData.firstName) tempErrors.firstName = ERROR_MESSAGES.REQUIRED_FIELD;
     if (!formData.email) tempErrors.email = ERROR_MESSAGES.REQUIRED_FIELD;
     else if (!/^[^@]+@[^@]+\.[^@]+$/.test(formData.email)) tempErrors.email = "Invalid email format.";
-    if (!formData.roleId) tempErrors.userRole = "User Role is required.";
+    if (!formData.roleId) tempErrors.roleId = "User Role is required.";
     if (selectedBranches.length == 0) tempErrors.branches = "Branches are required.";
 
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validate()) {
+    const isValid = await validate(); // Await the asynchronous validate function
+    if (isValid) {
       handleSubmit(e);
     }
   };
-
+  
   return (
     <Box sx={{ pt: 2, pr: 4, pb: 2 }}>
       <DialogTitle
@@ -113,8 +141,8 @@ const UserFormModal: React.FC<UserFormProps> = ({
                 label="Username"
                 variant="outlined"
                 fullWidth
-                name="userName"
-                value={formData.userName}
+                name="loginName"
+                value={formData.loginName}
                 onChange={onChange}
                 placeholder="BOC Active Directory"
                 required
@@ -191,12 +219,12 @@ const UserFormModal: React.FC<UserFormProps> = ({
                 label="User Role"
                 variant="outlined"
                 fullWidth
-                name="userRole"
+                name="roleId"
                 value={formData.roleId}
                 onChange={onChange}
                 required
-                error={!!errors.userRole}
-                helperText={errors.userRole}
+                error={!!errors.roleId}
+                helperText={errors.roleId}
               >
                 {rolesOptions.map((role, index) => (
                   <MenuItem key={index} value={role.id}>

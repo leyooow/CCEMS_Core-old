@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class GroupsController : ControllerBase
@@ -42,6 +42,22 @@ namespace WebAPI.Controllers
             var response = await _groupService.GetGroupByIdAsync(id);
             return Ok(response);
 
+        }
+
+        [HttpGet("GetBranchDetails")]
+        public async Task<IActionResult> GetBranchDetailsAsync([FromQuery] string? branchIds = "")
+        {
+            try
+            {
+                var branchIdsList = branchIds?.Split(','); // Split comma-separated values
+                var branchDetails = await _groupService.GetBranchDetailsAsync(branchIdsList);
+                return Ok(branchDetails);
+            }
+            catch (Exception ex)
+            {
+                // Handle and log the exception
+                return StatusCode(500, new { message = $"Error retrieving branch details: {ex.Message}" });
+            }
         }
 
         [HttpPost("CreateGroup")]
