@@ -193,6 +193,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                 alignItems: 'stretch',
                                 padding: 3,
                                 boxShadow: 3,
+                                overflowY: 'auto'
                             }}
                         >
                             {children}
