@@ -11,10 +11,13 @@ namespace Application.Models.DTOs.Report
 {
     public class GenerateMainReportsViewModel
     {
+        public ReportCategory ReportCategory { get; set; }
+        public ReportCoverage ReportCoverage {  get; set; }
         public DailyCategory DailyCategory { get; set; }
         public WeeklyCategory WeeklyCategory { get; set; }
         public MonthlyCategory MonthlyCategory { get; set; }
         public RegularReports RegularReportName { get; set; }
+        public List<string> SelectedBranches { get; set; }
 
         [FutureDatedValidation]
         [DataType(DataType.Date)]

@@ -13,6 +13,7 @@ import {
   DialogContent,
   Divider,
   Select,
+  InputLabel,
 } from "@mui/material";
 import { DownloadAdhocViewModel, AdhocStatusDisplayNames,PaginatedList, AdhocStatus } from '../../../models/reportDTO';
 import EditIcon from "@mui/icons-material/Edit";
@@ -101,7 +102,6 @@ const Dashboard: React.FC = () =>  {
         ...prevFormData,
         reportAdhoc: newValue, // Update reportAdhoc with the new value from the tab change
       }));
-      console.log(newValue);
     };
     const InputOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent<AdhocStatus>) => {
       const { name, value } = e.target;
@@ -121,7 +121,6 @@ const Dashboard: React.FC = () =>  {
             current = current[key]; // Move deeper into the nested structure
           }
         });
-        console.log(newState);
         return newState;
       });
     };
@@ -137,28 +136,10 @@ const Dashboard: React.FC = () =>  {
         'aria-controls': `simple-tabpanel-${index}`,
       };
     }
-    
-    function CustomTabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-      </div>
-    );
-    }
 
     const SubmitDownloadAdhoc = async (e: any) =>{
         e.preventDefault();
-        console.log('Form submitted:', formData);
         const result = await ReportService.downloadAdhoc(formData);
-        console.log(result);
     }
 
     const GetReportList = async () => {
@@ -318,6 +299,7 @@ const Dashboard: React.FC = () =>  {
           <DialogContent sx={{ overflowY: 'unset' }}>
             <Grid container spacing={2}>
               <Grid item xs={4} sm={3}>
+                  <InputLabel id="coverage-label">Status</InputLabel>
                   <Select
                       size="small"
                       label="Status"
