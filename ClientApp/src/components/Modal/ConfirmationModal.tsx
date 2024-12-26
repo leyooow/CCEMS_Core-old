@@ -32,7 +32,13 @@ const headerStyle = {
   alignItems: 'center',
 };
 
-const CustomModal: React.FC<CustomModalProps> = ({ open, handleClose, title, content, handleConfirm, buttonName }) => {
+const CustomModal: React.FC<CustomModalProps> = ({
+  open,
+  handleClose,
+  title,
+  content,
+  handleConfirm,
+  buttonName }) => {
   return (
     <Modal
       open={open}

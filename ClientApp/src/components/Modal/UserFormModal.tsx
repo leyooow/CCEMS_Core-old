@@ -74,15 +74,15 @@ const UserFormModal: React.FC<UserFormProps> = ({
     try {
       const result = await userService.checkUserAD(loginName);
       return result.success ? true : false;
-      
+
     } catch (error) {
       console.error("Error checking AD User:", error);
       return false; // Return false if an error occurs
     }
   };
-  
 
-  const validate = async ()  => {
+
+  const validate = async () => {
 
 
     let tempErrors: Record<string, string> = {};
@@ -100,7 +100,7 @@ const UserFormModal: React.FC<UserFormProps> = ({
         tempErrors.loginName = "Error validating AD User.";
       }
     }
-  
+
     if (!formData.loginName) tempErrors.loginName = ERROR_MESSAGES.REQUIRED_FIELD;
     if (!formData.employeeId) tempErrors.employeeId = ERROR_MESSAGES.REQUIRED_FIELD;
     if (!formData.lastName) tempErrors.lastName = ERROR_MESSAGES.REQUIRED_FIELD;
@@ -121,7 +121,7 @@ const UserFormModal: React.FC<UserFormProps> = ({
       handleSubmit(e);
     }
   };
-  
+
   return (
     <Box sx={{ pt: 2, pr: 4, pb: 2 }}>
       <DialogTitle
@@ -234,7 +234,32 @@ const UserFormModal: React.FC<UserFormProps> = ({
               </TextField>
             </Grid>
             <Grid item xs={12}>
+
               <Autocomplete
+                multiple
+                options={branchOptions}
+                getOptionLabel={(option) => option.name}
+                value={selectedBranches}
+                onChange={(_event, value) => onBranchChange(_event, value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Branches"
+                    placeholder="Select branches"
+                    variant="outlined"
+                    fullWidth
+                    error={!!errors.branches}
+                    helperText={errors.branches}
+                  />
+                )}
+                renderOption={(props, option) => (
+                  <li {...props} key={option.id || option.name}> {/* Ensure unique key */}
+                    {option.name}
+                  </li>
+                )}
+              />
+
+              {/* <Autocomplete
                 multiple
                 options={branchOptions}
                 getOptionLabel={(option) => option.name}
@@ -251,7 +276,7 @@ const UserFormModal: React.FC<UserFormProps> = ({
                     helperText={errors.branches}
                   />
                 )}
-              />
+              /> */}
             </Grid>
           </Grid>
         </Box>

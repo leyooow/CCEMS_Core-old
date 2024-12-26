@@ -32,7 +32,7 @@ export interface UserUpdateDto {
   email: string;
   UserGroup?: string;
   roleId: number;
-  BranchAccessIds: number[];
+  branchAccessIds: number[];
   branchAccesses: BranchAccessDTO[];
 }
 

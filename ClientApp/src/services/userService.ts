@@ -19,43 +19,43 @@ const userService = {
     }
   },
 
-  async GetAllRoles() {
+  async getAllRoles() {
     const response = await apiClient.get('/User/GetAllRoles', {
     });
     return response.data;
   },
 
-  async GetAllPermissionLookups() {
+  async getAllPermissionLookups() {
     const response = await apiClient.get('/User/GetAllPermissionLookups', {
     });
     return response.data;
   },
 
-  async GetAllPermissionByRoleId(roleId: number) {
+  async getAllPermissionByRoleId(roleId: number) {
     const response = await apiClient.get(`/User/GetPermissionsByRoleId/${roleId}`, {
     });
     return response.data;
   },
 
-  async AddPermission(permissionsData: any) {
+  async addPermission(permissionsData: any) {
     const response = await apiClient.post(`/User/AddPermissions/`, permissionsData, {
     });
     return response.data;
   },
 
-  async GetUserById(userId: number) {
+  async getUserById(userId: number) {
     const response = await apiClient.get(`/User/GetUserById/${userId}`, {
     });
     return response.data;
   },
 
-  async AddUser(UserData: any) {
+  async addUser(UserData: any) {
     const response = await apiClient.post(`/User/CreateUser/`, UserData, {
     });
     return response.data;
   },
 
-  async UpdateUser(UserData: any) {
+  async updateUser(UserData: any) {
     const response = await apiClient.put(`/User/UpdateUser/`, UserData, {
     });
     return response.data;
@@ -66,6 +66,13 @@ const userService = {
     });
     return response.data;
   },
+
+  async deleteUser(employeeId: string) {
+    const response = await apiClient.delete(`/User/DeleteUser/${employeeId}`, {
+    });
+    return response.data;
+  },
+
   
 
 

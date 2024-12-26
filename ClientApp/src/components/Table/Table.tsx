@@ -17,7 +17,7 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = ({ columns, data }) => {
 
-  console.log(data)
+  // console.log(data)
   return (
     <TableContainer
       component={Paper} 
