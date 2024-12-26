@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Box, Tooltip, IconButton, TextField, Dialog } from "@mui/material";
-import { PagedResult } from "../../../models/groupDTOs";
+import { PagedResult } from "../../../models/GenericResponseDTO";
 import userService from "../../../services/userService";
 import { FormattedDate } from "../../../utils/formatDate";
 import EditNoteTwoTone from "@mui/icons-material/EditNoteTwoTone";
@@ -10,10 +10,23 @@ import Table from "../../../components/Table/Table";
 import PaginationControls from "../../../components/Pagination/PaginationControls";
 import UserFormModal from "../../../components/Modal/UserFormModal";
 import GlobalButton from "../../../components/Button/Button";
+import { EmployeeDTO } from "../../../models/employeeMaintenanceDTOs";
+import groupService from "../../../services/groupService";
+import { BranchAccessDTO, UserCreateDto, UserUpdateDto } from "../../../models/userManagementDTOs";
+import { GroupDTO } from "../../../models/groupDTOs";
+import { RoleDTO } from "../../../models/RoleDTOs";
+import ToastService from "../../../utils/toast";
+
+
 const Dashboard: React.FC = () => {
   // Define state with proper initial structure
   const [openCreateUserModal, setOpenCreateUserModal] = useState(false);
-  const [pagedResult, setPagedResult] = useState<PagedResult>({
+  const [openEditUserModal, setOpenEditUserModal] = useState(false);
+  // const [employeeId, setEmployeeId] = useState();
+  const [selectedBranches, setSelectedBranches] = useState<GroupDTO[]>([]);
+  const [roleOptions, setRoleOptions] = useState<RoleDTO[]>([]);
+  const [branchOptions, setBranchOptions] = useState<GroupDTO[]>([]);
+  const [pagedResult, setPagedResult] = useState<PagedResult<EmployeeDTO>>({
     items: [],
     totalCount: 0,
     pageNumber: 1,
@@ -21,47 +34,194 @@ const Dashboard: React.FC = () => {
     searchTerm: ''
   });
 
-
-  const initialFormData = {
-    username: '',
-    employeeId: '',
-    lastName: '',
-    firstName: '',
-    middleInitial: '',
-    email: '',
-    userRole: '',
-    branches: [],
+  const initialFormData: UserCreateDto = {
+    loginName: "",
+    employeeId: "",
+    lastName: "",
+    firstName: "",
+    middleName: "",
+    email: "",
+    roleId: 0,
+    branchAccesses: [],
   };
 
-  const roles = ["Admin", "User", "Manager", "Viewer"];
-  const branchOptions = [
-    "Branch 1",
-    "Branch 2",
-    "Branch 3",
-    "Branch 4",
-    "Branch 5",
-    "Branch 6",
-  ];
-
   // Define form fields, including value, error, and helper text
-  const [createUserFormData, setCreateUserFormData] = useState(initialFormData);
+  const [userFormData, setUserFormData] = useState(initialFormData);
+  const [editFormData, setEditFormData] = useState<UserUpdateDto>()
+  const [branchIds, setBranchIds] = useState([]);
   const [searchTerm, setSearchTerm] = useState<string>(pagedResult.searchTerm);
+
+  const fetchRolesOptions = async () => {
+    try {
+      const result = await userService.GetAllRoles();
+      setRoleOptions(result.data);
+    } catch (error) {
+      console.error("Error fetching roles", error);
+    }
+  };
+
+  // const mappedUserFormData = {
+  //   loginName: userFormData.loginName,
+  //   employeeId: userFormData.employeeId,
+  //   lastName: userFormData.lastName,
+  //   firstName: userFormData.firstName,
+  //   middleName: userFormData.middleName,
+  //   email: userFormData.email,
+  //   roleId: userFormData.roleId,
+  //   branchAccess: userFormData.branchAccess,
+  // };
+
+
+
+  const fetchBranchOptions = async () => {
+    try {
+      const result = await groupService.getAllGroups();
+      setBranchOptions(result.data);
+    } catch (error) {
+      console.error("Error fetching groups", error);
+    }
+  };
 
   // Handle input changes
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setCreateUserFormData({ ...createUserFormData, [name]: value });
+    setUserFormData({ ...userFormData, [name]: value });
   };
 
-  const handleBranchChange = (event: any, value: any) => {
-    setCreateUserFormData({ ...createUserFormData, branches: value });
+  // Handle branch changes
+  const handleBranchChange = (
+    _event: React.ChangeEvent<{}>,
+    value: GroupDTO[]
+  ) => {
+    setSelectedBranches(value);
+
+    const branchAccesses: BranchAccessDTO[] = value.map((branch) => ({
+      employeeId: userFormData.employeeId,
+      branchId: branch.code,
+      usersLoginName: userFormData.loginName,
+    }));
+
+
+    setUserFormData({ ...userFormData, branchAccesses });
   };
 
-  const hanldeCloseModal = () => {
-    setCreateUserFormData(initialFormData)
-    setOpenCreateUserModal(false)
-  }
+  const resetUserFormData = () => {
+    setUserFormData(initialFormData);
+    setSelectedBranches([]);
+  };
 
+  const handleCloseModal = () => {
+    resetUserFormData();
+    setOpenCreateUserModal(false);
+    setOpenEditUserModal(false);
+  };
+
+  const handleAddOpenModal = async () => {
+    setOpenCreateUserModal(true);
+  };
+
+
+  const handleEditOpenModal = async (employeeId: any) => {
+    try {
+      // setEmployeeId(employeeId);
+  
+      // Fetch user data by ID
+      const result = await userService.GetUserById(employeeId);
+  
+      if (result.success) {
+        const userData = result.data;
+        setUserFormData(userData);
+  
+        // Extract branch IDs from the user data
+        const branchIds = userData.branchAccesses.map((branch: any) => branch.branchId);
+        setBranchIds(branchIds)
+        console.log("Branch Accesses:", userData.branchAccesses);
+        console.log("Branch IDs:", branchIds);
+  
+        const branchDetails = await groupService.getBranchDetails(branchIds);
+        console.log("Branch Details:", branchDetails);
+  
+        setSelectedBranches(branchDetails);
+
+
+        // Set the edit form data based on userFormData
+        setEditFormData({
+          loginName: userData.loginName,
+          employeeId: userData.employeeId,
+          firstName: userData.firstName,
+          middleName: userData.middleName,
+          lastName: userData.lastName,
+          email: userData.email,
+          roleId: userData.roleId,
+          BranchAccessIds: branchIds,
+          branchAccesses: userData.branchAccesses,
+        });
+  
+        console.log("User Form Data:", userData);
+        console.log("User Edit Form Data:", editFormData);
+  
+        // Fetch branch details based on branch IDs
+ 
+      } else {
+        ToastService.error("No data found.");
+      }
+  
+      setOpenEditUserModal(true);
+    } catch (error) {
+      console.error("An error occurred while fetching user details:", error);
+      ToastService.error("An error occurred while loading data.");
+    }
+  };
+  
+  // const handleEditOpenModal = async (employeeId: any) => {
+  //   try {
+  //     // Set the employeeId for use later
+  //     setEmployeeId(employeeId);
+  
+  //     // Fetch user data by ID
+  //     const result = await userService.GetUserById(employeeId);
+  
+  //     if (result.success) {
+  //       const userData = result.data;
+  //       setUserFormData(userData);
+  
+  //       // Extract branch IDs from the user data
+  //       const branchIds = userData.branchAccesses.map((branch: any) => branch.branchId);
+  //       console.log("Branch Accesses:", userData.branchAccesses);
+  //       console.log("Branch IDs:", branchIds);
+  
+  //       // Prepare form data for editing
+  //       setEditFormData({
+  //         loginName: userData.loginName,
+  //         employeeId: userData.employeeId,
+  //         firstName: userData.firstName,
+  //         middleName: userData.middleName,
+  //         lastName: userData.lastName,
+  //         email: userData.email,
+  //         roleId: userData.roleId,
+  //         BranchAccessIds: branchIds,
+  //         branchAccesses: userData.branchAccesses,
+  //       });
+  
+  //       console.log("User Form Data:", userData);
+  //       console.log("User Edit Form Data:", editFormData);
+  
+  //       // Fetch branch details based on branch IDs
+  //       const branchDetails = await groupService.getBranchDetails(branchIds);
+  //       console.log("Branch Details:", branchDetails);
+  
+  //       setSelectedBranches(branchDetails);
+  //     } else {
+  //       ToastService.error("No data found.");
+  //     }
+  
+  //     setOpenEditUserModal(true);
+  //   } catch (error) {
+  //     console.error("An error occurred while fetching user details:", error);
+  //     ToastService.error("An error occurred while loading data.");
+  //   }
+  // };
+  
   const fetchUsers = async () => {
     try {
       const result = await userService.getPaginatedUsers(
@@ -70,15 +230,29 @@ const Dashboard: React.FC = () => {
         searchTerm
       );
       setPagedResult(result.data.data);
-
-
     } catch (error) {
       console.error("Error fetching users", error);
     }
   };
 
   useEffect(() => {
+
+    if (userFormData) {
+      setEditFormData({
+        loginName: userFormData.loginName,
+        employeeId: userFormData.employeeId,
+        firstName: userFormData.firstName,
+        middleName: userFormData.middleName,
+        lastName: userFormData.lastName,
+        email: userFormData.email,
+        roleId: userFormData.roleId,
+        BranchAccessIds: branchIds,
+        branchAccesses: userFormData.branchAccesses,
+      });
+    }
     fetchUsers();
+    fetchBranchOptions();
+    fetchRolesOptions();
   }, [pagedResult.pageNumber, pagedResult.pageSize, searchTerm]);
 
   const columns = [
@@ -96,7 +270,6 @@ const Dashboard: React.FC = () => {
         FormattedDate(data.lastLogIn)
       ),
     },
-
     {
       label: 'Branches',
       render: (data: any) => (
@@ -106,15 +279,15 @@ const Dashboard: React.FC = () => {
     { label: 'Role', accessor: 'roleName' },
     {
       label: 'Action',
-      render: () => (
+      render: (data: any) => (
         <Box sx={globalStyle.buttonBox}>
           <Tooltip title="Edit">
-            <IconButton color='primary' >
+            <IconButton color='primary' onClick={() => handleEditOpenModal(data.employeeId)}>
               <EditNoteTwoTone />
             </IconButton>
           </Tooltip>
           <Tooltip title="Delete">
-            <IconButton sx={globalStyle.buttonRed} >
+            <IconButton sx={globalStyle.buttonRed}>
               <DeleteTwoTone />
             </IconButton>
           </Tooltip>
@@ -124,6 +297,9 @@ const Dashboard: React.FC = () => {
   ];
 
   const pageCount = Math.ceil(pagedResult.totalCount / pagedResult.pageSize);
+
+
+
 
   const handlePageChange = (newPage: number) => {
     setPagedResult({
@@ -135,47 +311,82 @@ const Dashboard: React.FC = () => {
   // Handle search input change
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    pagedResult.pageNumber = 1;
+    setPagedResult({
+      ...pagedResult,
+      pageNumber: 1,
+    });
   };
 
-
-  const handleSubmitCreateUser = (e: any) => {
+  const handleSubmitCreateUser = async (e: any) => {
     e.preventDefault();
-    console.log("Form Submitted:", createUserFormData);
-    setOpenCreateUserModal(false);
+    // console.log("Form Submitted:", userFormData);
+    // console.log("Selected Branch:", selectedBranches);
+
+    try {
+      const result = await userService.AddUser(userFormData);
+      console.log(result)
+
+      if (result.success) {
+        handleCloseModal();
+        fetchUsers()
+        ToastService.success(result.message);
+      } else {
+        ToastService.error(result.message);
+      }
+    } catch (error) {
+      console.error("Error creating user", error);
+      ToastService.error('An error occurred while creating the user.');
+    }
+
+  };
+
+  const handleSubmitEditUser = async (e: any) => {
+    e.preventDefault();
+     console.log("Form Submitted:", editFormData);
+    // console.log("Selected Branch:", selectedBranches);
+
+    try {
+      const result = await userService.UpdateUser(editFormData);
+      console.log(result)
+
+      if (result.success) {
+        handleCloseModal();
+        fetchUsers()
+        ToastService.success(result.message);
+      } else {
+        ToastService.error(result.message);
+      }
+    } catch (error) {
+      console.error("Error creating user", error);
+      ToastService.error('An error occurred while creating the user.');
+    }
   };
 
   return (
     <>
-
       <Typography variant="h6" component="h6" gutterBottom>
         User Dashboard
       </Typography>
 
-
       <Box sx={globalStyle.mainBox}>
         <Box sx={{ m: 1 }}>
-          <GlobalButton buttonAction="add" buttonName="Add User" onClick={() => setOpenCreateUserModal(true)} />
+          <GlobalButton buttonAction="add" buttonName="Add User" onClick={handleAddOpenModal} />
         </Box>
 
-        {/* Search input box with spacing */}
         <Box sx={globalStyle.searchBox}>
-          {/* Search Input */}
           <TextField
             label="Search"
             variant="outlined"
             size="small"
-            sx={globalStyle.searchInput} // Make the input box flexible
-            value={searchTerm}  // Controlled input
-            onChange={handleSearchChange}  // Update search term as user types
+            sx={globalStyle.searchInput}
+            value={searchTerm}
+            onChange={handleSearchChange}
           />
         </Box>
       </Box>
 
-      {/* Table wrapped inside a responsive container */}
       <Table columns={columns} data={pagedResult.items} />
 
-      {/* Pagination Controls Component */}
       <PaginationControls
         currentPage={pagedResult.pageNumber}
         totalPages={pageCount}
@@ -183,23 +394,37 @@ const Dashboard: React.FC = () => {
         totalItems={pagedResult.totalCount}
       />
 
-      <Dialog open={openCreateUserModal} onClose={() => setOpenCreateUserModal(false)} maxWidth="lg" fullWidth>
+      <Dialog open={openCreateUserModal} onClose={handleCloseModal} maxWidth="lg" fullWidth>
         <UserFormModal
-          formData={createUserFormData}
+          formData={userFormData}
           onChange={handleChange}
           onBranchChange={handleBranchChange}
           handleSubmit={handleSubmitCreateUser}
-          roles={roles}
+          rolesOptions={roleOptions}
           branchOptions={branchOptions}
-          onCancel={hanldeCloseModal}
-          // isEditMode
+          selectedBranches={selectedBranches}
+          onCancel={handleCloseModal}
+          isEditMode={false}
+        />
+      </Dialog>
+
+
+      <Dialog open={openEditUserModal} onClose={handleCloseModal} maxWidth="lg" fullWidth>
+        <UserFormModal
+          formData={userFormData}
+          onChange={handleChange}
+          onBranchChange={handleBranchChange}
+          handleSubmit={handleSubmitEditUser}
+          rolesOptions={roleOptions}
+          branchOptions={branchOptions}
+          selectedBranches={selectedBranches}
+          onCancel={handleCloseModal}
+          isEditMode={true}
+        // userData = 
         />
       </Dialog>
     </>
-
-  )
+  );
 };
 
 export default Dashboard;
-
-

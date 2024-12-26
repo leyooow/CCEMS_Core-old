@@ -21,7 +21,7 @@ namespace Application.Models.DTOs.User.user
         public int RoleId { get; set; }
         public string? UserGroup { get; set; }
         public string LoginName { get; set; } = null!;
-        public List<int> BranchAccessIds { get; set; } = new List<int>();
+        public List<int> BranchAccessIds { get; set; } = [];
         public List<BranchAccessDTO> BranchAccesses { get; set; } = new();
 
     }

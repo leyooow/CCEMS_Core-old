@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Application.Models.DTOs.ExceptionsMgmt
@@ -183,9 +184,8 @@ namespace Application.Models.DTOs.ExceptionsMgmt
 
         [Display(Name = "Employee Name")]
         public string EmployeeName { get; set; }
-
         public ExceptionItem ExceptionItem { get; set; }
-
+        [JsonIgnore]
         public ExceptionItemRev ExceptionItemRevs { get; set; }
 
         //[ValidateEmptyDeviationList]
@@ -194,7 +194,6 @@ namespace Application.Models.DTOs.ExceptionsMgmt
         public ICollection<ActionPlansDTO> ActionPlans { get; set; }
 
         public ActionPlansDTO ActionPlan { get; set; }
-
         public List<SubExceptionsListViewDTO> SubExceptionItems { get; set; }
 
         public bool HasPendingUpdate { get; set; }
@@ -211,6 +210,7 @@ namespace Application.Models.DTOs.ExceptionsMgmt
         public int Id { get; set; }
         public string SubReferenceNo { get; set; }
         public int ExCode { get; set; }
+        [JsonIgnore]
         public ExceptionItem ExItem { get; set; }
         public string ExItemRefNo { get; set; }
         public DeviationStatusDTO DeviationStatus { get; set; }

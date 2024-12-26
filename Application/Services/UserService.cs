@@ -51,7 +51,7 @@ namespace Application.Services
             }
             catch (Exception ex)
             {
-                return ResponseHelper.ErrorResponse<UserDTO?>("An error occurred while retrieving the group.");
+                return ResponseHelper.ErrorResponse<UserDTO?>($"An error occurred while retrieving the group: {ex.Message}");
             }
         }
 
@@ -132,9 +132,16 @@ namespace Application.Services
 
         public async Task<GenericResponse<object>> AddUserAsync(UserCreateDTO userCreateDTO)
         {
-
             try
             {
+
+                var userExist = await _repository.GetUserByIdAsync(userCreateDTO.EmployeeId);
+
+                if (userExist != null)
+                {
+                    return ResponseHelper.ErrorResponse<object>($"The employee ID already exists");
+                }
+
                 var branchAccesses = userCreateDTO.BranchAccesses
                     .Select(ba => new BranchAccess
                     {
@@ -153,7 +160,7 @@ namespace Application.Services
             catch (Exception ex)
             {
 
-                return ResponseHelper.ErrorResponse<object>($"An error occurred while adding the group: {ex.Message}");
+                return ResponseHelper.ErrorResponse<object>($"An error occurred while adding the group: {ex.InnerException.Message}");
             }
         }
         public async Task<GenericResponse<UserActiveDirectoryDTO>> CheckUserNameAsync(string username)

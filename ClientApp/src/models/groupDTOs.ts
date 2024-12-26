@@ -1,8 +1,10 @@
-// src/models/groupDTOs.ts
-
 export interface GroupDTO {
   id: number;
-  code?: string;
+<<<<<<< Updated upstream
+  code: number;
+=======
+  code?: number;
+>>>>>>> Stashed changes
   name: string;
   description?: string;
   dateCreated: Date;
@@ -11,6 +13,8 @@ export interface GroupDTO {
   area?: string;
   division?: string;
 }
+
+
 
 export interface PagedResult {
   items: GroupDTO[];    // Array of GroupDTO (list of groups)
@@ -25,13 +29,13 @@ export interface GroupCreateDTO {
   name: string,
   area: string,
   division: string
-  
+
 }
 
 export interface GroupUpdateDTO {
   id: number;
   name: string;
-  // Other properties for updating a group
+  
 }
 
 

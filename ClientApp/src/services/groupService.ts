@@ -1,19 +1,57 @@
 // src/services/groupService.ts
 
-import apiClient from './apiClient'; // Assuming apiClient.ts handles base configurations like axios instance
-import { GroupCreateDTO, GroupUpdateDTO, PagedResult } from '../models/groupDTOs'; // Update with actual DTO paths
+import apiClient from "./apiClient"; // Assuming apiClient.ts handles base configurations like axios instance
+import {
+  GroupCreateDTO,
+  GroupDTO,
+  GroupUpdateDTO,
+  PagedResult,
+} from "../models/groupDTOs"; // Update with actual DTO paths
+import { Id } from "react-toastify";
 
 const GroupService = {
-  async getAllGroups(pageNumber: number = 1, pageSize: number = 10, searchTerm: string = '') {
+  async getAllGroups() {
     try {
-      const response = await apiClient.get('/groups/GetPaginatedGroups', {
+      const response = await apiClient.get("/Groups/GetAllGroups");
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async getPaginatedGroups(
+    pageNumber: number = 1,
+    pageSize: number = 10,
+    searchTerm: string = ""
+  ) {
+    try {
+      const response = await apiClient.get("/groups/GetPaginatedGroups", {
         params: {
           pageNumber,
-          pageSize, 
+          pageSize,
           searchTerm,
         },
       });
-      return response;
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async getPaginatedAllGroups(
+    pageNumber: number = 1,
+    pageSize: number = 10,
+    searchTerm: string = ""
+  ) {
+    try {
+      const response = await apiClient.get("/groups/GetPaginatedGroups", {
+        params: {
+          pageNumber,
+          pageSize,
+          searchTerm,
+        },
+      });
+      return response.data;
     } catch (error) {
       throw error;
     }
@@ -28,9 +66,18 @@ const GroupService = {
     }
   },
 
+  async getBranchDetails(branchIds: string[]) {
+    try {
+      const response = await apiClient.get(`/groups/GetBranchDetails?branchIds=${branchIds.join(',')}`);
+      return response.data;
+    } catch (error: any) {
+      throw new Error(`Failed to fetch branch details: ${error.message}`);
+    }
+  },
+
   async createGroup(groupCreateDto: GroupCreateDTO) {
     try {
-      await apiClient.post('/groups/CreateGroup', groupCreateDto);
+      await apiClient.post("/groups/CreateGroup", groupCreateDto);
     } catch (error) {
       throw error;
     }
@@ -52,23 +99,28 @@ const GroupService = {
     }
   },
 
- 
-  
-  async getBranchCodes(pageNumber: number = 1, pageSize: number = 10, searchTerm: string = '') {
+  async getBranchCodes(
+    pageNumber: number = 1,
+    pageSize: number = 10,
+    searchTerm: string = ""
+  ) {
     try {
-      const response = await apiClient.get('/BranchCode/GetPaginatedBranchCodes', {
-        params: {
-          pageNumber,
-          pageSize,
-          searchTerm,
-        },
-      });
+      const response = await apiClient.get(
+        "/BranchCode/GetPaginatedBranchCodes",
+        {
+          params: {
+            pageNumber,
+            pageSize,
+            searchTerm,
+          },
+        }
+      );
 
       if (response.data.success) {
-        return response.data.data; 
+        return response.data.data;
       }
 
-      throw new Error(response.data.message || 'Failed to fetch branch codes.');
+      throw new Error(response.data.message || "Failed to fetch branch codes.");
     } catch (error) {
       throw error;
     }

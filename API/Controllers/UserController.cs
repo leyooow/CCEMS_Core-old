@@ -28,7 +28,7 @@ namespace API.Controllers
         }
         [HttpGet("GetPaginatedUsers")]
         public async Task<IActionResult> GetPaginated([FromQuery] int? pageNumber = 1, [FromQuery] int? pageSize = 10, [FromQuery] string? searchTerm = null)
-        {
+            {
 
             var response = await _userService.GetPaginatedAsync(pageNumber, pageSize, searchTerm);
             return Ok(response);

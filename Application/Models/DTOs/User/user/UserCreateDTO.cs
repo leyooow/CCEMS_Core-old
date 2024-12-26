@@ -16,9 +16,9 @@ namespace Application.Models.DTOs.User.user
         public string? MiddleName { get; set; }
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
         public int RoleId { get; set; }
-        public ICollection<BranchAccess> BranchAccesses { get; set; } = new List<BranchAccess>();
+        public ICollection<BranchAccess> BranchAccesses { get; set; } = [];
         //public virtual Role Role { get; set; } = null!;
     }
 }

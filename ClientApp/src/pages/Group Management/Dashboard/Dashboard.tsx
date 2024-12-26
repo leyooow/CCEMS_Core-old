@@ -14,10 +14,10 @@ import { ERROR_MESSAGES } from '../../../utils/constants';
 import { FormData } from '../../../models/formDTOs';
 import GlobalButton from '../../../components/Button/Button';
 import GroupFormModal from '../../../components/Modal/GroupFormModal';
-
+ 
 const GroupList: React.FC = () => {
-
-
+ 
+ 
   // Define state with proper initial structure
   const [pagedResult, setPagedResult] = useState<PagedResult>({
     items: [],
@@ -26,7 +26,7 @@ const GroupList: React.FC = () => {
     pageSize: 10,
     searchTerm: ''
   });
-
+ 
   const [modalTitle, setModalTitle] = useState('')
   const [openAddModal, setOpenAddModal] = useState(false)
   const [formData, setFormData] = useState<GroupCreateDTO>({
@@ -35,8 +35,8 @@ const GroupList: React.FC = () => {
     area: '',
     division: '',
   });
-
-  
+ 
+ 
   const [branchOptions, setBranchOptions] = useState<BranchOption[]>([]);
   const [selectedBranch, setSelectedBranch] = useState<BranchOption | null>(null);
   const fetchBranchCodes = async (searchTerm = '', pageNumber = 1, pageSize = 10) => {
@@ -47,34 +47,34 @@ const GroupList: React.FC = () => {
       console.error('Error fetching branch codes', error);
     }
   };
-
-
+ 
+ 
   const handleBranchSearch = (event: React.ChangeEvent<{}>, value: string) => {
     fetchBranchCodes(value, 1, 10);
   };
-
+ 
   const [searchTerm, setSearchTerm] = useState<string>(pagedResult.searchTerm);
-
+ 
   const fetchGroups = async () => {
     try {
-      const result = await GroupService.getAllGroups(
+      const result = await GroupService.getPaginatedAllGroups(
         pagedResult.pageNumber,
         pagedResult.pageSize,
         searchTerm
       );
-      setPagedResult(result.data.data);
-
-      // console.log(result); 
+      setPagedResult(result.data);
+ 
+      // console.log(result);
     } catch (error) {
       console.error("Error fetching groups", error);
     }
   };
-
+ 
   // UseEffect hook to refetch groups based on page number, page size, or search term change
   useEffect(() => {
     fetchGroups();
   }, [pagedResult.pageNumber, pagedResult.pageSize, searchTerm]);
-
+ 
   const columns = [
     { label: 'Branch Code', accessor: 'code' },
     { label: 'Branch Name', accessor: 'name' },
@@ -112,50 +112,56 @@ const GroupList: React.FC = () => {
       ),
     },
   ];
+ 
+  const pageCount = Math.ceil((pagedResult?.totalCount || 0) / (pagedResult?.pageSize || 1));
 
-  const pageCount = Math.ceil(pagedResult.totalCount / pagedResult.pageSize);
-
-  const handlePageChange = (newPage: number) => {
+const handlePageChange = (newPage: number) => {
+  if (pagedResult) {
     setPagedResult({
       ...pagedResult,
       pageNumber: newPage,
     });
-  };
+  }
+};
 
-  // Handle search input change
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    pagedResult.pageNumber = 1;
-  };
+// Handle search input change
+const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setSearchTerm(e.target.value);
+  if (pagedResult) {
+    setPagedResult({
+      ...pagedResult,
+      pageNumber: 1,
+    });
+  }
+};
 
-  const handleOpenAddModal = () => {
-    setOpenAddModal(true);
-    setModalTitle('Add Group');
-  };
+const handleOpenAddModal = () => {
+  setOpenAddModal(true);
+  setModalTitle('Add Group');
+};
 
-  const handleCloseAddModal = () => {
-    setOpenAddModal(false);
-    setFormData({ code: '', name: '', area: '', division: '' });
-  };
+const handleCloseAddModal = () => {
+  setOpenAddModal(false);
+  setFormData({ code: '', name: '', area: '', division: '' });
+};
 
-  const handleSave = () => {
-    console.log('Data saved:', formData);
-    handleCloseAddModal();
-  };
-
+const handleSave = () => {
+  console.log('Data saved:', formData);
+};
+ 
   return (
     <>
-
-
+ 
+ 
       <Typography variant="h6" component="h6" gutterBottom>
         Groups
       </Typography>
-
+ 
       <Box sx={globalStyle.mainBox}>
         <Box sx={{ m: 1 }}>
           <GlobalButton buttonAction="add" buttonName="Add Group" onClick={handleOpenAddModal} />
         </Box>
-
+ 
         {/* Search input box with spacing */}
         <Box sx={globalStyle.searchBox}>
           {/* Search Input */}
@@ -169,10 +175,10 @@ const GroupList: React.FC = () => {
           />
         </Box>
       </Box>
-
+ 
       {/* Table wrapped inside a responsive container */}
       <Table columns={columns} data={pagedResult.items} />
-
+ 
       {/* Pagination Controls Component */}
       <PaginationControls
         currentPage={pagedResult.pageNumber}
@@ -180,19 +186,19 @@ const GroupList: React.FC = () => {
         onPageChange={handlePageChange}
         totalItems={pagedResult.totalCount}
       />
-
+ 
       <GroupFormModal
         open={openAddModal}
         handleClose={handleCloseAddModal}
         title={modalTitle}
         formData={formData}
         handleSave={handleSave}
-        setFormData={setFormData} 
+        setFormData={setFormData}
       />
      
     </>
-
+ 
   );
 };
-
+ 
 export default GroupList;

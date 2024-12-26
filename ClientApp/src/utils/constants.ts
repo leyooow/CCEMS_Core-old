@@ -3,6 +3,8 @@ import {JwtPayload } from 'jwt-decode';
 
 // API Endpoints
 export const API_BASE_URL = 'https://localhost:7192/api';
+// export const API_BASE_URL = 'http://172.19.13.216:5555/api';
+
 export const SECRET_KEY = "JOHNLYOROYANDLEOESPINO20253Z93rLbyZucty3";
 
 // Application Settings

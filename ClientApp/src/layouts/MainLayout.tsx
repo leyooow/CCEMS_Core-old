@@ -7,7 +7,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ManageAccounts from '@mui/icons-material/ManageAccounts';
 import ManageAccountsTwoTone from '@mui/icons-material/ManageAccountsTwoTone';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import CreateRounded from '@mui/icons-material/CreateRounded';
+// import CreateRounded from '@mui/icons-material/CreateRounded';
 import DocumentScannerSharp from '@mui/icons-material/DocumentScannerSharp';
 import DocumentScannerOutlined from '@mui/icons-material/DocumentScannerOutlined';
 import DocumentScanner from '@mui/icons-material/DocumentScanner';
@@ -116,7 +116,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
     useEffect(() => {
 
-        console.log(session);
+        // console.log(session);
         authentication.signIn()
 
 
@@ -193,6 +193,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                 alignItems: 'stretch',
                                 padding: 3,
                                 boxShadow: 3,
+                                overflowY: 'auto'
                             }}
                         >
                             {children}

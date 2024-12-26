@@ -6,6 +6,12 @@ using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Security.AccessControl;
 
+using System;
+using Microsoft.AspNetCore.Mvc;
+using System.DirectoryServices.AccountManagement;
+using Application.Models.DTOs.User.role;
+
+
 
 namespace Infrastructure.Repositories
 {
@@ -55,7 +61,10 @@ namespace Infrastructure.Repositories
         }
         public async Task<User?> GetUserByIdAsync(string? id)
         {
-            var entity = await _context.Users.Where(x => x.EmployeeId == id).FirstOrDefaultAsync();
+            var entity = await _context.Users
+                .Include(x => x.BranchAccesses)
+                .Where(x => x.EmployeeId == id)
+                .FirstOrDefaultAsync();
 
             return entity;
         }

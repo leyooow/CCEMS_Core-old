@@ -1,3 +1,5 @@
+import { UpdatePayload } from 'vite/types/hmrPayload.js';
+import { UserCreateDto, UserDTO, UserUpdateDto } from '../models/userManagementDTOs';
 import apiClient from './apiClient';
 
 const userService = {
@@ -29,7 +31,7 @@ const userService = {
     return response.data;
   },
 
-  async GetAllPermissionByRoleId(roleId: any) {
+  async GetAllPermissionByRoleId(roleId: number) {
     const response = await apiClient.get(`/User/GetPermissionsByRoleId/${roleId}`, {
     });
     return response.data;
@@ -41,8 +43,8 @@ const userService = {
     return response.data;
   },
 
-  async GetUserById(userId: any) {
-    const response = await apiClient.post(`/User/GetUserById/${userId}`, {
+  async GetUserById(userId: number) {
+    const response = await apiClient.get(`/User/GetUserById/${userId}`, {
     });
     return response.data;
   },
@@ -54,10 +56,17 @@ const userService = {
   },
 
   async UpdateUser(UserData: any) {
-    const response = await apiClient.post(`/User/AddPermissions/`, UserData, {
+    const response = await apiClient.put(`/User/UpdateUser/`, UserData, {
     });
     return response.data;
   },
+
+  async checkUserAD(loginName: any) {
+    const response = await apiClient.get(`/User/CheckAdUsername/${loginName}`, {
+    });
+    return response.data;
+  },
+  
 
 
 };
