@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Application.Models.DTOs.Report
@@ -11,8 +12,11 @@ namespace Application.Models.DTOs.Report
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public ReportAdhoc ReportAdhoc { get; set; }
+        [JsonPropertyName("rt")]
         public RegularizationTAT RT { get; set; }
+        [JsonPropertyName("pr")]
         public Pervasiveness PR { get; set; }
+        [JsonPropertyName("ea")]
         public ExceptionAdhocs EA { get; set; }
 
     }
@@ -21,18 +25,14 @@ namespace Application.Models.DTOs.Report
     {
         public int CoveredBranch { get; set; }
 
-        public string EmployeeID { get; set; }
+        public string EmployeeID { get; set; } = "";
     }
 
     public class Pervasiveness
     {
-        public string EmployeeID { get; set; }
+        public string EmployeeID { get; set; } = "";
     }
 
-    public class AuditTrail
-    {
-        
-    }
 
     public class ExceptionAdhocs
     {
@@ -48,5 +48,9 @@ namespace Application.Models.DTOs.Report
         Deleted = 6,
         [Display(Name = "Tagged as Dispensed")]
         Dispensed = 7,
+    }
+    public class AuditTrail
+    {
+
     }
 }

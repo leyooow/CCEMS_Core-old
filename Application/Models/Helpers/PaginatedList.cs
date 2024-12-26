@@ -65,12 +65,12 @@ namespace Application.Models.Helpers
         public bool HasNextPage => PageIndex < TotalPages;
         public List<T> Data { get; set; }
 
-        public PaginatedList(List<T> data, int pageIndex, int totalPages,int countData)
+        public PaginatedList(List<T> data, int countData, int pageIndex, int totalPages)
         {
             PageIndex = pageIndex;
-            TotalPages = totalPages;
             CountData = countData;
             Data = data;
+            TotalPages = (int)Math.Ceiling(countData / (double)totalPages);
         }
 
         public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex = 1, int pageSize = 10)

@@ -205,7 +205,7 @@ namespace Infrastructure.Repositories
                         return ResponseHelper.SuccessResponse<EPPlusReturn>(result, "");
                     }
                 }
-                return ResponseHelper.SuccessResponse<EPPlusReturn>(result, "No extracted data from the filtered query");
+                return ResponseHelper.ErrorResponse<EPPlusReturn>("No extracted data from the filtered query");
                 #endregion
             }
             catch (Exception ex)
