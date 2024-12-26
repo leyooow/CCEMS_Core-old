@@ -13,6 +13,6 @@ namespace Application.Contracts.Services
     public interface IReportGenerateService
     {
         Task<List<DropdownReturn>> PopulateGroupsDropDownList();
-        Task<GenericResponse<dynamic>> GenerateReport(Report report, GenerateMainReportsViewModel GenerateReports, int reportCoverage, string[] SelectedBranches);
+        Task<GenericResponse<dynamic>> GenerateReport(GenerateMainReportsViewModel GenerateReports);
     }
 }

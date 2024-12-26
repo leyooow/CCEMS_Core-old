@@ -32,11 +32,12 @@ namespace Application.Services
             string EmployeeID = _user.EmployeeID ?? string.Empty;
             return _repository.PopulateGroupsDropDownList(EmployeeID);
         }
-        public async Task<GenericResponse<dynamic>> GenerateReport(Report report, GenerateMainReportsViewModel GenerateReports, int reportCoverage, string[] SelectedBranches)
+        public async Task<GenericResponse<dynamic>> GenerateReport(GenerateMainReportsViewModel GenerateReports)
         {
             string loggedRole = _user.RoleName ?? "";
             string Username = _user.LoginName; 
-            var coverage = reportCoverage;
+            var coverage = GenerateReports.ReportCoverage;
+            List<string> SelectedBranches = GenerateReports.SelectedBranches;
             try
             {
                 if (SelectedBranches != null)
@@ -47,42 +48,44 @@ namespace Application.Services
                         case ReportCoverage.Daily:
 
                             category = (int)GenerateReports.DailyCategory;
-
+                            GenerateReports.ReportCategory = (ReportCategory)category;
                             if (category == (int)DailyCategory.DailyExceptionReport)
                             {
-                                return await ProcessDailyOutstanding(report, GenerateReports, SelectedBranches, loggedRole, Username);
+                                return await ProcessDailyOutstanding(GenerateReports, SelectedBranches, loggedRole, Username);
                             }
                             else if (category == (int)DailyCategory.RedFlag)
                             {
-                                return await ProcessDailyRedFlag(report, GenerateReports, SelectedBranches, loggedRole, Username);
+                                return await ProcessDailyRedFlag(GenerateReports, SelectedBranches, loggedRole, Username);
                             }
                             break;
 
                         case ReportCoverage.Weekly:
 
                             category = (int)GenerateReports.WeeklyCategory;
+                            GenerateReports.ReportCategory = (ReportCategory)category;
 
                             if (category == (int)WeeklyCategory.Escalation)
                             {
-                                return await ProcessWeeklyEscalation(report, GenerateReports, SelectedBranches, loggedRole, Username);
+                                return await ProcessWeeklyEscalation(GenerateReports, SelectedBranches, loggedRole, Username);
                             }
                             if (category == (int)WeeklyCategory.NewAccounts)
                             {
-                                return await ProcessWeeklyNewAccounts(report, GenerateReports, SelectedBranches, loggedRole, Username);
+                                return await ProcessWeeklyNewAccounts(GenerateReports, SelectedBranches, loggedRole, Username);
                             }
                             break;
 
                         case ReportCoverage.Monthly:
 
                             category = (int)GenerateReports.MonthlyCategory;
+                            GenerateReports.ReportCategory = (ReportCategory)category;
 
                             if (category == (int)MonthlyCategory.AllOutstanding1)
                             {
-                                return await ProcessAllOutstanding(report, GenerateReports, SelectedBranches, loggedRole, Username);
+                                return await ProcessAllOutstanding(GenerateReports, SelectedBranches, loggedRole, Username);
                             }
                             if (category == (int)MonthlyCategory.AllOutstanding2)
                             {
-                                return await ProcessAllOutstanding(report, GenerateReports, SelectedBranches, loggedRole, Username);
+                                return await ProcessAllOutstanding(GenerateReports, SelectedBranches, loggedRole, Username);
                             }
                             break;
 
@@ -101,7 +104,7 @@ namespace Application.Services
                 throw ex;
             }
         }
-        private async Task<GenericResponse<dynamic>> ProcessDailyOutstanding(Report report, GenerateMainReportsViewModel GenerateReports, string[] SelectedBranches, string loggedRole, string Username)
+        private async Task<GenericResponse<dynamic>> ProcessDailyOutstanding(GenerateMainReportsViewModel GenerateReports, List<string> SelectedBranches, string loggedRole, string Username)
         {
             string errMsg = string.Empty;
             DateTime dateFrom = GenerateReports.DateFrom;
@@ -141,7 +144,7 @@ namespace Application.Services
                         // Save Details to DB.
                         List<ReportContent> rContents = await _repository.OutstandingDaily(filteredException, dateTo);
 
-                        errMsg = await _repository.InsertReportRecordsToDB(fileDetails, (ReportCategory)report.ReportCategory, (ReportCoverage)report.ReportCoverage, ReportStatus.Standby, filteredException, null, rContents, loggedRole, Username);
+                        errMsg = await _repository.InsertReportRecordsToDB(fileDetails, (ReportCategory)GenerateReports.ReportCategory, (ReportCoverage)GenerateReports.ReportCoverage, ReportStatus.Standby, filteredException, null, rContents, loggedRole, Username);
 
                         if (errMsg == string.Empty)
                         {
@@ -168,7 +171,7 @@ namespace Application.Services
                 return ResponseHelper.ErrorResponse<dynamic>(ex.Message);
             }
         }
-        private async Task<GenericResponse<dynamic>> ProcessDailyRedFlag(Report report, GenerateMainReportsViewModel GenerateReports, string[] SelectedBranches, string loggedRole, string Username)
+        private async Task<GenericResponse<dynamic>> ProcessDailyRedFlag(GenerateMainReportsViewModel GenerateReports, List<string> SelectedBranches, string loggedRole, string Username)
         {
             string errMsg = string.Empty;
             DateTime dateFrom = GenerateReports.DateFrom;
@@ -212,7 +215,7 @@ namespace Application.Services
                     if (errMsg == string.Empty)
                     {
                         // Save Details to DB.
-                        errMsg = await _repository.InsertReportRecordsToDB(fileDetails, (ReportCategory)report.ReportCategory, (ReportCoverage)report.ReportCoverage, ReportStatus.Standby, filteredException, null, formattedException, loggedRole, Username);
+                        errMsg = await _repository.InsertReportRecordsToDB(fileDetails, (ReportCategory)GenerateReports.ReportCategory, (ReportCoverage)GenerateReports.ReportCoverage, ReportStatus.Standby, filteredException, null, formattedException, loggedRole, Username);
 
                         if (errMsg == string.Empty)
                         {
@@ -239,7 +242,7 @@ namespace Application.Services
                 return ResponseHelper.ErrorResponse<dynamic>(ex.Message);
             }
         }
-        private async Task<GenericResponse<dynamic>> ProcessWeeklyEscalation(Report report, GenerateMainReportsViewModel GenerateReports, string[] SelectedBranches, string loggedRole, string Username)
+        private async Task<GenericResponse<dynamic>> ProcessWeeklyEscalation(GenerateMainReportsViewModel GenerateReports, List<string> SelectedBranches, string loggedRole, string Username)
         {
             string errMsg = string.Empty;
             DateTime dateFrom = GenerateReports.DateFrom;
@@ -283,7 +286,7 @@ namespace Application.Services
                     if (errMsg == string.Empty)
                     {
                         // Save Details to DB.
-                        errMsg = await _repository.InsertReportRecordsToDB(fileDetails, (ReportCategory)report.ReportCategory, (ReportCoverage)report.ReportCoverage, ReportStatus.Standby, filteredException, null, formattedException, loggedRole, Username);
+                        errMsg = await _repository.InsertReportRecordsToDB(fileDetails, (ReportCategory)GenerateReports.ReportCategory, (ReportCoverage)GenerateReports.ReportCoverage, ReportStatus.Standby, filteredException, null, formattedException, loggedRole, Username);
 
                         if (errMsg == string.Empty)
                         {
@@ -310,7 +313,7 @@ namespace Application.Services
                 return ResponseHelper.ErrorResponse<dynamic>(ex.Message);
             }
         }
-        private async Task<GenericResponse<dynamic>> ProcessAllOutstanding(Report report, GenerateMainReportsViewModel GenerateReports, string[] SelectedBranches, string loggedRole, string Username)
+        private async Task<GenericResponse<dynamic>> ProcessAllOutstanding(GenerateMainReportsViewModel GenerateReports, List<string> SelectedBranches, string loggedRole, string Username)
         {
             string errMsg = string.Empty;
             DateTime dateFrom = GenerateReports.DateFrom;
@@ -370,7 +373,7 @@ namespace Application.Services
                     if (errMsg == string.Empty)
                     {
                         // Save Details to DB.
-                        errMsg = await _repository.InsertReportRecordsToDB(fileDetails, (ReportCategory)report.ReportCategory, (ReportCoverage)report.ReportCoverage, ReportStatus.Standby, filteredException, null, formattedException, loggedRole, Username);
+                        errMsg = await _repository.InsertReportRecordsToDB(fileDetails, (ReportCategory)GenerateReports.ReportCategory, (ReportCoverage)GenerateReports.ReportCoverage, ReportStatus.Standby, filteredException, null, formattedException, loggedRole, Username);
 
                         if (errMsg == string.Empty)
                         {
@@ -397,7 +400,7 @@ namespace Application.Services
                 return ResponseHelper.ErrorResponse<dynamic>(ex.Message);
             }
         }
-        private async Task<GenericResponse<dynamic>> ProcessWeeklyNewAccounts(Report report, GenerateMainReportsViewModel GenerateReports, string[] SelectedBranches, string loggedRole, string Username)
+        private async Task<GenericResponse<dynamic>> ProcessWeeklyNewAccounts(GenerateMainReportsViewModel GenerateReports, List<string> SelectedBranches, string loggedRole, string Username)
         {
             string errMsg = string.Empty;
             DateTime dateFrom = GenerateReports.DateFrom;
@@ -441,7 +444,7 @@ namespace Application.Services
                     if (errMsg == string.Empty)
                     {
                         // Save Details to DB.
-                        errMsg = await _repository.InsertReportRecordsToDB(fileDetails, (ReportCategory)report.ReportCategory, (ReportCoverage)report.ReportCoverage, ReportStatus.Standby, filteredException, null, formattedException, loggedRole, Username);
+                        errMsg = await _repository.InsertReportRecordsToDB(fileDetails, (ReportCategory)GenerateReports.ReportCategory, (ReportCoverage)GenerateReports.ReportCoverage, ReportStatus.Standby, filteredException, null, formattedException, loggedRole, Username);
 
                         if (errMsg == string.Empty)
                         {

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ReportGenerateController : ControllerBase
     {
@@ -18,11 +18,11 @@ namespace API.Controllers
             _service = service;
         }
         [HttpPost("GenerateReport")]
-        public async Task<IActionResult> GenerateReport(ReportGenerateParam data)
+        public async Task<IActionResult> GenerateReport(GenerateMainReportsViewModel data)
         {
             try
             {
-                return Ok(await _service.GenerateReport(data.report, data.GenerateReports, data.reportCoverage, data.SelectedBranches));
+                return Ok(await _service.GenerateReport(data));
             }
             catch
             {
