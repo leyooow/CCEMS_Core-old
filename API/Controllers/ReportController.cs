@@ -6,10 +6,11 @@ using Application.Models;
 using Infrastructure.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace API.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ReportController : ControllerBase
     {
@@ -19,9 +20,9 @@ namespace API.Controllers
             _service = service;
         }
         [HttpGet("GetList")]
-        public async Task<PaginatedList<Report>> GetList(string searchString = "")
+        public async Task<PaginatedList<Report>> GetList(string searchString = "", int Page = 1)
         {
-            return await _service.GetList(searchString);
+            return await _service.GetList(searchString, Page);
         }
         [HttpGet("PopulateGroupsDropDownList")]
         public async Task<List<Group>> PopulateGroupsDropDownList()
@@ -31,11 +32,7 @@ namespace API.Controllers
         [HttpPost("DownloadAdhoc")]
         public async Task<IActionResult> DownloadAdhoc(DownloadAdhocViewModel vm)
         {
-            var result = await _service.DownloadAdhoc(vm);
-            if (result.Success)
-                return File(result.Data.FileByte, result.Data.ContentType, result.Data.FileName);
-            else
-                return Ok(result);
+            return Ok(await _service.DownloadAdhoc(vm));
         }
     }
 }

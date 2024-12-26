@@ -24,7 +24,7 @@ namespace Application.Services
             _mapper = mapper;
 
         }
-        public async Task<PaginatedList<Report>> GetList(string searchString)
+        public async Task<PaginatedList<Report>> GetList(string searchString = "", int Page = 1)
         {
             string loggedRole = _user.RoleName ?? "";
             string empID = _user.EmployeeID ?? string.Empty;
@@ -53,7 +53,7 @@ namespace Application.Services
                     break;
             }
 
-            return await PaginatedList<Report>.CreateAsync(query);
+            return await PaginatedList<Report>.CreateAsync(query, Page);
         }
         public async Task<List<Group>> PopulateGroupsDropDownList()
         {

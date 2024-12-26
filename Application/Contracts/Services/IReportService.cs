@@ -16,7 +16,7 @@ namespace Application.Contracts.Services
 {
     public interface IReportService
     {
-        Task<PaginatedList<Report>> GetList(string searchString);
+        Task<PaginatedList<Report>> GetList(string searchString, int Page);
         Task<List<Group>> PopulateGroupsDropDownList();
         Task<GenericResponse<EPPlusReturn>> DownloadAdhoc(DownloadAdhocViewModel vm);
     }

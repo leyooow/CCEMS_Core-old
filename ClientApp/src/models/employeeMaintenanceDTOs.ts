@@ -11,6 +11,7 @@ export interface PagedResult {
   pageNumber: number;   
   pageSize: number;     
   searchTerm: string;   
+  pageCount?: number;   
 }
 
 export interface EmployeeCreateDTO {
